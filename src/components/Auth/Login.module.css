@@ -1,0 +1,70 @@
+.background {
+  background-image: url("../../../public/images/2020_01_23_85097_1579785360._large.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.auth {
+  margin: auto auto;
+  width: 100%;
+  max-width: 25rem;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.auth h1 {
+  text-align: center;
+  color: white;
+}
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control label {
+  display: block;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.control input {
+  font: inherit;
+  background-color: rgba(255, 255, 255, 1);
+  color: #38015c;
+  border-radius: 4px;
+  border: 1px solid white;
+  width: 100%;
+  text-align: left;
+  padding: 0.25rem;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actions button {
+  cursor: pointer;
+  font: inherit;
+  color: black;
+  background-color: rgba(235, 235, 235, 0.8);
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 0.5rem 2.5rem;
+}
+
+.actions button:hover {
+  background-color: rgba(164, 164, 164, 0.8);
+  border-color: black;
+}

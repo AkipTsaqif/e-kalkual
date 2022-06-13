@@ -7,16 +7,16 @@ const Home = () => {
 
     return (
         <Navbar>
-            <div className={styles.background}>
+            <div>
                 <section className={styles.card}>
                     <div className={styles.actions}>
                         <button type="button" onClick={() => navigate("/dashboard")}>Dashboard Jadwal</button>
                     </div>
                     <div className={styles.actions}>
-                        <button type="button">Request</button>
+                        <button type="button" onClick={() => navigate("/request")}>Request</button>
                     </div>
                     <div className={styles.actions}>
-                        <button type="button">Verifikasi TMB dan CWR</button>
+                        <button type="button" onClick={() => navigate("/verifikasi")}>Verifikasi TMB dan CWR</button>
                     </div>
                 </section>
             </div>

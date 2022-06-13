@@ -12,7 +12,7 @@ const Navbar = (props) => {
                     </ul>
                 </nav>
             </header>
-            <main>{props.children}</main>
+            <main className={styles.background}>{props.children}</main>
         </div>
     )
 }

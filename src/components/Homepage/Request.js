@@ -14,7 +14,7 @@ const Request = () => {
                     <hr />
                     <div>
                         <div className={styles.actions}>
-                            <button type="button" onClick={() => {navigate("/request/kalibrasi")}}>Kalibrasi</button>
+                            <button type="button" onClick={() => {navigate("/request/new")}}>Kalibrasi</button>
                         </div>
                         <div className={styles.actions}>
                             <button>Kualifikasi</button>

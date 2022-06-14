@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navbar from "../Layout/Navbar";
 import styles from "./Home.module.css";
 
 const Home = () => {
     const navigate = useNavigate();
+    const uname = useSelector(state => state.auth.user);
+
+    console.log(uname);
 
     return (
         <Navbar>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
     return (
-        <div>
+        <div className={styles.background}>
             <header className={styles.header}>
                 <div className={styles.logo}>E-Kalkual</div>
                 <nav>
@@ -12,7 +12,7 @@ const Navbar = (props) => {
                     </ul>
                 </nav>
             </header>
-            <main className={styles.background}>{props.children}</main>
+            <section>{props.children}</section>
         </div>
     )
 }

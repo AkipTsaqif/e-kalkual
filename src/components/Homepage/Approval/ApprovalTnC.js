@@ -1,14 +1,13 @@
 import { Box, TextField, MenuItem, Button } from "@mui/material";
-import Stack from '@mui/material/Stack';
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./VerifTimbangan.module.css";
+import styles from "./ApprovalTnC.module.css";
 
-const VerifTimbangan = () => {
+const ApprovalTnC = () => {
     return (
         <div>
             <Navbar>
-                <section className={styles.auth}>
+                <section className={styles.card}>
                     <h3>Verifikasi Timbangan</h3>
                     <Box sx={{'& .MuiTextField-root': { m: 1, width: '50ch' }}}>
                         <div><TextField id="namaAlat" label="Nama Alat" size="small" InputProps={{ readOnly: true }}/></div>
@@ -21,11 +20,7 @@ const VerifTimbangan = () => {
                         <div><TextField id="zeroCheck" label="Zero Check" size="small"/></div>
                         <div><TextField id="hasil" label="Hasil Pengukuran" size="small"/></div>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
-                            <Stack direction="row" spacing={2}>
-                                <Button variant="contained">New</Button>
-                                <Button variant="contained" color="success">Save</Button>
-                                <Button variant="outlined">Clear</Button>
-                            </Stack>
+                                <Button variant="contained" color="success">Approve</Button>
                         </Box>
                     </Box>
                 </section>
@@ -34,4 +29,4 @@ const VerifTimbangan = () => {
     )
 }
 
-export default VerifTimbangan;
+export default ApprovalTnC;

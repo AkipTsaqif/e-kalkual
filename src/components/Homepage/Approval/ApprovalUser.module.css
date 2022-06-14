@@ -1,0 +1,15 @@
+.card {
+    margin: auto auto;
+    width: 100%;
+    max-width: auto;
+
+    background-color: rgba(235, 235, 235, 0.8);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 0rem;
+    text-align: center;
+}
+
+.card h1 {
+    margin-top: 0px;
+    padding-top: 1rem;
+}

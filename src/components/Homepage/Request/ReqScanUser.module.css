@@ -1,0 +1,74 @@
+.card {
+    margin: auto auto;
+    width: 100%;
+    max-width: auto;
+
+    background-color: rgba(235, 235, 235, 0.8);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 0rem;
+    text-align: center;
+}
+
+.card h1 {
+    margin-top: 0px;
+    padding-top: 1rem;
+}
+
+.auth {
+    margin: auto auto;
+    width: 40rem;
+    /* border-radius: 6px; */
+    background-color: rgba(235, 235, 235, 0.8);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+  }
+  
+  .auth h3 {
+    text-align: center;
+  }
+  
+  .control {
+    margin-bottom: 0.5rem;
+  }
+  
+  .control label {
+    display: inline;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+  }
+  
+  .control input {
+    font: inherit;
+    background-color: rgba(255, 255, 255, 1);
+    color: #38015c;
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 75%;
+    text-align: left;
+    padding: 0.25rem;
+  }
+  
+  .actions {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .actions button {
+    cursor: pointer;
+    font: inherit;
+    color: black;
+    background-color: rgba(235, 235, 235, 0.8);
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 0.5rem 2.5rem;
+  }
+  
+  .actions button:hover {
+    background-color: rgba(164, 164, 164, 0.8);
+    border-color: black;
+  }

@@ -1,20 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const requestNewSlice = createSlice({
-    name: 'request-kalkual-new',
+    name: 'requestNew',
     initialState: {
-        username: null,
-        noIN: null,
-        tipeKalkual: null,
-        namaAlat: null,
-        tipeAlat: null,
-        noKontrol: null,
-        tahun: '2022',
-        departemen: null,
-        lokasi: 'plg',
-        tglKalkual: null,
-        edKalkual: null,
-        jenisKalibrasi: null
+        username: [],
+        noIN: [],
+        tipeKalkual: [],
+        namaAlat: [],
+        tipeAlat: [],
+        noKontrol: [],
+        tahun: [],
+        departemen: [],
+        lokasi: [],
+        tglKalkual: [],
+        edKalkual: [],
+        jenisKalibrasi: []
     },
     reducers: {
         insert: (state, action) => {
@@ -30,6 +30,8 @@ const requestNewSlice = createSlice({
             state.tglKalkual = action.payload.tglKalkual;
             state.edKalkual = action.payload.edKalkual;
             state.jenisKalibrasi = action.payload.jenisKalibrasi;
+            console.log(current(state));
+            console.log(action.payload);
         }
     }
 })

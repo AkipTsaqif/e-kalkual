@@ -1,8 +1,56 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, useCallback } from 'react' 
 import Navbar from "../Layout/Navbar"
 import styles from './DashboardJadwal.module.css'
 
 const DashboardJadwal = () => {
+    // const data = useSelector(state => state.requestNew);
+    // console.log(data);
+
+    const [dummy, setDummy] = useState();
+
+    const fetchRequest = useCallback(async () => {
+        const reponse = await fetch("https://e-kalkual-default-rtdb.asia-southeast1.firebasedatabase.app/request.json")
+        const data = await reponse.json()
+
+        const loadedRequest = [];
+
+        for (const key in data) {
+            loadedRequest.push({
+                ...data[key],
+                id: key
+            })
+        }
+
+        setDummy(loadedRequest);
+    })
+
+    useEffect(() => {
+        fetchRequest();
+    }, [])
+
+    // useEffect(() => {
+    //     fetch("https://e-kalkual-default-rtdb.asia-southeast1.firebasedatabase.app/request.json")
+    //     .then((data) => data.json()).then((data) => setDummy(data))
+    // }, []);
+
+    // console.log(dummy)
+    // console.log(dummy.req1)
+
+    // const baris = dummy.map((row) => {
+    //     return {
+    //         IN: row.noIN,
+    //         Nama: row.nama,
+    //         NoKontrol: row.noKontrol,
+    //         Tipe: row.tipeAlat,
+    //         Departemen: row.departemen,
+    //         Lokasi: row.lokasi,
+    //         TglKalibrasi: row.tglKalkual,
+    //         FrekuensiKalibrasi: row.edKalkual
+    //     }
+    // })
+    
     const columns = [
         { headerName: 'Release step', headerAlign: 'center', field: 'Step', width: 75 },
         { headerName: 'IN*', headerAlign: 'center', field: 'IN', width: 150 },
@@ -21,6 +69,9 @@ const DashboardJadwal = () => {
         { Step: '-', IN: '-', Nama: '-', Tipe: '-', NoKontrol: '-', Departemen: '-', Lokasi: '-', TglKalibrasi: '-', FrekuensiKalibrasi: '-', JenisKalibrasi: '-', Status: '-' },
     ]
 
+    console.log(dummy)
+    console.log(rows)
+
     return (
         <div>
             <Navbar>
@@ -28,7 +79,7 @@ const DashboardJadwal = () => {
                     <h1>DASHBOARD JADWAL</h1>
                     <div style={{ height: '100%', width: '100%' }}>
                         <DataGrid
-                            getRowId={(data) => data.Step}
+                            getRowId={(dummy) => dummy.Nama}
                             columns={columns}
                             rows={rows}
                             pageSize={5}

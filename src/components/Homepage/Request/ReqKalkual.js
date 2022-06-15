@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { requestNewActions } from "../../../store/request-new";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../Layout/Navbar";
 import styles from "./ReqKalkual.module.css";
@@ -96,22 +97,11 @@ const DUMMY_ALAT = [
 const Kalibrasi = () => {
     const dispatch = useDispatch();
     const username = useSelector(state => state.auth.user);
+    const navigate = useNavigate();
+
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
-    const [data, setData] = useState({
-        userID: username,
-        noIN: "",
-        tipeKalkual: "",
-        nama: "",
-        tipeAlat: "",
-        noKontrol: "",
-        tahun: "",
-        departemen: "",
-        lokasi: "",
-        tglKalkual: "",
-        edKalkual: "",
-        jenisKalibrasi: ""
-    });
+    const [request, setRequest] = useState([]);
 
     const noINRef = useRef();
     const tipeKalkualRef = useRef();
@@ -133,9 +123,8 @@ const Kalibrasi = () => {
         setAlatMesin(e.target.value);
     }
 
-    const dataHandler = (e) => {
-        setData({
-            ...data,
+    useEffect(() => {
+        setRequest({
             noIN: noINRef.current.value,
             tipeKalkual: tipeKalkualRef.current.value,
             nama: namaRef.current.value,
@@ -148,18 +137,23 @@ const Kalibrasi = () => {
             edKalkual: edKalkualRef.current.value,
             jenisKalibrasi: jenisKalibrasiRef.current.value
         });
-    }
+    }, [])
+
+    console.log(request)
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dataHandler();
-        dispatch(requestNewActions.insert({
-            ...data,
-            }));
-        console.log(noINRef.current.value)
-    }
 
-    console.log(tipe);
+        // dispatch(requestNewActions.insert({
+        //     ...data,
+        // }));
+
+        console.log(dispatch(requestNewActions.insert({
+            request,
+        })))
+        
+        // navigate("/dashboard");
+    }
 
     return (
         <div>

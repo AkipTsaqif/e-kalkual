@@ -30,8 +30,6 @@ const requestNewSlice = createSlice({
             state.tglKalkual = action.payload.tglKalkual;
             state.edKalkual = action.payload.edKalkual;
             state.jenisKalibrasi = action.payload.jenisKalibrasi;
-            console.log(current(state));
-            console.log(action.payload);
         }
     }
 })

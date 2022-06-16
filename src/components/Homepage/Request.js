@@ -14,10 +14,10 @@ const Request = () => {
                     <hr />
                     <div>
                         <div className={styles.actions}>
-                            <button type="button" onClick={() => {navigate("/request/new")}}>Kalibrasi</button>
+                            <button type="button" onClick={() => {navigate("/request/new", {state: {kalibrasi: true}})}}>Kalibrasi</button>
                         </div>
                         <div className={styles.actions}>
-                            <button>Kualifikasi</button>
+                            <button type="button" onClick={() => {navigate("/request/new", {state: {kalibrasi: false}})}}>Kualifikasi</button>
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { requestNewActions } from "../../../store/request-new";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "../../Layout/Navbar";
 import styles from "./ReqKalkual.module.css";
@@ -95,13 +95,13 @@ const DUMMY_ALAT = [
 ]
 
 const Kalibrasi = () => {
-    const dispatch = useDispatch();
     const username = useSelector(state => state.auth.user);
-    const navigate = useNavigate();
+    const location = useLocation();
 
+    const [isKalibrasi, setIsKalibrasi] = useState(true);
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
-    const [request, setRequest] = useState([]);
+    const [isRuangan, setIsRuangan] = useState(false);
 
     const noINRef = useRef();
     const tipeKalkualRef = useRef();
@@ -117,14 +117,35 @@ const Kalibrasi = () => {
 
     const tipeChangeHandler = (e) => {
         setTipe(e.target.value);
+
+        if (e.target.value === "RB") {
+            setIsRuangan(true);
+        } else {
+            setIsRuangan(false);
+        }
     }
 
     const alatMesinChangeHandler = (e) => {
         setAlatMesin(e.target.value);
     }
 
-    useEffect(() => {
-        setRequest({
+    async function postRequest(req) {
+        const response = await fetch("https://e-kalkual-default-rtdb.asia-southeast1.firebasedatabase.app/request.json", {
+            method: 'POST',
+            body: JSON.stringify(req),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const data = await response.json();
+        console.log(data);
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+
+        const request = {
             noIN: noINRef.current.value,
             tipeKalkual: tipeKalkualRef.current.value,
             nama: namaRef.current.value,
@@ -136,23 +157,9 @@ const Kalibrasi = () => {
             tglKalkual: tglKalkualRef.current.value,
             edKalkual: edKalkualRef.current.value,
             jenisKalibrasi: jenisKalibrasiRef.current.value
-        });
-    }, [])
+        }
 
-    console.log(request)
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        // dispatch(requestNewActions.insert({
-        //     ...data,
-        // }));
-
-        console.log(dispatch(requestNewActions.insert({
-            request,
-        })))
-        
-        // navigate("/dashboard");
+        postRequest(request);
     }
 
     return (
@@ -172,7 +179,7 @@ const Kalibrasi = () => {
                         pt: '2rem',
                         '& .MuiTextField-root': { m: 1, width: '30rem' }
                     }}>
-                        <div><TextField id="userID" label="User ID" size="small" value={username} InputProps={{ readOnly: true }}/></div>
+                        <div><TextField id="userID" label="User ID" size="small" variant="filled" value={username} disabled/></div>
                         <div><TextField id="noIN" label="No IN" inputRef={noINRef} size="small"/></div>
                         <TextField
                             id="tipeKalkual"
@@ -205,13 +212,13 @@ const Kalibrasi = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <div><TextField id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small"/></div>
-                        <div><TextField id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small"/></div>
+                        <div><TextField id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/></div>
+                        <div><TextField id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/></div>
                         <div><TextField id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/></div>
                         <div><TextField id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/></div>
                         <div><TextField id="tglKalkual" label="Tgl Kalibrasi/Kualifikasi" inputRef={tglKalkualRef} size="small"/></div>
                         <div><TextField id="edKalkual" label="ED Kalibrasi/Kualifikasi" inputRef={edKalkualRef} size="small"/></div>
-                        <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div>
+                        {location.state.kalibrasi ? <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div> : <div></div>}
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
                                 <Button variant="outlined">Cancel</Button>

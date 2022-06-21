@@ -30,8 +30,8 @@ function App() {
         <Route path="request" element={<Request />} />
         <Route path="verifikasi" element={<Verifikasi />} />
         <Route path="request/new" element={<ReqKalkual />} />
-        <Route path="verifikasi/verifperiode" element={<VerifPeriode />} />
-        <Route path="verifikasi/veriftimbangan" element={<VerifTimbangan />} />
+        <Route path="verifikasi/periode" element={<VerifPeriode />} />
+        <Route path="verifikasi/timbangan" element={<VerifTimbangan />} />
         <Route path="request/scanned" element={<ReqScanUser />} />
         <Route path="request/scanned/register" element={<ReqKalkualUser />} />
         <Route path="dashboard/user" element={<DashboardSPVUser />} />

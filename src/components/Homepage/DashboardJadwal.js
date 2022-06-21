@@ -1,6 +1,8 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useCallback } from 'react' 
+import { Checkbox } from '@mui/material';
+
 import Navbar from "../Layout/Navbar"
 import styles from './DashboardJadwal.module.css'
 
@@ -26,9 +28,13 @@ const DashboardJadwal = () => {
     useEffect(() => {
         fetchRequest();
     }, [])
+
+    console.log(dummy)
     
     const columns = [
-        { headerName: 'Release step', headerAlign: 'center', field: 'Step', width: 75 },
+        { headerName: 'Release step', headerAlign: 'center', field: 'Step', width: 75, renderCell: () => {
+            <Checkbox />
+        } },
         { headerName: 'IN*', headerAlign: 'center', field: 'noIN', width: 150 },
         { headerName: 'Nama Alat/Mesin/Sistem Penunjang/Ruangan', headerAlign: 'center', field: 'nama', width: 200 },
         { headerName: 'Tipe (Alat/Mesin/Sistem Penunjang)', headerAlign: 'center', field: 'tipeAlat', width: 200 },
@@ -46,14 +52,14 @@ const DashboardJadwal = () => {
             <Navbar>
                 <div className={styles.card}>
                     <h1>DASHBOARD JADWAL</h1>
-                    <div style={{ height: '100%', width: '100%' }}>
+                    <hr />
+                    <div style={{ height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: '5vh', margin: 'auto auto', borderRadius: '5px' }}>
                         <DataGrid
                             getRowId={(dummy) => dummy.nama}
                             columns={columns}
                             rows={dummy}
                             pageSize={5}
                             pageSizeOptions={[5, 10, 20, 50, 100]}
-                            checkBoxSelection
                             autoHeight={true}
                             sx={{
                                 '& .MuiDataGrid-columnHeaderTitle': {

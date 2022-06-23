@@ -152,9 +152,7 @@ const Kalibrasi = () => {
     }
 
     async function postRequest(req) {
-        // console.log(req);
-        // console.log(JSON.stringify(req));
-        const response = await fetch("https://localhost:44375/api/request/new", {
+        const response = await fetch("https://localhost:44375/api/kalkual", {
             method: 'POST',
             body: JSON.stringify(req),
             headers: {
@@ -166,13 +164,13 @@ const Kalibrasi = () => {
         }).catch(e => {
             console.log(e);
         });
-
-        // const data = await response.json();
-        // console.log(data);
     }
 
     const submitHandler = (e) => {
         e.preventDefault();
+
+        // if ('value' in jenisKalibrasiRef.current.value) console.log(jenisKalibrasiRef.current.value)
+        // else console.log("kosong");
 
         const request = {
             Option: "Insert",
@@ -186,10 +184,9 @@ const Kalibrasi = () => {
             Lokasi: lokasiRef.current.value,
             TglKalkual: tanggal,
             EDKalkual: ed,
-            JenisKalkual: jenisKalibrasiRef.current.value
+            JenisKalkual: (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "")
         }
 
-        // console.log(request);
         postRequest(request);
     }
 

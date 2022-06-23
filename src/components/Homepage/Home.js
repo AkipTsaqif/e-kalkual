@@ -20,10 +20,16 @@ const Home = () => {
                         <Button variant="outlined" onClick={() => navigate("/dashboard")}>Dashboard Jadwal</Button>
                     </div>
                     <div className={styles.actions}>
-                        <Button variant="outlined" onClick={() => setIsRequest(!isRequest)}>Request Kalkual</Button>
+                        <Button variant="outlined" onClick={() => {
+                            setIsRequest(!isRequest);
+                            if (isVerif) setIsVerif(!isVerif);
+                        }}>Request Kalkual</Button>
                     </div>
                     <div className={styles.actions}>
-                        <Button variant="outlined" onClick={() => setIsVerif(!isVerif)}>Verifikasi TMB dan CWR</Button>
+                        <Button variant="outlined" onClick={() => {
+                            setIsVerif(!isVerif);
+                            if (isRequest) setIsRequest(!isRequest);
+                        }}>Verifikasi TMB dan CWR</Button>
                     </div>
                     <hr />    
                 </section>

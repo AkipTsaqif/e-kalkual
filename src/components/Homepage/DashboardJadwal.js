@@ -42,7 +42,7 @@ const DashboardJadwal = () => {
         { headerName: 'Departemen Pemilik', headerAlign: 'center', field: 'departemen', width: 100 },
         { headerName: 'Lokasi', headerAlign: 'center', field: 'lokasi', width: 75 },
         { headerName: 'Tgl Kalibrasi/Kualifikasi', headerAlign: 'center', field: 'tglKalkual', width: 175 },
-        { headerName: 'Frekuensi Kalibrasi/Kualifikasi (Umur Jatuh Tempo)', headerAlign: 'center', field: 'FrekuensiKalibrasi', width: 150 },
+        { headerName: 'Frekuensi Kalibrasi/Kualifikasi (Umur Jatuh Tempo)', headerAlign: 'center', field: 'EDKalibrasi', width: 150 },
         { headerName: 'Jenis Kalibrasi/Kualifikasi (internal/eksternal)', headerAlign: 'center', field: 'jenisKalibrasi', width: 150 },
         { headerName: 'Status', headerAlign: 'center', field: 'Status', width: 100 },
     ];

@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
-import axios from "axios";
+import { toast } from "react-toastify";
 
 import styles from "./Login.module.css";
 
@@ -13,32 +13,33 @@ const Login = () => {
     const dispatch = useDispatch();
     const [uname, setUname] = useState("");
 
-    const err = {
-        "ERROR": 'Error'
-    }
-
     const fetchUser = useCallback(async (username, password) => {
         const response = await fetch("https://localhost:44375/api/auth", {
             method: 'POST',
-            
             body: JSON.stringify({
               UserAD: username,
               Password: password
             }),
             headers: {
               'Content-Type': 'application/json',
-              'Accept': '*/*',
-              'Accept-Encoding': 'gzip, deflate, br',
-              'Connection': 'keep-alive'
+              'Accept': '*/*'
             }}).then(resp => {
                 resp.json().then(data => ({
                     data: data,
                     status: resp.status,
                 })).then(res => {
-                    console.log(res.data[0]);
-                    if (res.data[0] === err) console.log("data error")
-                    setUname(res.data[0].Username);
-                    console.log(res.status, res.result);
+                    if (res.data === null) toast.error("Password tidak benar!", {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    })
+                    else {
+                        setUname(res.data[0].Username);
+                    }
                 })
             }).catch(e => {
                 console.log(e);
@@ -48,7 +49,15 @@ const Login = () => {
     useEffect(() => {
         if (uname) {
             dispatch(authActions.login(uname));
-            console.log(uname);
+            toast.success("Berhasil masuk sebagai    " + '\n' + uname, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
             navigate("/home");
         }
     }, [uname])

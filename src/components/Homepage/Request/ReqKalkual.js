@@ -1,4 +1,10 @@
 import { Box, TextField, MenuItem, Button } from "@mui/material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import DateFnsAdapter from '@date-io/date-fns';
+import idLocale from 'date-fns/locale/id';
+
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
 import { useState, useEffect, useRef } from "react";
@@ -102,6 +108,16 @@ const Kalibrasi = () => {
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [isRuangan, setIsRuangan] = useState(false);
+    const [tanggal, setTanggal] = useState(new Date());
+    const [periode, setPeriode] = useState(0);
+    const [ed, setEd] = useState("");
+    
+    const locale = 'id';
+    const localeMap = {
+        id: idLocale
+    }
+
+    const dateFns = new DateFnsAdapter({ locale: localeMap.id });
 
     const noINRef = useRef();
     const tipeKalkualRef = useRef();
@@ -111,9 +127,15 @@ const Kalibrasi = () => {
     const tahunRef = useRef();
     const departemenRef = useRef();
     const lokasiRef = useRef();
-    const tglKalkualRef = useRef();
-    const edKalkualRef = useRef();
     const jenisKalibrasiRef = useRef();
+
+    useEffect(() => {
+        setEd(dateFns.addMonths(tanggal, periode));
+    }, [periode, tanggal])
+
+    const periodeChangeHandler = (e) => {
+        setPeriode(e.target.value);
+    }
 
     const tipeChangeHandler = (e) => {
         setTipe(e.target.value);
@@ -130,35 +152,44 @@ const Kalibrasi = () => {
     }
 
     async function postRequest(req) {
-        const response = await fetch("https://e-kalkual-default-rtdb.asia-southeast1.firebasedatabase.app/request.json", {
+        // console.log(req);
+        // console.log(JSON.stringify(req));
+        const response = await fetch("https://localhost:44375/api/request/new", {
             method: 'POST',
             body: JSON.stringify(req),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': '*/*'
             }
-        })
+        }).then(resp => {
+            resp.json().then(data => console.log(data));
+        }).catch(e => {
+            console.log(e);
+        });
 
-        const data = await response.json();
-        console.log(data);
+        // const data = await response.json();
+        // console.log(data);
     }
 
     const submitHandler = (e) => {
         e.preventDefault();
 
         const request = {
-            noIN: noINRef.current.value,
-            tipeKalkual: tipeKalkualRef.current.value,
-            nama: namaRef.current.value,
-            tipeAlat: tipeAlatRef.current.value,
-            noKontrol: noKontrolRef.current.value,
-            tahun: tahunRef.current.value,
-            departemen: departemenRef.current.value,
-            lokasi: lokasiRef.current.value,
-            tglKalkual: tglKalkualRef.current.value,
-            edKalkual: edKalkualRef.current.value,
-            jenisKalibrasi: jenisKalibrasiRef.current.value
+            Option: "Insert",
+            NoIN: noINRef.current.value,
+            TipeKalkual: tipeKalkualRef.current.value,
+            Nama: namaRef.current.value,
+            Tipe: tipeAlatRef.current.value,
+            NoKontrol: noKontrolRef.current.value,
+            TahunPembelian: tahunRef.current.value,
+            Departemen: departemenRef.current.value,
+            Lokasi: lokasiRef.current.value,
+            TglKalkual: tanggal,
+            EDKalkual: ed,
+            JenisKalkual: jenisKalibrasiRef.current.value
         }
 
+        // console.log(request);
         postRequest(request);
     }
 
@@ -216,8 +247,17 @@ const Kalibrasi = () => {
                         <div><TextField id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/></div>
                         <div><TextField id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/></div>
                         <div><TextField id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/></div>
-                        <div><TextField id="tglKalkual" label="Tgl Kalibrasi/Kualifikasi" inputRef={tglKalkualRef} size="small"/></div>
-                        <div><TextField id="edKalkual" label="ED Kalibrasi/Kualifikasi" inputRef={edKalkualRef} size="small"/></div>
+                        <div>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
+                                <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={tanggal} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params}/>}/>
+                            </LocalizationProvider>
+                        </div>
+                        <div><TextField id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/></div>
+                        <div>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
+                                <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={ed} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} id="edKalkual" size="small" variant="filled" sx={{fontWeight: 'bold'}} disabled/>}/>
+                            </LocalizationProvider>
+                        </div>
                         {location.state.kalibrasi ? <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div> : <div></div>}
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>

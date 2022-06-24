@@ -2,6 +2,7 @@ import { Box, TextField, MenuItem, Button } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { toast } from "react-toastify";
 import DateFnsAdapter from '@date-io/date-fns';
 import idLocale from 'date-fns/locale/id';
 
@@ -10,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { requestNewActions } from "../../../store/request-new";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Navbar from "../../Layout/Navbar";
 import styles from "./ReqKalkual.module.css";
@@ -103,6 +104,7 @@ const DUMMY_ALAT = [
 const Kalibrasi = () => {
     const username = useSelector(state => state.auth.user);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [isKalibrasi, setIsKalibrasi] = useState(true);
     const [tipe, setTipe] = useState("");
@@ -160,7 +162,15 @@ const Kalibrasi = () => {
                 'Accept': '*/*'
             }
         }).then(resp => {
-            resp.json().then(data => console.log(data));
+            resp.json().then(data => toast.success("Request kalkual berhasil!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            })).then(() => navigate(-1));
         }).catch(e => {
             console.log(e);
         });
@@ -184,7 +194,7 @@ const Kalibrasi = () => {
             Lokasi: lokasiRef.current.value,
             TglKalkual: tanggal,
             EDKalkual: ed,
-            JenisKalkual: (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "")
+            JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "") : ""
         }
 
         postRequest(request);
@@ -255,10 +265,10 @@ const Kalibrasi = () => {
                                 <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={ed} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} id="edKalkual" size="small" variant="filled" sx={{fontWeight: 'bold'}} disabled/>}/>
                             </LocalizationProvider>
                         </div>
-                        {location.state.kalibrasi ? <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div> : <div></div>}
+                        {location.state.kalibrasi !== null ? (location.state.kalibrasi ? <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div> : <div></div>) : <div></div>}
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
-                                <Button variant="outlined">Cancel</Button>
+                                <Button variant="outlined" >Cancel</Button>
                                 <Button variant="contained" color="success">Save</Button>
                                 <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
                             </Stack>

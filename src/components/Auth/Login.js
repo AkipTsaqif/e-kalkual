@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
 import { toast } from "react-toastify";
+import { useSignIn } from 'react-auth-kit';
 
 import styles from "./Login.module.css";
 
@@ -11,6 +12,7 @@ const Login = () => {
     const passwordRef = useRef();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const login = useSignIn();
     const [uname, setUname] = useState("");
 
     const fetchUser = useCallback(async (username, password) => {
@@ -37,7 +39,12 @@ const Login = () => {
                         draggable: true,
                         progress: undefined
                     })
-                    else {
+                    else if (login({
+                        token: res.data[0].Token,
+                        expiresIn: new Date(res.data[0].ExpiresIn),
+                        tokenType: 'Bearer',
+                        authState: res.data[0].Username
+                    })){
                         setUname(res.data[0].Username);
                     }
                 })

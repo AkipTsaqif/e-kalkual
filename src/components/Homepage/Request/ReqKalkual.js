@@ -207,18 +207,17 @@ const Kalibrasi = () => {
                     <h3>Form registrasi tipe kalkual QA khusus tipe alat/mesin/sistem penunjang/ruangan baru</h3>
                 </section>
 
-                    <Box sx={{
-                        backgroundColor: 'background.paper',
-                        ml: 'auto',
-                        mr: 'auto',
-                        maxWidth: '35rem',
+                    <Stack sx={{
+                        backgroundColor: 'rgba(241, 243, 243, 0.95)',
+                        mx: 'auto',
+                        maxWidth: 0.6,
                         height: 'auto',
-                        pl: '3.5rem',
-                        pt: '2rem',
-                        '& .MuiTextField-root': { m: 1, width: '30rem' }
+                        px: 5,
+                        pb: 2,
+                        '& .MuiTextField-root': { m: 1 }
                     }}>
-                        <div><TextField id="userID" label="User ID" size="small" variant="filled" value={username} disabled/></div>
-                        <div><TextField id="noIN" label="No IN" inputRef={noINRef} size="small"/></div>
+                        <TextField id="userID" label="User ID" size="small" variant="filled" value={username} disabled/>
+                        <TextField id="noIN" label="No IN" inputRef={noINRef} size="small"/>
                         <TextField
                             id="tipeKalkual"
                             select
@@ -234,7 +233,7 @@ const Kalibrasi = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <div><TextField id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" inputRef={namaRef} size="small"/></div>
+                        <TextField id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" inputRef={namaRef} size="small"/>
                         <TextField
                             id="tipeAlat"
                             select
@@ -250,21 +249,21 @@ const Kalibrasi = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <div><TextField id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/></div>
-                        <div><TextField id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/></div>
-                        <div><TextField id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/></div>
-                        <div><TextField id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/></div>
-                        <div>
+                        <TextField id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
+                        <TextField id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
+                        <TextField id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/>
+                        <TextField id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
+                        <Box>
                             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
                                 <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={tanggal} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params}/>}/>
                             </LocalizationProvider>
-                        </div>
-                        <div><TextField id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/></div>
-                        <div>
+                        </Box>
+                        <TextField id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/>
+                        <Box>
                             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
                                 <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={ed} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} id="edKalkual" size="small" variant="filled" sx={{fontWeight: 'bold'}} disabled/>}/>
                             </LocalizationProvider>
-                        </div>
+                        </Box>
                         {location.state.kalibrasi !== null ? (location.state.kalibrasi ? <div><TextField id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></div> : <div></div>) : <div></div>}
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
@@ -273,8 +272,7 @@ const Kalibrasi = () => {
                                 <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
                             </Stack>
                         </Box>
-                        <div className={styles.div}>P</div>
-                    </Box>
+                    </Stack>
                 
             </Navbar>
         </div>

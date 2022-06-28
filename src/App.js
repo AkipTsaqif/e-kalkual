@@ -1,6 +1,7 @@
 import styles from './App.css';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/Auth/PrivateRoute';
+import { RequireAuth } from 'react-auth-kit';
 
 import Login from './components/Auth/Login';
 import Home from './components/Homepage/Home';
@@ -23,9 +24,14 @@ function App() {
     <div className={styles.bg}>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="home" element={<Home />} />
-          <Route path="dashboard" element={<DashboardJadwal />} />
+        <Route path='home' element={<RequireAuth>
+            <Home />
+          </RequireAuth>}>
+        </Route>
+        <Route path='dashboard' element={<RequireAuth>
+            <DashboardJadwal />
+          </RequireAuth>}>
+        </Route>
           <Route path="request/new" element={<ReqKalkual />} />
           <Route path="verifikasi/periode" element={<VerifPeriode />} />
           <Route path="verifikasi/timbangan" element={<VerifTimbangan />} />
@@ -38,7 +44,6 @@ function App() {
           <Route path="approval/uploadlaporan" element={<ApprovalLaporan />} />
           <Route path="approval/timbangan" element={<ApprovalTnC />} />
           <Route path="dashboard/timbangan" element={<DashboardTnC />} />
-        </Route>
       </Routes>   
     </div>
   );

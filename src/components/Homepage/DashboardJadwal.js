@@ -9,7 +9,10 @@ import styles from './DashboardJadwal.module.css'
 import { parse } from 'date-fns';
 import { useNavigate } from 'react-router';
 
+import { uploadLaporanActions } from '../../store/upload-laporan';
+
 const DashboardJadwal = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [dummy, setDummy] = useState([]);
     const [selectedData, setSelectedData] = useState({});
@@ -152,7 +155,8 @@ const DashboardJadwal = () => {
                                     const selectedRowData = dummy.find(row => selectedID.has(row.id));
                                     // setSelectedData(selectedRowData);
                                     console.log(selectedRowData);
-                                    navigate('/request/new')
+                                    dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
+                                    navigate('/approval/uploadlaporan');
                                 }}
                                 getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
                                 sx={{

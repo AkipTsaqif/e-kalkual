@@ -4,6 +4,7 @@ import PrivateRoute from './components/Auth/PrivateRoute';
 
 import Login from './components/Auth/Login';
 import Home from './components/Homepage/Home';
+import Sidebar from './components/Layout/Sidebar';
 import DashboardJadwal from './components/Homepage/DashboardJadwal';
 import ReqKalkual from './components/Homepage/Request/ReqKalkual';
 import VerifPeriode from './components/Homepage/Verifikasi/VerifPeriode';
@@ -23,6 +24,7 @@ function App() {
     <div className={styles.bg}>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="sidebar" element={<Sidebar />}/>
         <Route element={<PrivateRoute />}>
           <Route path='home' element={<Home />} />
           <Route path='dashboard' element={<DashboardJadwal />} />

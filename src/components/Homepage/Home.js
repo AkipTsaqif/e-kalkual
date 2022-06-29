@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from '@mui/material/Card';
 import CardContent from "@mui/material/CardContent";
-import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
 
 import Navbar from "../Layout/Navbar";
 import styles from "./Home.module.css";
@@ -13,9 +12,7 @@ import { blue } from "@mui/material/colors";
 
 const Home = () => {
     const navigate = useNavigate();
-    // const user = useSelector(state => state.auth.user);
-    const user = useAuthUser();
-    console.log(useIsAuthenticated());
+    const user = useSelector(state => state.persistedReducer.auth.user);
     const [isRequest, setIsRequest] = useState(false);
     const [isVerif, setIsVerif] = useState(false);
 
@@ -41,7 +38,7 @@ const Home = () => {
                                 color: 'primary.main' }}>
                         <CardContent>
                             <h1 style={{marginBottom: "-3vh", marginTop: "-0.5vh"}}>Selamat datang,</h1>
-                            <h1 style={{marginBottom: "-1.5vh"}}>{user().Username}</h1>
+                            <h1 style={{marginBottom: "-1.5vh"}}>{user}</h1>
                         </CardContent>
                     </Card>
                 </ThemeProvider>

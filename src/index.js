@@ -5,16 +5,15 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from 'react-auth-kit';
-
-import store from './store';
+import { store, persistor } from './store/index';
+import { PersistGate } from 'redux-persist/integration/react'
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <AuthProvider authType='localstorage' authName='_auth'>
+    <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <App />    
         <ToastContainer position="top-center"
@@ -27,6 +26,6 @@ root.render(
           draggable
           pauseOnHover />
       </BrowserRouter>
-    </AuthProvider>
+    </PersistGate>
   </Provider>
 );

@@ -102,7 +102,7 @@ const DUMMY_ALAT = [
 ]
 
 const Kalibrasi = () => {
-    const username = useSelector(state => state.auth.user);
+    const username = useSelector(state => state.persistedReducer.auth.user);
     const location = useLocation();
     const navigate = useNavigate();
 

@@ -17,7 +17,6 @@ const uploadLaporanSlice = createSlice({
     },
     reducers: {
         inputLaporan: (state, action) => {
-            state.username = action.payload.username;
             state.NoIN = action.payload.NoIN;
             state.TipeKalkual = action.payload.TipeKalkual;
             state.NamaAlat = action.payload.Nama;

@@ -19,6 +19,7 @@ import Avatar from '@mui/material/Avatar';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 
+import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
@@ -87,6 +88,16 @@ const Navbar = (props) => {
                     </ThemeProvider>
                     <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
                     <List>
+                        <ListItemButton onClick={() => navigate("/home")}>
+                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                <HomeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Home' primaryTypographyProps={{
+                                fontSize: 20,
+                                color: "white",
+                                letterSpacing: 0,
+                            }}/>
+                        </ListItemButton>
                         <ListItemButton onClick={() => navigate("/dashboard")}>
                             <ListItemIcon style={{minWidth: '40px', color: "white"}}>
                                 <DashboardIcon />

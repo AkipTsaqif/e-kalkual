@@ -17,7 +17,8 @@ const requestNewSlice = createSlice({
         jenisKalibrasi: []
     },
     reducers: {
-        insert: (state, action) => {
+        saveRequest: (state, action) => {
+            console.log(action.payload);
             state.username = action.payload.username;
             state.noIN = action.payload.noIN;
             state.tipeKalkual = action.payload.tipeKalkual;
@@ -29,7 +30,7 @@ const requestNewSlice = createSlice({
             state.lokasi = action.payload.lokasi;
             state.tglKalkual = action.payload.tglKalkual;
             state.edKalkual = action.payload.edKalkual;
-            state.jenisKalibrasi = action.payload.jenisKalibrasi;
+            state.jenisKalkual = action.payload.jenisKalibrasi;
         }
     }
 })

@@ -168,13 +168,16 @@ const DashboardJadwal = () => {
                                 getRowId={(dummy) => dummy.id}
                                 columns={columns}
                                 rows={dummy}
-                                pageSizeOptions={[5, 10, 20, 50, 100]}
-                                rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                                pageSize={[10]}
+                                rowsPerPageOptions={[10]}
+                                rowHeight={35}
+                                headerHeight={60}
                                 autoHeight={true}
                                 onSelectionModelChange={id => {
                                     const selectedID = new Set(id);
                                     const selectedRowData = dummy.find(row => selectedID.has(row.id));
                                     // setSelectedData(selectedRowData);
+                                    console.log(selectedRowData);
                                     if (selectedRowData.Status === "In progress") {
                                         dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
                                         navigate('/approval/uploadlaporan');

@@ -118,7 +118,7 @@ const theme = createTheme({
 
 const Kalibrasi = () => {
     const username = useSelector(state => state.persistedReducer.auth.user);
-    const savedRequest = useSelector(state => state.persistedReducer.requestNew.saveRequest);
+    const savedRequest = useSelector(state => state.persistedReducer.requestNew);
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -127,7 +127,7 @@ const Kalibrasi = () => {
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [isRuangan, setIsRuangan] = useState(false);
-    const [tanggal, setTanggal] = useState(new Date());
+    const [tanggal, setTanggal] = useState("");
     const [periode, setPeriode] = useState(0);
     const [ed, setEd] = useState("");
     
@@ -135,7 +135,7 @@ const Kalibrasi = () => {
     const localeMap = {
         id: idLocale
     }
-
+    
     const dateFns = new DateFnsAdapter({ locale: localeMap.id });
 
     const noINRef = useRef();
@@ -149,12 +149,10 @@ const Kalibrasi = () => {
     const jenisKalibrasiRef = useRef();
 
     useEffect(() => {
-        setEd(dateFns.addMonths(tanggal, periode));
-    }, [periode, tanggal])
+        // setEd(dateFns.addMonths(savedRequest.TglKalkual, periode));
 
-    useEffect(() => {
-        console.log(savedRequest);
-    }, [savedRequest])
+        dispatch(requestNewActions.calcEndDate({ TglKalkual: tanggal, Periode: periode }))
+    }, [periode, tanggal])
 
     const periodeChangeHandler = (e) => {
         setPeriode(e.target.value);
@@ -185,8 +183,9 @@ const Kalibrasi = () => {
             TahunPembelian: tahunRef.current.value,
             Departemen: departemenRef.current.value,
             Lokasi: lokasiRef.current.value,
-            TglKalkual: tanggal,
-            EDKalkual: ed,
+            TglKalkual: savedRequest.TglKalkual,
+            Periode: periode,
+            EDKalkual: savedRequest.EDKalkual,
             JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "") : ""
         }
 
@@ -223,6 +222,7 @@ const Kalibrasi = () => {
         // else console.log("kosong");
 
         postRequest(inputtedData());
+        dispatch(requestNewActions.removeRequest());
     }
 
     const saveHandler = (e) => {
@@ -230,6 +230,12 @@ const Kalibrasi = () => {
         dispatch(requestNewActions.saveRequest(inputtedData()));
     }
 
+    const cancelHandler = (e) => {
+        e.preventDefault();
+        dispatch(requestNewActions.removeRequest());
+        navigate("/home");
+    }
+    console.log(savedRequest);
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
@@ -249,14 +255,14 @@ const Kalibrasi = () => {
                         <Typography variant="h6">User ID:</Typography>
                         <TextField sx={{ gridColumn: "span 2" }} id="userID" label="User ID" size="small" variant="filled" value={username} disabled/>
                         <Typography variant="h6">No IN:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="noIN" label="No IN" inputRef={noINRef} size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest ? savedRequest.NoIN : ""} id="noIN" label="No IN" inputRef={noINRef} size="small"/>
                         <Typography variant="h6">Tipe Kalkual:</Typography>
                         <TextField sx={{ gridColumn: "span 2" }}
                             size="small"
                             id="tipeKalkual"
                             select
                             label="Tipe Kalkual"
-                            value={tipe}
+                            defaultValue={!savedRequest ? tipe : savedRequest.TipeKalkual}
                             onChange={tipeChangeHandler}
                             variant="outlined"
                             inputRef={tipeKalkualRef}
@@ -268,14 +274,14 @@ const Kalibrasi = () => {
                             ))}
                         </TextField>
                         <Typography variant="h6">Nama Alat:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" inputRef={namaRef} size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.NamaAlat} id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" inputRef={namaRef} size="small"/>
                         <Typography variant="h6">Tipe Alat:</Typography>
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }}
                             size="small"
                             id="tipeAlat"
                             select
                             label="Tipe Alat/Mesin/Sistem Penunjang/Ruangan"
-                            value={alatMesin}
+                            defaultValue={!savedRequest ? alatMesin : savedRequest.TipeAlat}
                             onChange={alatMesinChangeHandler}
                             variant="outlined"
                             inputRef={tipeAlatRef}
@@ -287,33 +293,33 @@ const Kalibrasi = () => {
                             ))}
                         </TextField>
                         <Typography variant="h6">No Kontrol:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.NoKontrol} id="noKontrol" label="No Kontrol" inputRef={noKontrolRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
                         <Typography variant="h6">Tahun Pembelian:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Tahun} id="tahun" label="Tahun Pembelian" inputRef={tahunRef} size="small" variant={isRuangan ? "filled" : "outlined"} disabled={isRuangan}/>
                         <Typography variant="h6">Departemen:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Departemen} id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/>
                         <Typography variant="h6">Lokasi:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Lokasi} id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
                         <Typography variant="h6">Tanggal Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
-                            <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={tanggal} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
+                            <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
                         </LocalizationProvider>
                         <Typography variant="h6">Periode Kalkual:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Periode} id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/>
                         <Typography variant="h6">ED Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
-                            <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={ed} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} sx={{ gridColumn: "span 2" }} id="edKalkual" size="small" variant="filled" disabled/>}/>
+                            <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={savedRequest.EDKalkual} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} sx={{ gridColumn: "span 2" }} id="edKalkual" size="small" variant="filled" disabled/>}/>
                         </LocalizationProvider>
                         {location.state.kalibrasi !== null ? 
                             (location.state.kalibrasi ? 
                                 <><Typography variant="h6">Jenis Kalkual:</Typography>
-                                <TextField sx={{ gridColumn: "span 2" }} id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></>
+                                <TextField sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.JenisKalkual} id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></>
                             : <div></div>) 
                         : <div></div>}
                     </Box>
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                         <Stack direction="row" spacing={2}>
-                            <Button variant="outlined" onClick={() => navigate("/home")} >Cancel</Button>
+                            <Button variant="outlined" onClick={cancelHandler} >Cancel</Button>
                             <Button variant="contained" onClick={saveHandler} color="success">Save</Button>
                             <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
                         </Stack>

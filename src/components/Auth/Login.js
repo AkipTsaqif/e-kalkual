@@ -32,13 +32,24 @@ const Login = () => {
                 })).then(res => {
                     if (res.data === null) toast.error("Password tidak benar!", {
                         position: "top-center",
-                        autoClose: 2000,
+                        autoClose: 3000,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined
                     })
+                    else if (res.data[0].hasOwnProperty('Status')) {
+                        toast.error("Username tidak terdaftar di dalam sistem! Silahkan menghubungi tim IT.", {
+                            position: "top-center",
+                            autoClose: 4000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined
+                        })
+                    }
                     else {
                         setUname(res.data[0].Username);
                         setToken(res.data[0].Token);
@@ -59,7 +70,7 @@ const Login = () => {
             }));
             toast.success("Berhasil masuk sebagai    " + '\n' + uname, {
                 position: "top-center",
-                autoClose: 2000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

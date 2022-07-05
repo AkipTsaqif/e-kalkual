@@ -170,8 +170,8 @@ const DashboardJadwal = () => {
                                 rows={dummy}
                                 pageSize={[10]}
                                 rowsPerPageOptions={[10]}
-                                rowHeight={35}
-                                headerHeight={60}
+                                rowHeight={36}
+                                headerHeight={55}
                                 autoHeight={true}
                                 onSelectionModelChange={id => {
                                     const selectedID = new Set(id);
@@ -197,7 +197,7 @@ const DashboardJadwal = () => {
                                 }}
                             />
                         </Box>
-                        <Box m={3} display="flex" justifyContent="flex-end" alignItems="flex-end">
+                        <Box m={3} mt={1} mr={3.5} display="flex" justifyContent="flex-end" alignItems="flex-end">
                             <Button variant="contained" color="success" type="button" disabled>Print Barcode</Button>
                         </Box>
                     </Box>

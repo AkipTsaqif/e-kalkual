@@ -78,7 +78,8 @@ const ApprovalLaporan = () => {
                         px: '5vw',
                         pi: '2vh',
                         pb: 3,
-                        '& .MuiTextField-root': { m: 1 }
+                        '& .MuiTextField-root': { m: 1 },
+                        borderRadius: 2
                     }}>
                         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
                             <Typography variant="h6">User ID:</Typography>

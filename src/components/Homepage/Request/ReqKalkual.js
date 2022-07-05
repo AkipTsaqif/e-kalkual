@@ -128,7 +128,7 @@ const Kalibrasi = () => {
     const [alatMesin, setAlatMesin] = useState("");
     const [isRuangan, setIsRuangan] = useState(false);
     const [tanggal, setTanggal] = useState("");
-    const [periode, setPeriode] = useState(0);
+    const [periode, setPeriode] = useState(savedRequest.Periode);
     const [ed, setEd] = useState("");
     
     const locale = 'id';
@@ -239,7 +239,7 @@ const Kalibrasi = () => {
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
-                <Box display="flex" width={0.75} justifyContent="center" alignItems="center" sx={{ m: "auto auto", pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
+                <Box display="flex" width={0.7} justifyContent="center" alignItems="center" sx={{ m: "auto auto", pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
                     <Typography variant="h5">Form Registrasi Kalkual QA Khusus Alat/Mesin/Sistem Penunjang/Ruangan Baru</Typography>
                 </Box>
                 <Stack sx={{
@@ -249,7 +249,8 @@ const Kalibrasi = () => {
                     height: 'auto',
                     px: 5,
                     pb: 2,
-                    '& .MuiTextField-root': { m: 1 }
+                    '& .MuiTextField-root': { m: 1 },
+                    borderRadius: 2
                 }}>
                     <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
                         <Typography variant="h6">User ID:</Typography>

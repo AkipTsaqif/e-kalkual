@@ -1,9 +1,10 @@
 .background {
-  background-image: url("../../../public/images/2020_01_23_85097_1579785360._large.jpg");
+  background-image: url("../../../public/images/PT-Bintang-Toedjoe-2021-2.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: center 0px;
   background-repeat: no-repeat;
-  height: 100vh;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 .auth {

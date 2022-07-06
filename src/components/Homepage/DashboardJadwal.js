@@ -5,7 +5,7 @@ import { Checkbox } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, Button } from "@mui/material";
 import Box from '@mui/material/Box';
-import { red } from '@mui/material/colors'
+
 import Navbar from "../Layout/Navbar"
 import styles from './DashboardJadwal.module.css'
 import { parse } from 'date-fns';
@@ -24,7 +24,7 @@ const DashboardJadwal = () => {
 
     const theme = createTheme({
         typography: {
-            h3: {
+            h5: {
                 fontWeight: "bold",
                 color: "white",
                 letterSpacing: 0,
@@ -149,56 +149,73 @@ const DashboardJadwal = () => {
         <div>
             <Navbar>
                 <ThemeProvider theme={theme}>
-                    <Box sx={{ backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}> 
-                        <Typography variant="h3">Dashboard</Typography>           
-                        <hr />                    
-                        <Box sx={{height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: '5vh', margin: 'auto auto', borderRadius: '5px',
-                                    '& .super-app-theme--1': {
-                                        bgcolor: 'yellow'
-                                    },
-                                    '& .super-app-theme--2': {
-                                        bgcolor: 'red'
-                                    },
-                                    '& .super-app-theme--3': {
-                                        bgcolor: 'gray'
-                                    }
-                                }}>
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{
+                        m: "auto auto", 
+                        backgroundColor: "rgba(0, 0, 0, 0)",
+                        borderRadius: 3,
+                        boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
+                        minHeight: `calc(100vh - 48px)`
+                    }}>
 
-                            <DataGrid
-                                getRowId={(dummy) => dummy.id}
-                                columns={columns}
-                                rows={dummy}
-                                pageSize={[10]}
-                                rowsPerPageOptions={[10]}
-                                rowHeight={36}
-                                headerHeight={55}
-                                autoHeight={true}
-                                onSelectionModelChange={id => {
-                                    const selectedID = new Set(id);
-                                    const selectedRowData = dummy.find(row => selectedID.has(row.id));
-                                    // setSelectedData(selectedRowData);
-                                    console.log(selectedRowData);
-                                    if (selectedRowData.Status === "In progress") {
-                                        dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
-                                        navigate('/approval/uploadlaporan');
-                                    }
-                                }}
-                                getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
-                                sx={{
-                                    '& .MuiDataGrid-columnHeaderTitle': {
-                                        textOverflow: "clip",
-                                        whiteSpace: "break-spaces",
-                                        lineHeight: 1,
-                                        fontWeight: "bold",
-                                    },
-                                    '& .MuiDataGrid-cell': {
-                                        border: '1px solid #000000'
-                                    }
-                                }}
-                            />
-                        </Box>
-                        <Box m={3} mt={1} mr={3.5} display="flex" justifyContent="flex-end" alignItems="flex-end">
-                            <Button variant="contained" color="success" type="button" disabled>Print Barcode</Button>
+                        <Box width={1} sx={{ 
+                            backgroundColor: "rgba(0, 0, 0, 0.8)", 
+                            borderRadius: 3, 
+                            borderTop: 1, 
+                            borderBottom: 1, 
+                            borderColor: "rgba(220, 220, 220, 0.8)", 
+                            borderWidth: 2,
+                            boxShadow: 5
+                        }}> 
+                            <Typography variant="h5">Dashboard</Typography>           
+                            <hr />                    
+                            <Box sx={{height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: '5vh', margin: 'auto auto', borderRadius: '5px',
+                                        '& .super-app-theme--1': {
+                                            bgcolor: 'yellow'
+                                        },
+                                        '& .super-app-theme--2': {
+                                            bgcolor: 'red'
+                                        },
+                                        '& .super-app-theme--3': {
+                                            bgcolor: 'gray'
+                                        }
+                                    }}>
+
+                                <DataGrid
+                                    getRowId={(dummy) => dummy.id}
+                                    columns={columns}
+                                    rows={dummy}
+                                    pageSize={[10]}
+                                    rowsPerPageOptions={[10]}
+                                    rowHeight={36}
+                                    headerHeight={55}
+                                    autoHeight={true}
+                                    onSelectionModelChange={id => {
+                                        const selectedID = new Set(id);
+                                        const selectedRowData = dummy.find(row => selectedID.has(row.id));
+                                        // setSelectedData(selectedRowData);
+                                        console.log(selectedRowData);
+                                        if (selectedRowData.Status === "In progress") {
+                                            dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
+                                            navigate('/approval/uploadlaporan');
+                                        }
+                                    }}
+                                    getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
+                                    sx={{
+                                        '& .MuiDataGrid-columnHeaderTitle': {
+                                            textOverflow: "clip",
+                                            whiteSpace: "break-spaces",
+                                            lineHeight: 1,
+                                            fontWeight: "bold",
+                                        },
+                                        '& .MuiDataGrid-cell': {
+                                            border: '1px solid #000000'
+                                        }
+                                    }}
+                                />
+                            </Box>
+                            <Box m={3} mt={1} mr={3.5} display="flex" justifyContent="flex-end" alignItems="flex-end">
+                                <Button variant="contained" color="success" type="button" disabled>Print Barcode</Button>
+                            </Box>
                         </Box>
                     </Box>
                 </ThemeProvider>  

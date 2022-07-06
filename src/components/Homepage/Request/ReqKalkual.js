@@ -3,7 +3,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { toast } from "react-toastify";
-import DateFnsAdapter from '@date-io/date-fns';
 import idLocale from 'date-fns/locale/id';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -15,7 +14,6 @@ import { requestNewActions } from "../../../store/request-new";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./ReqKalkual.module.css";
 
 const tipeKalibrasi = [
     {
@@ -122,21 +120,17 @@ const Kalibrasi = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [isKalibrasi, setIsKalibrasi] = useState(true);
+    
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [isRuangan, setIsRuangan] = useState(false);
     const [tanggal, setTanggal] = useState("");
     const [periode, setPeriode] = useState(savedRequest.Periode);
-    const [ed, setEd] = useState("");
     
     const locale = 'id';
     const localeMap = {
         id: idLocale
     }
-    
-    const dateFns = new DateFnsAdapter({ locale: localeMap.id });
 
     const noINRef = useRef();
     const tipeKalkualRef = useRef();
@@ -239,7 +233,18 @@ const Kalibrasi = () => {
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
-                <Box display="flex" width={0.7} justifyContent="center" alignItems="center" sx={{ m: "auto auto", pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
+                <Box display="flex" width={0.7} justifyContent="center" alignItems="center" sx={{ 
+                    m: "auto auto", 
+                    pt: "2vh", 
+                    pb: "2vh", 
+                    backgroundColor: "rgba(0, 0, 0, 0.8)", 
+                    borderRadius: 3, 
+                    borderTop: 1, 
+                    borderBottom: 1, 
+                    borderColor: "rgba(220, 220, 220, 0.8)", 
+                    borderWidth: 2,
+                    boxShadow: 5
+                }}>
                     <Typography variant="h5">Form Registrasi Kalkual QA Khusus Alat/Mesin/Sistem Penunjang/Ruangan Baru</Typography>
                 </Box>
                 <Stack sx={{
@@ -250,7 +255,8 @@ const Kalibrasi = () => {
                     px: 5,
                     pb: 2,
                     '& .MuiTextField-root': { m: 1 },
-                    borderRadius: 2
+                    borderRadius: 2,
+                    boxShadow: 5
                 }}>
                     <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
                         <Typography variant="h6">User ID:</Typography>

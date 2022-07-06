@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { colorRandomizer } from "../utils/colorRandomizer";
 
 const authSlice = createSlice({
     name: 'auth',
@@ -7,7 +8,8 @@ const authSlice = createSlice({
         user: null,
         token: null,
         expiry: null,
-        isLoggedOut: null
+        isLoggedOut: null,
+        profileColor: colorRandomizer
     },
     reducers: {
         login: (state, action) => {
@@ -16,6 +18,7 @@ const authSlice = createSlice({
             state.user = action.payload.Username;
             state.token = action.payload.Token;
             state.expiry = action.payload.ExpiresIn;
+            state.profileColor = colorRandomizer();
         },
         logout: (state, action) => {
             state.authorized = false;

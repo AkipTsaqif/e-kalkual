@@ -1,5 +1,5 @@
 import styles from "./Navbar.module.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth";
@@ -64,7 +64,12 @@ const Navbar = (props) => {
 
     return (
         <Box className={styles.background} display="flex" flexDirection="column" sx={{ minHeight: "100vh", maxWidth: "100vw" }}>
-            <Box position="fixed" minWidth="100vw" zIndex={1} sx={{ borderBottom: 1, borderBottomColor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2}}>
+            <Box position="fixed" minWidth="100vw" zIndex={1} sx={{ 
+                borderBottom: 1, 
+                borderBottomColor: "rgba(220, 220, 220, 0.8)", 
+                borderBottomWidth: 2,
+                boxShadow: 5
+            }}>
                 <header className={styles.header}>
                     <div className={styles.logo}>E-Kalkual</div>
                     <nav>
@@ -88,13 +93,21 @@ const Navbar = (props) => {
                 </header>
             </Box>
             <Box flex={1} display="flex">
-                <Box position="fixed" display="flex" flexDirection="column" zIndex={1} top={48} minHeight="100vh" sx={{backgroundColor: "rgba(0,0,0,0.8)", minWidth: 240, maxWidth: 240, borderRight: 1, borderRightWidth: 2, borderColor: "rgba(220, 220, 220, 0.8)"}}>
+                <Box position="fixed" display="flex" flexDirection="column" zIndex={1} top={48} minHeight="100vh" sx={{
+                    backgroundColor: "rgba(0,0,0,0.8)", 
+                    minWidth: 240, 
+                    maxWidth: 240, 
+                    borderRight: 1, 
+                    borderRightWidth: 2, 
+                    borderColor: "rgba(220, 220, 220, 0.8)",
+                    boxShadow: 5
+                }}>
                     <Box>
                         <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
                         <ThemeProvider theme={theme}>
                             <Typography variant="h6" sx={{ ml: 4, mt: 2, mb: -1 }}>Selamat datang,</Typography>
                             <CardHeader avatar={
-                                <Avatar sx={{ bgcolor: "gray" }}>
+                                <Avatar sx={{ bgcolor: auth.profileColor }}>
                                     <Typography>{acronym}</Typography>
                                 </Avatar>
                             } title={<Typography variant="h6" sx={{ wordWrap: "break-word" }}>{strArr}</Typography>}/>   

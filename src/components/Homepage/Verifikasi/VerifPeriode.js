@@ -25,32 +25,51 @@ const VerifPeriode = () => {
         <div>
             <Navbar>
                 <ThemeProvider theme={theme}>
-                    <Box display="flex" width={0.6} justifyContent="center" alignItems="center" sx={{ m: "auto auto", pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
-                        <Typography variant="h5">Ubah Periode Verifikasi</Typography>
-                    </Box>
-                    <Box sx={{
-                        backgroundColor: 'rgba(230, 233, 233, 0.99)',
-                        mx: 'auto',
-                        width: 0.5,
-                        height: 'auto',
-                        px: 5,
-                        pb: 2,
-                        borderRadius: 2,
-                        '& .MuiTextField-root': { m: 2 },
-                        '& .MuiTypography-root.MuiTypography-body1': { fontWeight: "bold" }
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{
+                        m: "auto auto", 
+                        backgroundColor: "rgba(0, 0, 0, 0)",
+                        borderRadius: 3,
+                        boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
+                        minHeight: `calc(100vh - 48px)`
                     }}>
-                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
-                            <Typography variant="h6">Periode verifikasi:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} disabled type="number" id="periode" label="Periode verifikasi" size="small" InputProps={{
-                                endAdornment: <InputAdornment position="end" >jam</InputAdornment>
-                            }}/>
+                        <Box display="flex" width={0.6} justifyContent="center" alignItems="center" sx={{ 
+                            pt: "2vh", 
+                            pb: "2vh", 
+                            backgroundColor: "rgba(0, 0, 0, 0.8)", 
+                            borderRadius: 3, 
+                            borderTop: 1, 
+                            borderBottom: 1, 
+                            borderColor: "rgba(220, 220, 220, 0.8)", 
+                            borderWidth: 2,
+                            boxShadow: 5
+                        }}>
+                            <Typography variant="h5">Ubah Periode Verifikasi</Typography>
                         </Box>
-                        <Box display="flex" justifyContent="center" alignItems="center">
-                            <Stack direction="row" spacing={2}>
-                                <Button variant="contained" color="success">Save</Button>
-                                <Button variant="outlined">Edit</Button>
-                                <Button variant="outlined">Cancel</Button>
-                            </Stack>
+                        <Box sx={{
+                            backgroundColor: 'rgba(230, 233, 233, 0.99)',
+                            mx: 'auto',
+                            width: 0.5,
+                            height: 'auto',
+                            px: 5,
+                            pb: 2,
+                            borderRadius: 2,
+                            boxShadow: 5,
+                            '& .MuiTextField-root': { m: 2 },
+                            '& .MuiTypography-root.MuiTypography-body1': { fontWeight: "bold" }
+                        }}>
+                            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
+                                <Typography variant="h6">Periode verifikasi:</Typography>
+                                <TextField sx={{ gridColumn: "span 2" }} disabled type="number" id="periode" label="Periode verifikasi" size="small" InputProps={{
+                                    endAdornment: <InputAdornment position="end" >jam</InputAdornment>
+                                }}/>
+                            </Box>
+                            <Box display="flex" justifyContent="center" alignItems="center">
+                                <Stack direction="row" spacing={2}>
+                                    <Button variant="contained" color="success">Save</Button>
+                                    <Button variant="outlined">Edit</Button>
+                                    <Button variant="outlined">Cancel</Button>
+                                </Stack>
+                            </Box>
                         </Box>
                     </Box>
                 </ThemeProvider>

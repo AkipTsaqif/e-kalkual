@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
 import { toast } from "react-toastify";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
 import styles from "./Login.module.css";
 
@@ -14,6 +22,37 @@ const Login = () => {
     const [uname, setUname] = useState("");
     const [token, setToken] = useState("");
     const [expiry, setExpiry] = useState("");
+
+    const theme = createTheme({
+        typography: {
+            h4: {
+                fontWeight: "bold",
+                color: "white",
+                letterSpacing: 0,
+                textAlign: "center"
+            },
+            h5: {
+                fontWeight: "bold",
+                color: "white",
+                letterSpacing: 0,
+                textAlign: "center"
+            },
+            body1: {
+                fontWeight: "bold",
+                color: "white",
+                letterSpacing: 0
+            }
+        },
+        components: {
+            MuiTextField: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: "rgba(230, 233, 233, 0.95)"
+                    }
+                }
+            }
+        }
+    });
 
     const fetchUser = useCallback(async (username, password) => {
         const response = await fetch("https://localhost:44375/api/auth", {
@@ -89,25 +128,45 @@ const Login = () => {
     }
 
     return (
-        <div className={styles.background}>
-            <section className={styles.auth}>
-                <h1>Login</h1>
-                <form onSubmit={e => {e.preventDefault();
-                    submitHandler()}}>
-                    <div className={styles.control}>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" id="username" ref={usernameRef}/>
-                    </div>
-                    <div className={styles.control}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" ref={passwordRef}/>
-                    </div>
-                    <div className={styles.actions}>
-                        <button type="submit">Login</button>
-                    </div>
-                </form>
-            </section>
-        </div>
+        <ThemeProvider theme={theme}>
+            <Box className={styles.background} display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ 
+                // background: styles.background,
+                m: "auto auto", 
+                boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
+                minHeight: "100vh"
+            }}>
+                <Box width="35vw" margin="auto auto" textAlign="center" sx={{ 
+                    backgroundColor: "rgba(0, 0, 0, 0.8)", 
+                    borderRadius: 3, 
+                    border: 1,
+                    borderColor: "rgba(220, 220, 220, 0.8)", 
+                    borderWidth: 3,
+                    boxShadow: 20
+                }} >
+                    <Box marginTop="2vh"/>
+                    <Typography variant="h4">Login</Typography>
+                    <Box marginTop="2vh" />
+                    <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
+                    <Box marginBottom="2vh" />
+                    <form onSubmit={e => {
+                        e.preventDefault();
+                        submitHandler()
+                    }}>
+                        <Box marginBottom="2vh">
+                            <Typography htmlFor="username" variant="body1">Username</Typography>
+                            <TextField sx={{ width: "25vw" }} fullWidth type="text" id="username" inputRef={usernameRef} size="small"/>
+                        </Box>
+                        <Box marginBottom="3vh">
+                            <Typography htmlFor="password" variant="body1">Password</Typography>
+                            <TextField sx={{ width: "25vw" }} type="password" id="password" inputRef={passwordRef} size="small"/>
+                        </Box>
+                        <Box marginBottom="2vh">
+                            <Button type="submit" variant="contained" endIcon={<SendIcon />}>Login</Button>
+                        </Box>
+                    </form>
+                </Box>
+            </Box>
+        </ThemeProvider>
     )
 }
 

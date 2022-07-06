@@ -4,13 +4,16 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { toast } from "react-toastify";
 
 import Navbar from "../../Layout/Navbar";
 import styles from "./ApprovalLaporan.module.css";
 import axios from "axios";
 
 const ApprovalLaporan = () => {
+    const navigate = useNavigate();
     const data = useSelector(state => state.persistedReducer.uploadLaporan);
     const user = useSelector(state => state.persistedReducer.auth.user);
     const [file, setFile] = useState({});
@@ -42,6 +45,15 @@ const ApprovalLaporan = () => {
         try {
             const res = await axios.post("https://localhost:44375/api/upload", file);
             console.log(res);
+            toast.success("File laporan berhasil tersimpan!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
         } catch (e) {
             console.log(e);
         }
@@ -61,6 +73,19 @@ const ApprovalLaporan = () => {
         reader.onerror = function (error) {
             console.log('Error: ', error);
         };
+    }
+
+    const submitLaporanHandler = () => {
+        toast.success("Data kalkual berhasil disubmit!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+        });
+        navigate("/approval/QA");
     }
 
     return (
@@ -121,7 +146,7 @@ const ApprovalLaporan = () => {
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
                                 <Button variant="outlined">Cancel</Button>
-                                <Button variant="contained" endIcon={<SendIcon />}>Submit ke Approval</Button>
+                                <Button variant="contained" endIcon={<SendIcon />} onClick={submitLaporanHandler}>Submit ke Approval</Button>
                             </Stack>
                         </Box>  
                     </Stack>

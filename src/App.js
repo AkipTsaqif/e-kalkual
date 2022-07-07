@@ -30,7 +30,7 @@ function App() {
           <Route path='dashboard' element={<DashboardJadwal />} />
           <Route path="request/new" element={<ReqKalkual />} />
           <Route path="verifikasi/periode" element={<VerifPeriode />} />
-          <Route path="verifikasi/timbangan" element={<VerifTimbangan />} />
+          <Route path="verifikasi/tnc" element={<VerifTimbangan />} />
           <Route path="request/scanned" element={<ReqScanUser />} />
           <Route path="request/scanned/register" element={<ReqKalkualUser />} />
           <Route path="dashboard/user" element={<DashboardSPVUser />} />
@@ -38,8 +38,8 @@ function App() {
           <Route path="dashboard/qa" element={<DashboardQA />} />
           <Route path="approval/qa" element={<ApprovalQA />} />
           <Route path="approval/uploadlaporan" element={<ApprovalLaporan />} />
-          <Route path="approval/timbangan" element={<ApprovalTnC />} />
-          <Route path="dashboard/timbangan" element={<DashboardTnC />} />
+          <Route path="approval/tnc" element={<ApprovalTnC />} />
+          <Route path="dashboard/tnc" element={<DashboardTnC />} />
         </Route>
       </Routes>   
     </div>

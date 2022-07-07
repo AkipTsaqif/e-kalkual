@@ -5,6 +5,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { toast } from "react-toastify";
 import idLocale from 'date-fns/locale/id';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import parseISO from "date-fns/parseISO";
+import { format } from "date-fns";
 
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
@@ -124,7 +126,7 @@ const Kalibrasi = () => {
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [isRuangan, setIsRuangan] = useState(false);
-    const [tanggal, setTanggal] = useState("");
+    const [tanggal, setTanggal] = useState(savedRequest.TglKalkual);
     const [periode, setPeriode] = useState(savedRequest.Periode);
     
     const locale = 'id';
@@ -178,7 +180,7 @@ const Kalibrasi = () => {
             Departemen: departemenRef.current.value,
             Lokasi: lokasiRef.current.value,
             TglKalkual: savedRequest.TglKalkual,
-            Periode: periode,
+            Periode: savedRequest.Periode,
             EDKalkual: savedRequest.EDKalkual,
             JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "") : ""
         }
@@ -309,7 +311,7 @@ const Kalibrasi = () => {
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Lokasi} id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
                         <Typography variant="h6">Tanggal Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
-                            <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
+                            <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(format(new Date(tgl), 'yyyy-MM-dd'))} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
                         </LocalizationProvider>
                         <Typography variant="h6">Periode Kalkual:</Typography>
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Periode} id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/>

@@ -36,6 +36,7 @@ const Navbar = (props) => {
     const auth = useSelector(state => state.persistedReducer.auth);
 
     const [isHome, setIsHome] = useState(loc.pathname === '/home' ? true : false);
+    const [menuDashboard, setMenuDashboard] = React.useState(false);
     const [menuRequest, setMenuRequest] = React.useState(false);
     const [menuVerifikasi, setMenuVerifikasi] = React.useState(false);
 
@@ -53,6 +54,10 @@ const Navbar = (props) => {
             }
         }
     });
+
+    const dashboardSubmenuHandler = () => {
+        setMenuDashboard(!menuDashboard);
+    }
 
     const reqSubmenuHandler = () => {
         setMenuRequest(!menuRequest);
@@ -140,7 +145,7 @@ const Navbar = (props) => {
                                     letterSpacing: 0,
                                 }}/>
                             </ListItemButton>
-                            <ListItemButton onClick={() => navigate("/dashboard")}>
+                            <ListItemButton onClick={dashboardSubmenuHandler}>
                                 <ListItemIcon style={{minWidth: '40px', color: "white"}}>
                                     <DashboardIcon />
                                 </ListItemIcon>
@@ -149,7 +154,52 @@ const Navbar = (props) => {
                                     color: "white",
                                     letterSpacing: 0,
                                 }}/>
+                                {menuDashboard ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
                             </ListItemButton>
+                            <Collapse in={menuDashboard} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    <ListItemButton onClick={() => navigate("/dashboard")} sx={{ pl: 7 }}>
+                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                            <DashboardIcon style={{fontSize: 18}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Dashboard Jadwal" primaryTypographyProps={{
+                                            fontSize: 18,
+                                            color: "white",
+                                            letterSpacing: 0,
+                                        }}/>
+                                    </ListItemButton>
+                                    <ListItemButton onClick={() => navigate("/dashboard/qa")} sx={{ pl: 7 }}>
+                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                            <DashboardIcon style={{fontSize: 18}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Outstanding QA" primaryTypographyProps={{
+                                            fontSize: 18,
+                                            color: "white",
+                                            letterSpacing: 0,
+                                        }}/>
+                                    </ListItemButton>
+                                    <ListItemButton onClick={() => navigate("/dashboard/user")} sx={{ pl: 7 }}>
+                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                            <DashboardIcon style={{fontSize: 18}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Outstanding User" primaryTypographyProps={{
+                                            fontSize: 18,
+                                            color: "white",
+                                            letterSpacing: 0,
+                                        }}/>
+                                    </ListItemButton>
+                                    <ListItemButton onClick={() => navigate("/dashboard/tnc")} sx={{ pl: 7 }}>
+                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                            <DashboardIcon style={{fontSize: 18}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Outstanding TMB dan CWR" primaryTypographyProps={{
+                                            fontSize: 18,
+                                            color: "white",
+                                            letterSpacing: 0,
+                                        }}/>
+                                    </ListItemButton>
+                                </List>
+                            </Collapse>
                             <ListItemButton onClick={reqSubmenuHandler}>
                                 <ListItemIcon style={{minWidth: '40px', color: "white"}}>
                                     <RequestQuoteIcon />
@@ -175,10 +225,10 @@ const Navbar = (props) => {
                                     </ListItemButton>
                                     <ListItemButton onClick={() => navigate("/request/new", {state: {kalibrasi: false}})} sx={{ pl: 7 }}>
                                         <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <EngineeringIcon />
+                                            <EngineeringIcon style={{fontSize: 18}}/>
                                         </ListItemIcon>
                                         <ListItemText primary="Kualifikasi" primaryTypographyProps={{
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             color: "white",
                                             letterSpacing: 0,
                                         }}/>
@@ -200,30 +250,30 @@ const Navbar = (props) => {
                                 <List component="div" disablePadding>
                                     <ListItemButton onClick={() => {navigate("/verifikasi/periode")}} sx={{ pl: 7 }}>
                                         <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <EventRepeatIcon />
+                                            <EventRepeatIcon style={{fontSize: 18}}/>
                                         </ListItemIcon>
                                         <ListItemText primary="Periode Verifikasi" primaryTypographyProps={{
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             color: "white",
                                             letterSpacing: 0,
                                         }}/>
                                     </ListItemButton>
-                                    <ListItemButton onClick={() => {navigate("/verifikasi/timbangan", {state: {tipe: "timbangan"}})}} sx={{ pl: 7 }}>
+                                    <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "timbangan"}})}} sx={{ pl: 7 }}>
                                         <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <ScaleIcon />
+                                            <ScaleIcon style={{fontSize: 18}}/>
                                         </ListItemIcon>
                                         <ListItemText primary="Verifikasi Timbangan" primaryTypographyProps={{
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             color: "white",
                                             letterSpacing: 0,
                                         }}/>
                                     </ListItemButton>
-                                    <ListItemButton onClick={() => {navigate("/verifikasi/timbangan", {state: {tipe: "checkweigher"}})}} sx={{ pl: 7 }}>
+                                    <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "checkweigher"}})}} sx={{ pl: 7 }}>
                                         <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <ScaleIcon />
+                                            <ScaleIcon style={{fontSize: 18}}/>
                                         </ListItemIcon>
                                         <ListItemText primary="Verifikasi Checkweigher" primaryTypographyProps={{
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             color: "white",
                                             letterSpacing: 0,
                                         }}/>

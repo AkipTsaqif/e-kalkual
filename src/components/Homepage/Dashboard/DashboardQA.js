@@ -2,6 +2,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, Button } from "@mui/material";
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import axios from "axios";
 
@@ -9,6 +10,7 @@ import Navbar from "../../Layout/Navbar"
 import styles from "./DashboardQA.module.css"
 
 const DashboardQA = () => {
+    const navigate = useNavigate();
     const [dummy, setDummy] = useState([]);
 
     const theme = createTheme({
@@ -29,21 +31,29 @@ const DashboardQA = () => {
         }
     });
 
+    let no = 0;
     const getData = async () => {
         try {
             const res = await axios.post("https://localhost:44375/api/kalkual", {
                 Option: "Dashboard"
-            }).then();
-            console.log(res.data);
-            var test = res.data.map((item, index) => {
+            });
+
+            const parsedData = JSON.parse(res.data).filter((item) => {
+                if (item.Status !== "In progress") return false;
+                if (item.LokasiFile === null) return false;
+                return true;
+            }).map((item, index) => {
                 return {
                     ...item,
                     id: index,
+                    No: no += 1,
                     TglKalkual: item.TglKalkual.slice(0, 10),
                     EDKalkual: item.EDKalkual.slice(0, 10)
                 }
             });
-            console.log(test);
+
+            console.log(parsedData);
+            setDummy(parsedData);
         } catch (e) {
             console.log(e);
         }
@@ -54,21 +64,17 @@ const DashboardQA = () => {
     }, []);
 
     const columns = [
-        { headerName: 'No', headerAlign: 'center', field: 'No', width: 75 },
-        { headerName: 'Nama Alat', headerAlign: 'center', field: 'Nama', width: 200 },
-        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'Tipe', width: 200 },
-        { headerName: 'No Kontrol', headerAlign: 'center', field: 'NoKontrol', width: 100 },
-        { headerName: 'Departemen Pemilik', headerAlign: 'center', field: 'Departemen', width: 75 },
+        { headerName: 'No', headerAlign: 'center', field: 'No', width: 5 },
+        { headerName: 'Nama Alat', headerAlign: 'center', field: 'Nama', width: 150 },
+        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'Tipe', width: 100 },
+        { headerName: 'No Kontrol', headerAlign: 'center', field: 'NoKontrol', width: 150 },
+        { headerName: 'Dept Pemilik', headerAlign: 'center', field: 'Departemen', width: 75 },
         { headerName: 'Lokasi', headerAlign: 'center', field: 'Lokasi', width: 75 },
         { headerName: 'Site', headerAlign: 'center', field: 'Site', width: 75 },
-        { headerName: 'Tgl Kalibrasi/Kualifikasi', headerAlign: 'center', field: 'TglKalkual', width: 75 },
-        { headerName: 'ED Kalibrasi/Kualifikasi', headerAlign: 'center', field: 'EDKalkual', width: 175 },
-        { headerName: 'Remarks', headerAlign: 'center', field: 'Remarks', width: 150 },
+        { headerName: 'Tgl Kalkual', headerAlign: 'center', field: 'TglKalkual', width: 100 },
+        { headerName: 'ED Kalkual', headerAlign: 'center', field: 'EDKalkual', width: 100 },
+        { headerName: 'Remarks', headerAlign: 'center', field: 'Remarks', width: 190 },
     ];
-
-    const rows = [
-        { No: '1', Nama: '-', Tipe: '-', NoKontrol: '-', Departemen: '-', Lokasi: '-', Site: 'PG', TglKalkual: '-', EDKalkual: '-', Remarks: 'Testestes'},
-    ]
 
     return (
         <Navbar>
@@ -91,20 +97,28 @@ const DashboardQA = () => {
                     }}> 
                         <Typography variant="h5">DASHBOARD OUTSTANDING QA</Typography>
                         <hr/>
-                        <Box sx={{ height: '100%', width: '95%', backgroundColor: 'lightgray', margin: 'auto auto', borderRadius: '5px' }}>
+                        <Box sx={{ height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: "5vh", margin: 'auto auto', borderRadius: '5px' }}>
                             <DataGrid
-                                getRowId={(data) => data.NoKontrol}
+                                getRowId={(data) => data.id}
                                 columns={columns}
-                                rows={rows}
+                                rows={dummy}
                                 pageSize={[10]}
                                 rowsPerPageOptions={[10]}
-                                checkBoxSelection
-                                autoHeight={true}
+                                headerHeight={55}
+                                rowHeight={36}
+                                autoHeight
+                                onSelectionModelChange={id => {
+                                    const selectedID = new Set(id);
+                                    const selectedRowData = dummy.find(row => selectedID.has(row.id));
+                                    // setSelectedData(selectedRowData);
+                                    navigate('/approval/qa');
+                                }}
                                 sx={{
                                     '& .MuiDataGrid-columnHeaderTitle': {
                                         textOverflow: "clip",
                                         whiteSpace: "break-spaces",
-                                        lineHeight: 1
+                                        lineHeight: 1,
+                                        fontWeight: "bold",
                                     },
                                     '& .MuiDataGrid-cell': {
                                         border: '1px solid #000000'

@@ -181,7 +181,7 @@ const Kalibrasi = () => {
             Lokasi: lokasiRef.current.value,
             TglKalkual: savedRequest.TglKalkual,
             Periode: savedRequest.Periode,
-            EDKalkual: savedRequest.EDKalkual,
+            EDKalkual: format(savedRequest.EDKalkual, "yyyy-MM-dd"),
             JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "") : ""
         }
 

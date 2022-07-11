@@ -3,23 +3,25 @@ import { withStyles } from "@mui/styles";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import { useFormik, Form } from "formik";
 import { approvalSchema } from "../../../utils/validationSchema";
+import { uploadLaporanActions } from '../../../store/upload-laporan';
 
 import Navbar from "../../Layout/Navbar";
 import styles from "./ApprovalLaporan.module.css";
 import axios from "axios";
 
 const ApprovalLaporan = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const data = useSelector(state => state.persistedReducer.uploadLaporan);
     const user = useSelector(state => state.persistedReducer.auth.user);
     const [uploadedFile, setUploadedFile] = useState();
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState({"Files": [], "FileNames": [], "NoIN": "", "Vendor": "", "Biaya": ""});
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -37,9 +39,14 @@ const ApprovalLaporan = () => {
             h6: {
                 letterSpacing: 0
             },
+            body1: {
+                letterSpacing: 0,
+                fontWeight: "bold"
+            },
             body2: {
                 letterSpacing: 0.2,
-                fontSize: 15
+                fontSize: 15,
+                fontWeight: "bold"
             }
         }
     });
@@ -54,6 +61,7 @@ const ApprovalLaporan = () => {
         validateOnBlur: false,
         onSubmit: (val) => {
             submitLaporanHandler();
+            // testArr();
         }
     })
 
@@ -75,45 +83,39 @@ const ApprovalLaporan = () => {
         reader.readAsDataURL(uploadedFile);
         reader.onload = function () {
             // console.log(reader.result.split(',')[1]);
-            setFiles(files => [
-                ...files,
-                {file: reader.result.split(',')[1],
-                filename: uploadedFile.name}
-            ]);
+            setFiles(file => ({
+                ...file,
+                "Files": [...file["Files"], reader.result.split(',')[1]],
+                "FileNames": [...file["FileNames"], uploadedFile.name]
+            }))
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
         };
-    }
 
-    useEffect(() => {
-        // console.log(files)
-    }, [uploadedFile]);
+        setUploadedFile();
+    }
 
     const submitLaporanHandler = async () => {
         try {
             setProgress(0);
-            const formData = new FormData();
-            for (const oneFile of files)
-            formData.append("file", oneFile)
             
-            // const res = await axios({
-                //     method: 'POST',
-                //     url: 'https://localhost:44375/api/upload',
-                //     formData,
-                //     headers: { 'Content-Type': 'multipart/form-data' }
-                // })
-                // console.log(res.data);
-                
-            console.log(files);
-            const res = await axios.post("https://localhost:44375/api/upload", files, {
+            const res = await axios.post("https://localhost:44375/api/upload", {
+                ...files,
+                "NoIN": data.NoIN,
+                "Vendor": vendorRef.current.value,
+                "Biaya": biayaRef.current.value
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 onUploadProgress: (e) => {
                     setIsUploading(true);
                     const totalLength = e.lengthComputable ? e.total : e.target.getResponseHeader('content-length') || e.target.getResponseHeader('x-decompressed-content-length');
                     setProgress(Math.round((100 * e.loaded) / totalLength));
                 }
-            });
-            console.log(res);
+            }).then(resp => console.log(resp.data));
+
             toast.success("Data kalkual berhasil di submit!", {
                 position: "top-center",
                 autoClose: 3000,
@@ -124,6 +126,7 @@ const ApprovalLaporan = () => {
                 progress: undefined,
                 onOpen: () => setIsUploading(false)
             });
+
         } catch (e) {
             console.log(e);
             toast.error("Gagal mengupload file laporan!", {
@@ -188,28 +191,33 @@ const ApprovalLaporan = () => {
                                     <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="ed" label="ED Kalibrasi/Kualifikasi" value={data.EDKalkual} size="small" disabled/>
                                     <Typography variant="h6">Jenis kalkual:</Typography>
                                     <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="jenis" label="Jenis Kalibrasi" value={data.JenisKalkual} size="small" disabled/>
-                                    <Typography variant="h6">File laporan:</Typography>
+                                    <Typography variant="h6">Berkas laporan:</Typography>
                                     <Box marginTop={1} marginBottom={1} justifyContent="space-evenly" alignItems="center" sx={{ display: "flex", gridColumn: "span 2" }}>     
                                         <Button variant="outlined" component="label" disabled={isUploading ? true : false}>Upload File<input onChange={(e) => saveFileHandler(e.target.files[0])} type="file" hidden /></Button>
                                         <Button variant="contained" onClick={cvtob64} color="success" disabled={isUploading ? true : false}>Add</Button>
                                     </Box>
                                     <LinearProgress sx={{ gridColumn: "2 / 4" }} variant="determinate" value={progress} />
-                                    <Box marginTop={1} py={1} sx={{ backgroundColor: "rgba(231,234,234,0.99)", boxShadow: 1, gridColumn: "2 / 4" }}>
-                                        {files.length > 0 && files.map((item, index) => 
-                                            <Typography sx={{ ml: 1 }} key={item.filename} variant="body2">{index + 1}.  {item.filename}</Typography>
+                                    <Typography sx={{ ml: 1, mt: 1, gridColumn: "2 / 4" }} variant="body1">Berkas terpilih: {uploadedFile ? uploadedFile.name : "-"}</Typography>
+                                    <Box marginTop={1} marginBottom={1} py={1} display="grid" sx={{ backgroundColor: "rgba(231,234,234,0.99)", boxShadow: 1, gridColumn: "2 / 4", gridTemplateColumns: 'repeat(5, 1fr)', }}>
+                                        <Typography variant="body1" sx={{ ml: 1, gridColumn: "1 / 6" }}>Berkas laporan:</Typography>
+                                        {files.FileNames.map((items, i) => 
+                                            <Typography sx={{ ml: 1, gridColumn: "2 / 6" }} key={items} variant="body1">{i + 1}. {items}</Typography>
                                         )}
                                     </Box>
                                     {data.JenisKalkual === "Eksternal" 
                                         ? <>
                                         <Typography variant="h6">Input vendor:</Typography>
-                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.vendor} onChange={formik.handleChange} error={formik.touched.vendor && Boolean(formik.errors.vendor)} helperText={formik.touched.vendor && formik.errors.vendor} inputRef={vendorRef} id="vendor" name="vendor" label="Vendor" size="small"/>
+                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.vendor} onChange={formik.handleChange} error={formik.touched.vendor && Boolean(formik.errors.vendor)} helperText={formik.touched.vendor && formik.errors.vendor} inputRef={vendorRef} id="vendor" name="vendor" label="Masukkan vendor" size="small"/>
                                         <Typography variant="h6">Input biaya:</Typography>
-                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.biaya} onChange={formik.handleChange} error={formik.touched.biaya && Boolean(formik.errors.biaya)} helperText={formik.touched.biaya && formik.errors.biaya} inputRef={biayaRef} id="biaya" name="biaya" label="Biaya" size="small"/></> 
+                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.biaya} onChange={formik.handleChange} error={formik.touched.biaya && Boolean(formik.errors.biaya)} helperText={formik.touched.biaya && formik.errors.biaya} inputRef={biayaRef} id="biaya" name="biaya" label="Masukkan biaya" size="small"/></> 
                                         : <></>}
                                 </Box>
                                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                                     <Stack direction="row" spacing={2}>
-                                        <Button variant="outlined">Cancel</Button>
+                                        <Button variant="outlined" onClick={() => {
+                                            dispatch(uploadLaporanActions.cancelLaporan());
+                                            navigate("/dashboard");
+                                        }}>Cancel</Button>
                                         <Button variant="contained" endIcon={<SendIcon />} type="submit" disabled={isUploading ? true : false}>Submit ke Approval</Button>
                                     </Stack>
                                 </Box>  

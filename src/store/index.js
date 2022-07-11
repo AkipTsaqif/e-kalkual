@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import authSlice from './auth';
 import requestNewSlice from './request-new';
 import uploadLaporanSlice from "./upload-laporan";
+import approvalKalkualSlice from "./approval-kalkual";
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const persistConfig = {
 const reducers = combineReducers({
     auth: authSlice,
     requestNew: requestNewSlice,
-    uploadLaporan: uploadLaporanSlice
+    uploadLaporan: uploadLaporanSlice,
+    approvalKalkual: approvalKalkualSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

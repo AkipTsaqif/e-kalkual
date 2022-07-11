@@ -3,14 +3,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, Button } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import axios from "axios";
+
+import { approvalKalkualActions } from '../../../store/approval-kalkual';
 
 import Navbar from "../../Layout/Navbar"
 import styles from "./DashboardQA.module.css"
 
 const DashboardQA = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [dummy, setDummy] = useState([]);
 
     const theme = createTheme({
@@ -35,14 +39,10 @@ const DashboardQA = () => {
     const getData = async () => {
         try {
             const res = await axios.post("https://localhost:44375/api/kalkual", {
-                Option: "Dashboard"
+                Option: "Dashboard QA"
             });
 
-            const parsedData = JSON.parse(res.data).filter((item) => {
-                if (item.Status !== "In progress") return false;
-                if (item.LokasiFile === null) return false;
-                return true;
-            }).map((item, index) => {
+            const parsedData = JSON.parse(res.data).map((item, index) => {
                 return {
                     ...item,
                     id: index,
@@ -66,7 +66,7 @@ const DashboardQA = () => {
     const columns = [
         { headerName: 'No', headerAlign: 'center', field: 'No', width: 5 },
         { headerName: 'Nama Alat', headerAlign: 'center', field: 'Nama', width: 150 },
-        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'Tipe', width: 100 },
+        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'TipeKalkual', width: 100 },
         { headerName: 'No Kontrol', headerAlign: 'center', field: 'NoKontrol', width: 150 },
         { headerName: 'Dept Pemilik', headerAlign: 'center', field: 'Departemen', width: 75 },
         { headerName: 'Lokasi', headerAlign: 'center', field: 'Lokasi', width: 75 },
@@ -111,6 +111,8 @@ const DashboardQA = () => {
                                     const selectedID = new Set(id);
                                     const selectedRowData = dummy.find(row => selectedID.has(row.id));
                                     // setSelectedData(selectedRowData);
+                                    console.log(selectedRowData);
+                                    dispatch(approvalKalkualActions.selectApproval(selectedRowData.NoIN));
                                     navigate('/approval/qa');
                                 }}
                                 sx={{

@@ -27,6 +27,18 @@ const uploadLaporanSlice = createSlice({
             state.TglKalkual = action.payload.TglKalkual;
             state.EDKalkual = action.payload.EDKalkual;
             state.JenisKalkual = action.payload.JenisKalkual;
+        },
+        cancelLaporan: (state, action) => {
+            state.NoIN = "";
+            state.TipeKalkual = "";
+            state.NamaAlat = "";
+            state.TipeAlat = "";
+            state.NoKontrol = "";
+            state.Departemen = "";
+            state.Lokasi = "";
+            state.TglKalkual = "";
+            state.EDKalkual = "";
+            state.JenisKalkual = "";
         }
     }
 })

@@ -102,7 +102,7 @@ const DashboardQA = () => {
                                 getRowId={(data) => data.id}
                                 columns={columns}
                                 rows={dummy}
-                                pageSize={[10]}
+                                pageSize={10}
                                 rowsPerPageOptions={[10]}
                                 headerHeight={55}
                                 rowHeight={36}

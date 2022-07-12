@@ -7,6 +7,7 @@ import authSlice from './auth';
 import requestNewSlice from './request-new';
 import uploadLaporanSlice from "./upload-laporan";
 import approvalKalkualSlice from "./approval-kalkual";
+import barcodeSlice from './barcode-gen';
 
 const persistConfig = {
     key: 'root',
@@ -17,7 +18,8 @@ const reducers = combineReducers({
     auth: authSlice,
     requestNew: requestNewSlice,
     uploadLaporan: uploadLaporanSlice,
-    approvalKalkual: approvalKalkualSlice
+    approvalKalkual: approvalKalkualSlice,
+    barcode: barcodeSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

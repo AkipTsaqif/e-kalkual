@@ -18,6 +18,7 @@ import ApprovalQA from './components/Homepage/Approval/ApprovalQA';
 import ApprovalLaporan from './components/Homepage/Approval/ApprovalLaporan';
 import DashboardTnC from './components/Homepage/Dashboard/DashboardTnC';
 import ApprovalTnC from './components/Homepage/Approval/ApprovalTnC';
+import BarcodeKalibrasi from './components/Barcode/BarcodeKalibrasi';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="approval/uploadlaporan" element={<ApprovalLaporan />} />
           <Route path="approval/tnc" element={<ApprovalTnC />} />
           <Route path="dashboard/tnc" element={<DashboardTnC />} />
+          <Route path="barcode/kalibrasi" element={<BarcodeKalibrasi />} />
         </Route>
       </Routes>   
     </div>

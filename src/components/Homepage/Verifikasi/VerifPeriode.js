@@ -1,10 +1,9 @@
-import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./VerifPeriode.module.css";
 
 const VerifPeriode = () => {
     const theme = createTheme({

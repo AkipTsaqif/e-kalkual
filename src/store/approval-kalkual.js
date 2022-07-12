@@ -1,4 +1,4 @@
-import { createSlice, combineReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const approvalKalkualSlice = createSlice({
     name: "approvalKalkual",
@@ -15,8 +15,10 @@ const approvalKalkualSlice = createSlice({
     },
     reducers: {
         selectApproval: (state, action) => {
-            console.log(action.payload);
             state.NoIN = action.payload;
+        },
+        cancelApproval: (state, action) => {
+            state.NoIN = "";
         }
     }
 });

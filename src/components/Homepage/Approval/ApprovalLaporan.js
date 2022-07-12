@@ -56,7 +56,7 @@ const ApprovalLaporan = () => {
             vendor: '',
             biaya: ''
         },
-        validationSchema: approvalSchema,
+        validationSchema: data.JenisKalkual === "Eksternal" ? approvalSchema : null,
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: (val) => {
@@ -103,8 +103,8 @@ const ApprovalLaporan = () => {
             const res = await axios.post("https://localhost:44375/api/upload", {
                 ...files,
                 "NoIN": data.NoIN,
-                "Vendor": vendorRef.current.value,
-                "Biaya": biayaRef.current.value
+                "Vendor": data.JenisKalkual === "Eksternal" ? vendorRef.current.value : null,
+                "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null
             }, {
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,8 +1,11 @@
 import { TextField, Box, Button, MenuItem, Typography, Modal, Fade, Backdrop, Divider } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { approvalKalkualActions } from '../../../store/approval-kalkual';
 import SendIcon from "@mui/icons-material/Send";
 
 import axios from "axios";
@@ -26,15 +29,18 @@ const justifikasiList = [
 ]
 
 const ApprovalQA = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = useSelector(state => state.persistedReducer.auth.user);
     const data = useSelector(state => state.persistedReducer.approvalKalkual);
-    console.log(data);
+    
     const [justifikasi, setJustifikasi] = useState("");
     const [enableEndDate, setEnableEndDate] = useState(false);
     const [modalStatus, setModalStatus] = useState(false);
 
     const usernameRef = useRef();
     const passwordRef = useRef();
+    const remarksRef = useRef();
 
     const theme = createTheme({
         typography: {
@@ -90,18 +96,7 @@ const ApprovalQA = () => {
             Password: password
         }).then(res => {
             if (res.data !== null) {
-                if (res.data[0].Username === user) {
-                    approveHandler(1);
-                    toast.success("Kalkual berhasil di approve!", {
-                        position: "top-center",
-                        autoClose: 4000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined
-                    })
-                }
+                if (res.data[0].Username === user) approveHandler(1);
                 else 
                     toast.error("Anda tidak memiliki akses untuk melakukan hal ini. Silahkan kontak tim IT.", {
                         position: "top-center",
@@ -126,13 +121,37 @@ const ApprovalQA = () => {
         });
     }
 
-    const approveHandler = (status) => {
+    const approveHandler = async (status) => {
         if (status == 1) {
-            // besok di sini
+            const response = await axios.post("https://localhost:44375/api/kalkual", {
+                Option: "Approve QA",
+                NoIN: data.NoIN,
+                Remarks: remarksRef.current.value
+            }).then(toast.success("Kalkual berhasil di approve!", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: navigate("/home")
+            })).catch(e => toast.error("Terdapat kendala dengan server, silahkan coba kembali", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            }))
         }
     }
 
-    const handleOpen = () => setModalStatus(true);
+    const handleOpen = (e) => {
+        e.preventDefault();
+        setModalStatus(true)
+    };
     const handleClose = () => setModalStatus(false);
     
     console.log(enableEndDate);
@@ -171,34 +190,40 @@ const ApprovalQA = () => {
                         borderRadius: 2,
                         boxShadow: 5
                     }}>
-                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
-                            <Typography variant="h6">Remarks:</Typography>
-                            <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="remarks" label="Remarks" multiline rows={5}/>
-                            <Typography variant="h6">Pilih justifikasi:</Typography>
-                            <TextField
-                                id="tipe"
-                                select
-                                label="Pilih Justifikasi"
-                                value={justifikasi}
-                                onChange={justifikasiChangeHandler}
-                                variant="outlined"
-                                sx={{ mt: "3vh", gridColumn: "span 2" }}
-                            >
-                            {justifikasiList.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                            </TextField>
-                            <Typography variant="h6">Tgl berakhir:</Typography>
-                            <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="endDate" label="End date" disabled={enableEndDate ? false : true}/>
-                            <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2, gridColumn: "span 3" }}>
-                                <Stack direction="row" spacing={8}>
-                                    <Button variant="contained" color="success" onClick={handleOpen}>Approve</Button>
-                                    <Button variant="outlined">Cancel</Button>
-                                </Stack>
+                        <form onSubmit={handleOpen}>
+                            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
+                                <Typography variant="h6">Remarks:</Typography>
+                                <TextField required sx={{ mt: "3vh", gridColumn: "span 2" }} inputRef={remarksRef} id="remarks" label="Remarks" multiline rows={5}/>
+                                <Typography variant="h6">Pilih justifikasi:</Typography>
+                                <TextField
+                                    required
+                                    id="tipe"
+                                    select
+                                    label="Pilih Justifikasi"
+                                    value={justifikasi}
+                                    onChange={justifikasiChangeHandler}
+                                    variant="outlined"
+                                    sx={{ mt: "3vh", gridColumn: "span 2" }}
+                                >
+                                {justifikasiList.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                                </TextField>
+                                <Typography variant="h6">Tgl berakhir:</Typography>
+                                <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="endDate" label="End date" disabled={enableEndDate ? false : true}/>
+                                <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2, gridColumn: "span 3" }}>
+                                    <Stack direction="row" spacing={8}>
+                                        <Button variant="contained" color="success" type="submit">Approve</Button>
+                                        <Button variant="outlined" onClick={() => {
+                                            dispatch(approvalKalkualActions.cancelApproval());
+                                            navigate("/home");
+                                        }}>Cancel</Button>
+                                    </Stack>
+                                </Box>
                             </Box>
-                        </Box>
+                        </form>
                     </Box>
                 </Box>
                 <Modal open={modalStatus} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500 }}>

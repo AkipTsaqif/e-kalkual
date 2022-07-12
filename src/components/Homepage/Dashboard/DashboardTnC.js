@@ -63,8 +63,8 @@ const DashboardTnC = () => {
                                 getRowId={(data) => data.NoKontrol}
                                 columns={columns}
                                 rows={rows}
-                                pageSize={5}
-                                pageSizeOptions={[5, 10, 20, 50, 100]}
+                                pageSize={10}
+                                rowsPerPageOptions={[10]}
                                 checkBoxSelection
                                 autoHeight={true}
                                 sx={{

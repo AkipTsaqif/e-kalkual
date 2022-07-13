@@ -2,10 +2,13 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
 
 import Navbar from "../../Layout/Navbar";
 
 const VerifPeriode = () => {
+    const [lockPeriode, setLockPeriode] = useState(true);
+
     const theme = createTheme({
         typography: {
             h5: {
@@ -58,15 +61,15 @@ const VerifPeriode = () => {
                         }}>
                             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
                                 <Typography variant="h6">Periode verifikasi:</Typography>
-                                <TextField sx={{ gridColumn: "span 2" }} disabled type="number" id="periode" label="Periode verifikasi" size="small" InputProps={{
+                                <TextField sx={{ gridColumn: "span 2" }} disabled={lockPeriode} type="number" id="periode" label="Periode verifikasi" size="small" InputProps={{
                                     endAdornment: <InputAdornment position="end" >jam</InputAdornment>
                                 }}/>
                             </Box>
                             <Box display="flex" justifyContent="center" alignItems="center">
                                 <Stack direction="row" spacing={2}>
                                     <Button variant="contained" color="success">Save</Button>
-                                    <Button variant="outlined">Edit</Button>
-                                    <Button variant="outlined">Cancel</Button>
+                                    <Button variant="outlined" onClick={() => setLockPeriode(false)}>Edit</Button>
+                                    <Button variant="outlined" onClick={() => setLockPeriode(true)}>Cancel</Button>
                                 </Stack>
                             </Box>
                         </Box>

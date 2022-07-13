@@ -1,6 +1,6 @@
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
@@ -10,7 +10,6 @@ import axios from "axios";
 import { approvalKalkualActions } from '../../../store/approval-kalkual';
 
 import Navbar from "../../Layout/Navbar"
-import styles from "./DashboardQA.module.css"
 
 const DashboardQA = () => {
     const navigate = useNavigate();

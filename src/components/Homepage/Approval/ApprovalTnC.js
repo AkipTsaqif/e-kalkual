@@ -1,8 +1,7 @@
-import { Box, TextField, MenuItem, Button, Typography, Stack } from "@mui/material";
+import { Box, TextField, Button, Typography, Stack } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./ApprovalTnC.module.css";
 
 const ApprovalTnC = () => {
     const theme = createTheme({

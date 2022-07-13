@@ -3,6 +3,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { toast } from "react-toastify";
+import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { requestNewActions } from "../../../store/request-new";
+import { useLocation, useNavigate } from "react-router-dom";
 import idLocale from 'date-fns/locale/id';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import parseISO from "date-fns/parseISO";
@@ -10,11 +14,8 @@ import { format } from "date-fns";
 
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
-import { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { requestNewActions } from "../../../store/request-new";
-import { useLocation, useNavigate } from "react-router-dom";
 
+import axios from "axios";
 import Navbar from "../../Layout/Navbar";
 
 const tipeKalibrasi = [
@@ -128,6 +129,7 @@ const Kalibrasi = () => {
     const [isRuangan, setIsRuangan] = useState(false);
     const [tanggal, setTanggal] = useState(savedRequest.TglKalkual);
     const [periode, setPeriode] = useState(savedRequest.Periode);
+    const [isLoading, setIsLoading] = useState(false);
     
     const locale = 'id';
     const localeMap = {
@@ -189,15 +191,14 @@ const Kalibrasi = () => {
     }
 
     async function postRequest(req) {
-        const response = await fetch("https://localhost:44375/api/kalkual", {
-            method: 'POST',
-            body: JSON.stringify(req),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': '*/*'
+        const response = await axios.post("https://localhost:44375/api/kalkual", req, {
+            onUploadProgress: (e) => {
+                setIsLoading(true);
             }
         }).then(resp => {
-            resp.json().then(data => toast.success("Request kalkual berhasil!", {
+            setIsLoading(false);
+            console.log(resp);
+            toast.success("Request kalkual berhasil!", {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -205,9 +206,20 @@ const Kalibrasi = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined
-            })).then(() => navigate("/dashboard"));
+            });
+            navigate("/dashboard");
         }).catch(e => {
             console.log(e);
+            toast.error("Terdapat kendala dengan server. Silahkan dicoba kembali.", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: () => setIsLoading(false)
+            });
         });
     }
 
@@ -311,13 +323,13 @@ const Kalibrasi = () => {
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Lokasi} id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
                         <Typography variant="h6">Tanggal Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
-                            <DatePicker inputFormat="yyyy-MM-dd" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(format(new Date(tgl), 'yyyy-MM-dd'))} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
+                            <DatePicker inputFormat="dd-MM-yyyy" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(format(new Date(tgl), 'yyyy-MM-dd'))} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>
                         </LocalizationProvider>
                         <Typography variant="h6">Periode Kalkual:</Typography>
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Periode} id="periodeKalkual" onChange={periodeChangeHandler} label="Periode Kalkual" size="small"/>
                         <Typography variant="h6">ED Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
-                            <DatePicker inputFormat="yyyy-MM-dd" label="ED Kalkual" value={savedRequest.EDKalkual} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} sx={{ gridColumn: "span 2" }} id="edKalkual" size="small" variant="filled" disabled/>}/>
+                            <DatePicker inputFormat="dd-MM-yyyy" label="ED Kalkual" value={savedRequest.EDKalkual} onChange={tgl => setTanggal(tgl)} renderInput={params => <TextField {...params} sx={{ gridColumn: "span 2" }} id="edKalkual" size="small" variant="filled" disabled/>}/>
                         </LocalizationProvider>
                         {location.state.kalibrasi !== null ? 
                             (location.state.kalibrasi ? 
@@ -328,9 +340,9 @@ const Kalibrasi = () => {
                     </Box>
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                         <Stack direction="row" spacing={2}>
-                            <Button variant="outlined" onClick={cancelHandler} >Cancel</Button>
-                            <Button variant="contained" onClick={saveHandler} color="success">Save</Button>
-                            <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
+                            <Button variant="outlined" onClick={cancelHandler} disabled={isLoading}>Cancel</Button>
+                            <Button variant="contained" onClick={saveHandler} color="success" disabled={isLoading}>Save</Button>
+                            <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />} disabled={isLoading}>Submit ke Approval</Button>
                         </Stack>
                     </Box>
                 </Stack>

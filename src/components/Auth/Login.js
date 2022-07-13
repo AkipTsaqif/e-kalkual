@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 
+import axios from "axios";
 import styles from "./Login.module.css";
 
 const Login = () => {
@@ -19,9 +20,11 @@ const Login = () => {
     const passwordRef = useRef();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const [uname, setUname] = useState("");
     const [token, setToken] = useState("");
     const [expiry, setExpiry] = useState("");
+    const [isFetching, setIsFetching] = useState(false);
 
     const theme = createTheme({
         typography: {
@@ -51,50 +54,49 @@ const Login = () => {
                     }
                 }
             }
+        },
+        palette: {
+            action: {
+                disabledBackground: "rgb(210, 210, 210)"
+            }
         }
     });
 
     const fetchUser = useCallback(async (username, password) => {
-        const response = await fetch("https://localhost:44375/api/auth", {
-            method: 'POST',
-            body: JSON.stringify({
-              UserAD: username,
-              Password: password
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': '*/*'
-            }}).then(resp => {
-                resp.json().then(data => ({
-                    data: data,
-                    status: resp.status,
-                })).then(res => {
-                    if (res.data === null) toast.error("Password tidak benar!", {
+        const response = await axios.post("https://localhost:44375/api/auth", {
+                UserAD: username,
+                Password: password
+            }, {
+                onUploadProgress: (e) => {
+                    setIsFetching(true);
+                }
+            }).then(res => {
+                setIsFetching(false);
+                if (res.data === null) toast.error("Password tidak benar!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                })
+                else if (res.data[0].hasOwnProperty('Status')) {
+                    toast.error("Username tidak terdaftar di dalam sistem! Silahkan menghubungi tim IT.", {
                         position: "top-center",
-                        autoClose: 3000,
+                        autoClose: 4000,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined
                     })
-                    else if (res.data[0].hasOwnProperty('Status')) {
-                        toast.error("Username tidak terdaftar di dalam sistem! Silahkan menghubungi tim IT.", {
-                            position: "top-center",
-                            autoClose: 4000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined
-                        })
-                    }
-                    else {
-                        setUname(res.data[0].Username);
-                        setToken(res.data[0].Token);
-                        setExpiry(res.data[0].ExpiresIn);
-                    }
-                })
+                }
+                else {
+                    setUname(res.data[0].Username);
+                    setToken(res.data[0].Token);
+                    setExpiry(res.data[0].ExpiresIn);
+                }
             }).catch(e => {
                 console.log(e);
             });
@@ -161,7 +163,7 @@ const Login = () => {
                             <TextField sx={{ width: "25vw" }} type="password" id="password" inputRef={passwordRef} size="small"/>
                         </Box>
                         <Box marginBottom="2vh">
-                            <Button type="submit" variant="contained" endIcon={<SendIcon />}>Login</Button>
+                            <Button type="submit" variant="contained" endIcon={<SendIcon />} disabled={isFetching}>Login</Button>
                         </Box>
                     </form>
                 </Box>

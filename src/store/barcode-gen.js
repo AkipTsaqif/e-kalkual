@@ -9,7 +9,10 @@ const barcodeSlice = createSlice({
         NoKontrol: "",
         Lokasi: "",
         TglKalkual: "",
-        EDKalkual: ""
+        EDKalkual: "",
+        Approvee: "",
+        Approver: "",
+        TglApprove: ""
     },
     reducers: {
         generateBarcode: (state, action) => {
@@ -19,6 +22,9 @@ const barcodeSlice = createSlice({
             state.Lokasi = action.payload.Lokasi;
             state.TglKalkual = action.payload.TglKalkual;
             state.EDKalkual = action.payload.EDKalkual;
+            state.Approvee = action.payload.Approvee;
+            state.Approver = action.payload.Approver;
+            state.TglApprove = action.payload.TglApprove;
         }
     }
 });

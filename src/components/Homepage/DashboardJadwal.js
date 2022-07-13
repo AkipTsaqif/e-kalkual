@@ -1,10 +1,10 @@
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useCallback, useRef } from 'react' 
+import { DataGrid } from '@mui/x-data-grid'
+import { useDispatch } from "react-redux";
+import { useState, useEffect, useRef } from 'react' 
 import { Checkbox } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, Button } from "@mui/material";
-import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import ReactToPrint from 'react-to-print';
 import Box from '@mui/material/Box';
 
 import Navbar from "../Layout/Navbar"

@@ -1,18 +1,17 @@
-import { Box, TextField, MenuItem, Button, FormControl, Typography, LinearProgress, FormHelperText } from "@mui/material";
+import { Box, TextField, Button, FormControl, Typography, LinearProgress, FormHelperText } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "react-toastify";
-import { useFormik, Form } from "formik";
+import { useFormik } from "formik";
 import { approvalSchema } from "../../../utils/validationSchema";
 import { uploadLaporanActions } from '../../../store/upload-laporan';
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./ApprovalLaporan.module.css";
 import axios from "axios";
 
 const ApprovalLaporan = () => {
@@ -20,6 +19,7 @@ const ApprovalLaporan = () => {
     const navigate = useNavigate();
     const data = useSelector(state => state.persistedReducer.uploadLaporan);
     const user = useSelector(state => state.persistedReducer.auth.user);
+    
     const [uploadedFile, setUploadedFile] = useState();
     const [files, setFiles] = useState({"Files": [], "FileNames": [], "NoIN": "", "Vendor": "", "Biaya": ""});
     const [progress, setProgress] = useState(0);
@@ -104,7 +104,8 @@ const ApprovalLaporan = () => {
                 ...files,
                 "NoIN": data.NoIN,
                 "Vendor": data.JenisKalkual === "Eksternal" ? vendorRef.current.value : null,
-                "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null
+                "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null,
+                "Approvee": user
             }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -124,7 +125,8 @@ const ApprovalLaporan = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                onOpen: () => setIsUploading(false)
+                onOpen: () => setIsUploading(false),
+                onClose: () => navigate("/home")
             });
 
         } catch (e) {

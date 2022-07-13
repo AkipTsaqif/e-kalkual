@@ -23,7 +23,7 @@ const requestNewSlice = createSlice({
         Tahun: "",
         Departemen: "",
         Lokasi: "",
-        TglKalkual: format(new Date(), 'yyyy-MM-dd'),
+        TglKalkual: format(new Date(), 'dd/MM/yyyy'),
         Periode: "0",
         EDKalkual: "",
         JenisKalkual: ""

@@ -1,9 +1,8 @@
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Typography } from '@mui/material';
 
 import Navbar from "../../Layout/Navbar"
-import styles from "./DashboardSPVUser.module.css"
 
 const DashboardSPVUser = () => {
     const theme = createTheme({

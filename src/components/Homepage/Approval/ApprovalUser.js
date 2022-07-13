@@ -3,7 +3,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Navbar from "../../Layout/Navbar";
 import Stack from '@mui/material/Stack';
-import styles from "./ApprovalUser.module.css";
 
 const ApprovalUser = () => {
     const theme = createTheme({

@@ -1,10 +1,9 @@
-import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "../../Layout/Navbar";
-import styles from "./VerifTimbangan.module.css";
 
 const VerifTimbangan = () => {
     const location = useLocation();

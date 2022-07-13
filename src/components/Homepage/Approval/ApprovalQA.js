@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 import { approvalKalkualActions } from '../../../store/approval-kalkual';
 import SendIcon from "@mui/icons-material/Send";
@@ -11,7 +12,6 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import Navbar from "../../Layout/Navbar";
 import Stack from '@mui/material/Stack';
-import styles from "./ApprovalQA.module.css";
 
 const justifikasiList = [
     {
@@ -126,17 +126,22 @@ const ApprovalQA = () => {
             const response = await axios.post("https://localhost:44375/api/kalkual", {
                 Option: "Approve QA",
                 NoIN: data.NoIN,
-                Remarks: remarksRef.current.value
-            }).then(toast.success("Kalkual berhasil di approve!", {
-                position: "top-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                onClose: navigate("/home")
-            })).catch(e => toast.error("Terdapat kendala dengan server, silahkan coba kembali", {
+                Remarks: remarksRef.current.value,
+                Approver: user,
+                TglApprove: format(new Date(), "MM-yy")
+            }).then((res) => {
+                toast.success("Kalkual berhasil di approve!", {
+                    position: "top-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    onClose: navigate("/home")
+                });
+                console.log(res);
+            }).catch(e => toast.error("Terdapat kendala dengan server, silahkan coba kembali", {
                 position: "top-center",
                 autoClose: 4000,
                 hideProgressBar: false,

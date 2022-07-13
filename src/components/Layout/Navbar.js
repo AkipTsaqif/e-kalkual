@@ -79,7 +79,7 @@ const Navbar = (props) => {
                     <div className={styles.logo}>E-Kalkual</div>
                     <nav>
                         <ul>
-                            {isHome ? <div></div> : <Button variant="text" onClick={() => navigate(-1)}>Back</Button>}
+                            {isHome ? <div></div> : <Button variant="text" onClick={() => navigate("/home")}>Back</Button>}
                             <Button variant="text" onClick={() => {
                                 dispatch(authActions.logout());
                                 navigate("/");

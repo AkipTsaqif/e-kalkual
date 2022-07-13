@@ -61,8 +61,8 @@ const BarcodeKalibrasi = React.forwardRef((props, ref) => {
                             <Typography sx={{ gridColumn: "3 / 5", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.TglKalkual}</Typography>
                             <Typography variant="h6">ED kalibrasi:</Typography>
                             <Typography sx={{ gridColumn: "3 / 5", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.EDKalkual}</Typography>
-                            <Typography variant="h6">Approved by:</Typography>
-                            <Typography sx={{ gridColumn: "3 / 5", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{user}</Typography>
+                            <Typography variant="h6">Approved ({data.TglApprove}) by:</Typography>
+                            <Typography sx={{ gridColumn: "3 / 5", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.Approver}</Typography>
                         </Box>
                     </Box>
                     <Box display="flex" width={0.7} backgroundColor="white" justifyContent="center" alignItems="center" sx={{ 

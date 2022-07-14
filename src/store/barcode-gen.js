@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const barcodeSlice = createSlice({
     name: "barcode",
     initialState: {
+        RequestID: "",
         NoIN: "",
         TipeKalkual: "",
         NamaAlat: "",
@@ -16,6 +17,7 @@ const barcodeSlice = createSlice({
     },
     reducers: {
         generateBarcode: (state, action) => {
+            state.RequestID = action.payload.RequestID;
             state.TipeKalkual = action.payload.TipeKalkual;
             state.NamaAlat = action.payload.Nama;
             state.NoKontrol = action.payload.NoKontrol;

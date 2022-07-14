@@ -3,7 +3,7 @@ import { useState } from "react";
 import Stack from '@mui/material/Stack';
 import SendIcon from "@mui/icons-material/Send";
 import Navbar from "../../Layout/Navbar";
-import styles from "./ReqScanUser.module.css";
+import styles from "./ReqKalkualUser.module.css";
 
 const tipeKalibrasi = [
     {

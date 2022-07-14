@@ -103,6 +103,17 @@ const DUMMY_ALAT = [
     },
 ]
 
+const LOKASI_DD = [
+    {
+        value: "PLG",
+        label: "Pulogadung"
+    },
+    {
+        value: "CKR",
+        label: "Cikarang"
+    }
+]
+
 const theme = createTheme({
     typography: {
         h5: {
@@ -126,6 +137,7 @@ const Kalibrasi = () => {
     
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
+    const [lokasi, setLokasi] = useState("PLG");
     const [isRuangan, setIsRuangan] = useState(false);
     const [tanggal, setTanggal] = useState(savedRequest.TglKalkual);
     const [periode, setPeriode] = useState(savedRequest.Periode);
@@ -168,6 +180,10 @@ const Kalibrasi = () => {
 
     const alatMesinChangeHandler = (e) => {
         setAlatMesin(e.target.value);
+    }
+
+    const lokasiChangeHandler = (e) => {
+        setLokasi(e.target.value);
     }
 
     const inputtedData = () => {
@@ -320,7 +336,23 @@ const Kalibrasi = () => {
                         <Typography variant="h6">Departemen:</Typography>
                         <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Departemen} id="departemen" label="Departemen Pemilik" inputRef={departemenRef} size="small"/>
                         <Typography variant="h6">Lokasi:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.Lokasi} id="lokasi" label="Lokasi" inputRef={lokasiRef} size="small"/>
+                        <TextField autoComplete="off" 
+                            sx={{ gridColumn: "span 2" }} 
+                            defaultValue={!savedRequest ? lokasi : savedRequest.Lokasi} 
+                            id="lokasi" 
+                            label="Lokasi" 
+                            inputRef={lokasiRef} 
+                            size="small"
+                            variant="outlined"
+                            select
+                            onChange={lokasiChangeHandler}
+                        >
+                            {LOKASI_DD.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         <Typography variant="h6">Tanggal Kalkual:</Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeMap[locale]}>
                             <DatePicker inputFormat="dd-MM-yyyy" label="Tanggal Kalkual" value={savedRequest.TglKalkual} onChange={tgl => setTanggal(format(new Date(tgl), 'yyyy-MM-dd'))} renderInput={params => <TextField {...params} size="small" sx={{ gridColumn: "span 2" }}/>}/>

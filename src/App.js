@@ -41,7 +41,6 @@ function App() {
           <Route path="approval/uploadlaporan" element={<ApprovalLaporan />} />
           <Route path="approval/tnc" element={<ApprovalTnC />} />
           <Route path="dashboard/tnc" element={<DashboardTnC />} />
-          <Route path="barcode/kalibrasi" element={<BarcodeKalibrasi />} />
         </Route>
       </Routes>   
     </div>

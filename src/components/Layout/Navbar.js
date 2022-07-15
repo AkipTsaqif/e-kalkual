@@ -28,6 +28,7 @@ import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import ScaleIcon from '@mui/icons-material/Scale';
 import BuildIcon from '@mui/icons-material/Build';
 import EngineeringIcon from '@mui/icons-material/Engineering';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 const Navbar = (props) => {
     const navigate = useNavigate();
@@ -228,6 +229,16 @@ const Navbar = (props) => {
                                             <EngineeringIcon style={{fontSize: 18}}/>
                                         </ListItemIcon>
                                         <ListItemText primary="Kualifikasi" primaryTypographyProps={{
+                                            fontSize: 18,
+                                            color: "white",
+                                            letterSpacing: 0,
+                                        }}/>
+                                    </ListItemButton>
+                                    <ListItemButton onClick={() => navigate("/request/scan")} sx={{ pl: 7 }}>
+                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                            <QrCodeScannerIcon style={{fontSize: 18}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Scan" primaryTypographyProps={{
                                             fontSize: 18,
                                             color: "white",
                                             letterSpacing: 0,

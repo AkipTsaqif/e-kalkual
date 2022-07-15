@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from 'react' 
 import { Checkbox } from '@mui/material';
@@ -164,6 +164,7 @@ const DashboardJadwal = () => {
         { headerName: 'Frekuensi Kalkual (Umur Jatuh Tempo)', headerAlign: 'center', field: 'EDKalkual', width: 150 },
         { headerName: 'Jenis Kalkual (internal/eksternal)', headerAlign: 'center', field: 'JenisKalkual', width: 150 },
         { headerName: 'Status', headerAlign: 'center', field: 'Status', width: 100 },
+        { headerName: 'Warna', field: 'dueColor', hide: true }
     ];
 
     return (
@@ -213,6 +214,7 @@ const DashboardJadwal = () => {
                                     rowHeight={36}
                                     headerHeight={55}
                                     autoHeight={true}
+                                    components={{ Toolbar: GridToolbar }}
                                     onSelectionModelChange={id => {
                                         const selectedID = new Set(id);
                                         const selectedRowData = dummy.find(row => selectedID.has(row.id));

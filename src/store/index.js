@@ -8,6 +8,7 @@ import requestNewSlice from './request-new';
 import uploadLaporanSlice from "./upload-laporan";
 import approvalKalkualSlice from "./approval-kalkual";
 import barcodeSlice from './barcode-gen';
+import requestScanSlice from './request-scan';
 
 const persistConfig = {
     key: 'root',
@@ -19,7 +20,8 @@ const reducers = combineReducers({
     requestNew: requestNewSlice,
     uploadLaporan: uploadLaporanSlice,
     approvalKalkual: approvalKalkualSlice,
-    barcode: barcodeSlice
+    barcode: barcodeSlice,
+    requestScan: requestScanSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

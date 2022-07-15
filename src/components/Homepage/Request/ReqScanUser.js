@@ -2,7 +2,12 @@ import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { QrReader } from "react-qr-reader";
+import { format, parseISO } from "date-fns";
+import { requestScanActions } from "../../../store/request-scan";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
 import Navbar from "../../Layout/Navbar";
 
 const DUMMY_MESIN = [
@@ -29,7 +34,11 @@ const DUMMY_MESIN = [
 ]
 
 const ReqScanUser = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [alatMesin, setAlatMesin] = useState("");
+    const [data, setData] = useState();
 
     const theme = createTheme({
         typography: {
@@ -49,14 +58,25 @@ const ReqScanUser = () => {
         setAlatMesin(e.target.value);
     }
 
+    const scanHandler = async (scannedData) => {
+        console.log(scannedData);
+        const response = await axios.post("https://localhost:44375/api/kalkual", {
+            Option: "Get Scanned Data",
+            RequestID: scannedData[0]
+        }).then(resp => {
+            let parsedData = JSON.parse(resp.data);
+            setData(...parsedData);
+        })
+    }
+
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
                 <Box display="none">
                     <QrReader onResult={(res, err) => {
                         if (!!res) {
-                            let split = res.text.split("-");
-                            console.log("id: " + split[0] + "\n" + "no kontrol: " + split[1]);
+                            const split = res.text.split("-");
+                            scanHandler(split);
                         }
                     }} />
                 </Box>
@@ -91,12 +111,22 @@ const ReqScanUser = () => {
                         borderRadius: 2,
                         boxShadow: 5
                     }}>
-                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
+                        <Box sx={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 
+                            'repeat(3, 1fr)', 
+                            alignItems: "center",
+                            "& .MuiInputBase-root.Mui-disabled": {
+                                color: "gray",
+                                fontWeight: "bold"
+                            } 
+                        }}>
                             <Typography variant="h6">Nama:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} value="test" id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" size="small" disabled/>
-                            <Typography variant="h6">Tipe:</Typography>
+                            <TextField sx={{ gridColumn: "span 2" }} value={!!data ? data.Nama : ""} id="nama" label="Nama Alat/Mesin/Sistem Penunjang/Ruangan" size="small" disabled/>
+                            <Typography variant="h6">Tipe*:</Typography>
                             <TextField
                                 sx={{ gridColumn: "span 2" }}
+                                required
                                 id="tipe"
                                 select
                                 label="Tipe Alat/Mesin/Sistem Penunjang/Ruangan"
@@ -111,16 +141,25 @@ const ReqScanUser = () => {
                                 ))}
                             </TextField>
                             <Typography variant="h6">No kontrol:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" label="No Kontrol" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} value={!!data ? data.NoKontrol : ""} id="nama" label="No Kontrol" size="small" disabled/>
                             <Typography variant="h6">Lokasi:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" label="Lokasi" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} value={!!data ? data.Lokasi : ""} id="nama" label="Lokasi" size="small" disabled/>
                             <Typography variant="h6">Tanggal kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} value={!!data ? format(parseISO(data.TglKalkual), "dd-MM-yyyy") : ""} id="nama" label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
                             <Typography variant="h6">ED kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} value={!!data ? format(parseISO(data.EDKalkual), "dd-MM-yyyy") : ""} id="nama" label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
                         </Box>
                         <Box display="flex" justifyContent="center" marginTop={2}>
-                                <Button variant="contained" color="success">Request</Button>
+                                <Button variant="contained" color="success" 
+                                onClick={() => {
+                                    dispatch(requestScanActions.addRequest({
+                                        ...data,
+                                        Tipe: alatMesin,
+                                        TglKalkual: format(parseISO(data.TglKalkual), "dd-MM-yyyy"),
+                                        EDKalkual: format(parseISO(data.EDKalkual), "dd-MM-yyyy")
+                                    }));
+                                    navigate("/request/scan/register");
+                                }}>Request</Button>
                         </Box>
                     </Box>
                 </Box>

@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const barcodeSlice = createSlice({
-    name: "barcode",
+const labelSlice = createSlice({
+    name: "label",
     initialState: {
         RequestID: "",
         NoIN: "",
         TipeKalkual: "",
+        TipeAlat: "",
+        Departemen: "",
+        Jenis: "",
+        JenisKalkual: "",
         NamaAlat: "",
         NoKontrol: "",
         Lokasi: "",
@@ -16,9 +20,14 @@ const barcodeSlice = createSlice({
         TglApprove: ""
     },
     reducers: {
-        generateBarcode: (state, action) => {
+        generateLabel: (state, action) => {
+            console.log(action.payload)
             state.RequestID = action.payload.RequestID;
             state.TipeKalkual = action.payload.TipeKalkual;
+            state.TipeAlat = action.payload.Tipe;
+            state.Departemen = action.payload.Departemen;
+            state.Jenis = action.payload.Jenis;
+            state.JenisKalkual = action.payload.JenisKalkual;
             state.NamaAlat = action.payload.Nama;
             state.NoKontrol = action.payload.NoKontrol;
             state.Lokasi = action.payload.Lokasi;
@@ -31,5 +40,5 @@ const barcodeSlice = createSlice({
     }
 });
 
-export const barcodeActions = barcodeSlice.actions;
-export default barcodeSlice.reducer;
+export const labelActions = labelSlice.actions;
+export default labelSlice.reducer;

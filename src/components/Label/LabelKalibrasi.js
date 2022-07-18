@@ -2,11 +2,14 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { useSelector } from "react-redux";
-import Barcode from 'react-barcode';
-import { QRCodeSVG } from "qrcode.react";
+import { format, parseISO } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
-const BarcodeKalibrasi = React.forwardRef((props, ref) => {
-    const data = useSelector(state => state.persistedReducer.barcode);
+import Navbar from "../Layout/Navbar";
+
+const LabelKalibrasi = () => {
+    const navigate = useNavigate();
+    const data = useSelector(state => state.persistedReducer.label);
     const user = useSelector(state => state.persistedReducer.auth.user);
     console.log(data);
     const theme = createTheme({
@@ -39,8 +42,8 @@ const BarcodeKalibrasi = React.forwardRef((props, ref) => {
     });
 
     return (
-        <ThemeProvider theme={theme}>
-            <div ref={ref}>
+        <Navbar>
+            <ThemeProvider theme={theme}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{
                         m: "auto auto", 
                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -85,9 +88,9 @@ const BarcodeKalibrasi = React.forwardRef((props, ref) => {
                             <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">Lokasi:</Typography>
                             <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.Lokasi}</Typography>
                             <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">Tanggal kalibrasi:</Typography>
-                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.TglKalkual}</Typography>
+                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{format(parseISO(data.TglKalkual), "dd-MM-yyyy")}</Typography>
                             <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">ED kalibrasi:</Typography>
-                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.EDKalkual}</Typography>
+                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{format(parseISO(data.EDKalkual), "dd-MM-yyyy")}</Typography>
                             <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">Approved ({data.TglApprove}) by:</Typography>
                             <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.Approver}</Typography>
                         </Box>
@@ -98,15 +101,12 @@ const BarcodeKalibrasi = React.forwardRef((props, ref) => {
                         borderColor: "rgba(0, 0, 0, 1)", 
                         borderWidth: 4
                     }}>
-                        {/* <Typography variant="h5">Request</Typography> */}
-                        <Button variant="text" size="large" sx={{  }}>Request</Button>
+                        <Button variant="text" size="large" onClick={() => navigate("/request/user")}>Request</Button>
                     </Box>
-                    {/* <Barcode width={0.6} height={80} displayValue="true" value={data ? (data.RequestID).toString() : ""} /> */}
-                    
                 </Box>
-            </div>
-        </ThemeProvider>
+            </ThemeProvider>
+        </Navbar>
     )
-})
+}
 
-export default BarcodeKalibrasi;
+export default LabelKalibrasi;

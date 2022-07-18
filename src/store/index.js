@@ -7,7 +7,7 @@ import authSlice from './auth';
 import requestNewSlice from './request-new';
 import uploadLaporanSlice from "./upload-laporan";
 import approvalKalkualSlice from "./approval-kalkual";
-import barcodeSlice from './barcode-gen';
+import labelSlice from './label-gen';
 import requestScanSlice from './request-scan';
 
 const persistConfig = {
@@ -20,7 +20,7 @@ const reducers = combineReducers({
     requestNew: requestNewSlice,
     uploadLaporan: uploadLaporanSlice,
     approvalKalkual: approvalKalkualSlice,
-    barcode: barcodeSlice,
+    label: labelSlice,
     requestScan: requestScanSlice
 })
 

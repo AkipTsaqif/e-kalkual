@@ -27,6 +27,7 @@ const ApprovalLaporan = () => {
 
     const vendorRef = useRef();
     const biayaRef = useRef();
+    const parameterRef = useRef();
 
     const theme = createTheme({
         typography: {
@@ -105,6 +106,7 @@ const ApprovalLaporan = () => {
                 "NoIN": data.NoIN,
                 "Vendor": data.JenisKalkual === "Eksternal" ? vendorRef.current.value : null,
                 "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null,
+                "ParameterUji": parameterRef.current.value,
                 "Approvee": user
             }, {
                 headers: {
@@ -156,7 +158,7 @@ const ApprovalLaporan = () => {
                         minHeight: `calc(100vh - 48px)`
                     }}>
                         
-                        <Box display="flex" width={0.75} justifyContent="center" alignItems="center" sx={{ boxShadow: 5, m: "auto auto", pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
+                        <Box display="flex" width={0.75} justifyContent="center" alignItems="center" sx={{ boxShadow: 5, pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
                             <Typography variant="h5">Form Approval Kalkual</Typography>
                         </Box>
                         <Stack width={0.6} sx={{
@@ -193,6 +195,8 @@ const ApprovalLaporan = () => {
                                     <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="ed" label="ED Kalibrasi/Kualifikasi" value={data.EDKalkual} size="small" disabled/>
                                     <Typography variant="h6">Jenis kalkual:</Typography>
                                     <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="jenis" label="Jenis Kalibrasi" value={data.JenisKalkual} size="small" disabled/>
+                                    <Typography variant="h6">Parameter uji:</Typography>
+                                    <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} inputRef={parameterRef} id="parameter" label="Input parameter uji" size="small" minRows={5} multiline/>
                                     <Typography variant="h6">Berkas laporan:</Typography>
                                     <Box marginTop={1} marginBottom={1} justifyContent="space-evenly" alignItems="center" sx={{ display: "flex", gridColumn: "span 2" }}>     
                                         <Button variant="outlined" component="label" disabled={isUploading ? true : false}>Upload File<input onChange={(e) => saveFileHandler(e.target.files[0])} type="file" hidden /></Button>

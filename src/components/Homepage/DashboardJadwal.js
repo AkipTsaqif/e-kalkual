@@ -14,7 +14,7 @@ import { parse } from 'date-fns';
 import { useNavigate } from 'react-router';
 
 import { uploadLaporanActions } from '../../store/upload-laporan';
-import { barcodeActions } from '../../store/barcode-gen';
+import { labelActions } from '../../store/label-gen';
 
 const DashboardJadwal = () => {
     const dispatch = useDispatch();
@@ -190,17 +190,17 @@ const DashboardJadwal = () => {
                         }}> 
                             <Typography variant="h5">Dashboard</Typography>           
                             <hr />                    
-                            <Box sx={{height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: '5vh', margin: 'auto auto', borderRadius: '5px',
-                                        '& .super-app-theme--1': {
+                            <Box sx={{height: '515px', width: '95%', backgroundColor: 'lightgray', marginTop: '5vh', margin: 'auto auto', borderRadius: '5px',
+                                        '& .super-app-theme--moderate': {
                                             bgcolor: 'yellow'
                                         },
-                                        '& .super-app-theme--2': {
+                                        '& .super-app-theme--urgent': {
                                             bgcolor: 'red'
                                         },
-                                        '& .super-app-theme--3': {
+                                        '& .super-app-theme--expired': {
                                             bgcolor: 'gray'
                                         },
-                                        '& .super-app-theme--4': {
+                                        '& .super-app-theme--done': {
                                             bgcolor: 'green'
                                         }
                                     }}>
@@ -211,10 +211,12 @@ const DashboardJadwal = () => {
                                     rows={dummy}
                                     pageSize={10}
                                     rowsPerPageOptions={[10]}
-                                    rowHeight={36}
+                                    rowHeight={35}
                                     headerHeight={55}
-                                    autoHeight={true}
+                                    // autoHeight={true}
                                     components={{ Toolbar: GridToolbar }}
+                                    disableColumnSelector={true}
+                                    disableDensitySelector={true}
                                     onSelectionModelChange={id => {
                                         const selectedID = new Set(id);
                                         const selectedRowData = dummy.find(row => selectedID.has(row.id));
@@ -228,15 +230,15 @@ const DashboardJadwal = () => {
 
                                         if (selectedRowData.Status === "Completed") {
                                             setBtnBarcode(true);
-                                            dispatch(barcodeActions.generateBarcode(selectedRowData));
+                                            // dispatch(labelActions.generateBarcode(selectedRowData));
                                         }
                                         else setBtnBarcode(false);
 
-                                        if (selectedRowData.dueColor === 0) setRowColor("rgb(210, 210, 210)");
-                                        else if (selectedRowData.dueColor === 1) setRowColor("rgb(200, 200, 0)");
-                                        else if (selectedRowData.dueColor === 2) setRowColor("rgb(230, 0, 0)");
-                                        else if (selectedRowData.dueColor === 3) setRowColor("rgb(210, 210, 210)");
-                                        else if (selectedRowData.dueColor === 4) setRowColor("rgb(25, 170, 0)");
+                                        if (selectedRowData.dueColor === 'light') setRowColor("rgb(210, 210, 210)");
+                                        else if (selectedRowData.dueColor === 'moderate') setRowColor("rgb(200, 200, 0)");
+                                        else if (selectedRowData.dueColor === 'urgent') setRowColor("rgb(230, 0, 0)");
+                                        else if (selectedRowData.dueColor === 'expired') setRowColor("rgb(210, 210, 210)");
+                                        else if (selectedRowData.dueColor === 'done') setRowColor("rgb(25, 170, 0)");
                                     }}
                                     getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
                                     sx={{
@@ -258,7 +260,7 @@ const DashboardJadwal = () => {
                                     content={() => barcodeRef.current}
                                 />
                             </Box>
-                            <div style={{ display: "none" }}><BarcodeKalibrasi ref={barcodeRef} /></div>
+                            {/* <div style={{  }}><BarcodeKalibrasi ref={barcodeRef} /></div> */}
                         </Box>
                     </Box>
                 </ThemeProvider>  

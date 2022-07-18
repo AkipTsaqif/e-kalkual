@@ -2,16 +2,13 @@ import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import { format, parseISO } from "date-fns";
 
 import Stack from '@mui/material/Stack';
 import SendIcon from "@mui/icons-material/Send";
 import Navbar from "../../Layout/Navbar";
 
 const tipeKalibrasi = [
-    {
-        value: "AB",
-        label: "Alat Baru"
-    },
     {
         value: "AR",
         label: "Alat Rusak"
@@ -23,31 +20,11 @@ const tipeKalibrasi = [
     {
         value: "PA",
         label: "Perpindahan Alat"
-    },
-    {
-        value: "MB",
-        label: "Mesin Baru"
-    },
-    {
-        value: "RB",
-        label: "Ruangan Baru"
-    },
-    {
-        value: "MR",
-        label: "Mesin Rusak"
-    },
-    {
-        value: "MPP",
-        label: "Mesin Perlu Perbaikan"
-    },
-    {
-        value: "PM",
-        label: "Perpindahan Mesin"
-    },
+    }
 ]
 
 const ReqKalkualUser = () => {
-    const data = useSelector(state => state.persistedReducer.requestScan);
+    const data = useSelector(state => state.persistedReducer.label);
     console.log(data);
     const [tipe, setTipe] = useState("");
 
@@ -146,9 +123,9 @@ const ReqKalkualUser = () => {
                             <Typography variant="h6">Lokasi:</Typography>
                             <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.Lokasi : ""} label="Lokasi" size="small" disabled/>
                             <Typography variant="h6">Tanggal kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.TglKalkual : ""} label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? format(parseISO(data.TglKalkual), "dd-MM-yyyy") : ""} label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
                             <Typography variant="h6">ED kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.EDKalkual : ""} label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? format(parseISO(data.EDKalkual), "dd-MM-yyyy") : ""} label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
                             <Typography variant="h6">Jenis kalkual:</Typography>
                             <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.JenisKalkual : ""} label="Jenis Kalibrasi" size="small" disabled/>
                             <Typography variant="h6">Remarks:</Typography>

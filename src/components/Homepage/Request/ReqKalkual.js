@@ -34,7 +34,10 @@ const tipeKalibrasi = [
     {
         value: "PA",
         label: "Perpindahan Alat"
-    },
+    }
+]
+
+const tipeKualifikasi = [
     {
         value: "MB",
         label: "Mesin Baru"
@@ -54,7 +57,7 @@ const tipeKalibrasi = [
     {
         value: "PM",
         label: "Perpindahan Mesin"
-    },
+    }
 ]
 
 const DUMMY_MESIN = [
@@ -114,6 +117,17 @@ const LOKASI_DD = [
     }
 ]
 
+const JENIS_KALIBRASI = [
+    {
+        value: "Internal",
+        label: "Internal"
+    },
+    {
+        value: "Eksternal",
+        label: "Eksternal"
+    }
+]
+
 const theme = createTheme({
     typography: {
         h5: {
@@ -138,6 +152,7 @@ const Kalibrasi = () => {
     const [tipe, setTipe] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [lokasi, setLokasi] = useState("PLG");
+    const [jenisKalibrasi, setJenisKalibrasi] = useState("Internal");
     const [isRuangan, setIsRuangan] = useState(false);
     const [tanggal, setTanggal] = useState(savedRequest.TglKalkual);
     const [periode, setPeriode] = useState(savedRequest.Periode);
@@ -186,6 +201,10 @@ const Kalibrasi = () => {
         setLokasi(e.target.value);
     }
 
+    const jenisKalibrasiHandler = (e) => {
+        setJenisKalibrasi(e.target.value);
+    }
+
     const inputtedData = () => {
         const request = {
             Option: "Insert",
@@ -193,6 +212,7 @@ const Kalibrasi = () => {
             TipeKalkual: tipeKalkualRef.current.value,
             Nama: namaRef.current.value,
             Tipe: tipeAlatRef.current.value,
+            Jenis: location.state.kalibrasi !== null ? (location.state.kalibrasi ? "Kalibrasi" : "Kualifikasi") : null,
             NoKontrol: noKontrolRef.current.value,
             TahunPembelian: tahunRef.current.value,
             Departemen: departemenRef.current.value,
@@ -200,7 +220,7 @@ const Kalibrasi = () => {
             TglKalkual: savedRequest.TglKalkual,
             Periode: savedRequest.Periode,
             EDKalkual: format(savedRequest.EDKalkual, "yyyy-MM-dd"),
-            JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "") : ""
+            JenisKalkual: location.state.kalibrasi !== null ? (location.state.kalibrasi ? jenisKalibrasiRef.current.value : "Internal") : "Internal"
         }
 
         return request;
@@ -304,7 +324,13 @@ const Kalibrasi = () => {
                             variant="outlined"
                             inputRef={tipeKalkualRef}
                         >
-                            {tipeKalibrasi.map((option) => (
+                            {location.state.kalibrasi ? 
+                            tipeKalibrasi.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            )) : 
+                            tipeKualifikasi.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                                 </MenuItem>
@@ -365,8 +391,23 @@ const Kalibrasi = () => {
                         </LocalizationProvider>
                         {location.state.kalibrasi !== null ? 
                             (location.state.kalibrasi ? 
-                                <><Typography variant="h6">Jenis Kalkual:</Typography>
-                                <TextField sx={{ gridColumn: "span 2" }} defaultValue={savedRequest.JenisKalkual} id="jenis" label="Jenis Kalibrasi" inputRef={jenisKalibrasiRef} size="small"/></>
+                                <><Typography variant="h6">Jenis Kalibrasi:</Typography>
+                                <TextField autoComplete="off" 
+                                sx={{ gridColumn: "span 2" }} 
+                                defaultValue={!savedRequest ? jenisKalibrasi : savedRequest.JenisKalkual} 
+                                id="jenis" 
+                                label="Jenis Kalibrasi" 
+                                inputRef={jenisKalibrasiRef} 
+                                size="small"
+                                select
+                                onChange={jenisKalibrasiHandler}
+                                >
+                                    {JENIS_KALIBRASI.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField></>
                             : <div></div>) 
                         : <div></div>}
                     </Box>

@@ -18,7 +18,7 @@ import ApprovalQA from './components/Homepage/Approval/ApprovalQA';
 import ApprovalLaporan from './components/Homepage/Approval/ApprovalLaporan';
 import DashboardTnC from './components/Homepage/Dashboard/DashboardTnC';
 import ApprovalTnC from './components/Homepage/Approval/ApprovalTnC';
-import BarcodeKalibrasi from './components/Barcode/BarcodeKalibrasi';
+import LabelKalibrasi from './components/Label/LabelKalibrasi';
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
           <Route path="verifikasi/periode" element={<VerifPeriode />} />
           <Route path="verifikasi/tnc" element={<VerifTimbangan />} />
           <Route path="request/scan" element={<ReqScanUser />} />
-          <Route path="request/scan/register" element={<ReqKalkualUser />} />
+          <Route path="request/user" element={<ReqKalkualUser />} />
           <Route path="dashboard/user" element={<DashboardSPVUser />} />
           <Route path="approval/user" element={<ApprovalUser />} />
           <Route path="dashboard/qa" element={<DashboardQA />} />
@@ -41,6 +41,7 @@ function App() {
           <Route path="approval/uploadlaporan" element={<ApprovalLaporan />} />
           <Route path="approval/tnc" element={<ApprovalTnC />} />
           <Route path="dashboard/tnc" element={<DashboardTnC />} />
+          <Route path="label/kalibrasi" element={<LabelKalibrasi />} />
         </Route>
       </Routes>   
     </div>

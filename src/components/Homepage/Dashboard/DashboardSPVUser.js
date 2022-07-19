@@ -1,10 +1,19 @@
 import { DataGrid } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { approvalKalkualActions } from '../../../store/approval-kalkual';
 
+import axios from 'axios';
 import Navbar from "../../Layout/Navbar"
 
 const DashboardSPVUser = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [dummy, setDummy] = useState([]);
+
     const theme = createTheme({
         typography: {
             h5: {
@@ -23,19 +32,40 @@ const DashboardSPVUser = () => {
         }
     });
 
+    let no = 0;
+    const getData = async () => {
+        try {
+            const response = await axios.post("https://localhost:44375/api/kalkual", {
+                Option: "Dashboard User"
+            }).then(res => {
+                const parsedData = JSON.parse(res.data).map((item, index) => {
+                    return {
+                        ...item,
+                        id: index,
+                        No: no += 1,
+                        EDKalkual: item.EDKalkual.slice(0, 10)
+                    }
+                });
+                setDummy(parsedData);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     const columns = [
         { headerName: 'No', headerAlign: 'center', field: 'No', width: 5 },
         { headerName: 'Nama Alat', headerAlign: 'center', field: 'Nama', width: 350 },
-        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'Tipe', width: 120 },
+        { headerName: 'Tipe Kalkual', headerAlign: 'center', field: 'TipeKalkual', width: 120 },
         { headerName: 'No Kontrol', headerAlign: 'center', field: 'NoKontrol', width: 150 },
         { headerName: 'Lokasi', headerAlign: 'center', field: 'Lokasi', width: 75 },
         { headerName: 'ED Kalkual', headerAlign: 'center', field: 'EDKalkual', width: 120 },
         { headerName: 'Remarks', headerAlign: 'center', field: 'Remarks', width: 200 }
     ];
-
-    const rows = [
-        { No: '1', Nama: '-', Tipe: '-', NoKontrol: '-', Lokasi: '-', EDKalkual: '-', Remarks: 'Testestes'},
-    ]
 
     return (
         <Navbar>
@@ -60,13 +90,22 @@ const DashboardSPVUser = () => {
                         <hr/>
                         <Box sx={{ height: '100%', width: '95%', backgroundColor: 'lightgray', marginTop: "5vh", margin: 'auto auto', borderRadius: '5px' }}>
                             <DataGrid
-                                getRowId={(data) => data.NoKontrol}
+                                getRowId={(data) => data.id}
                                 columns={columns}
-                                rows={rows}
+                                rows={dummy}
                                 pageSize={10}
                                 rowsPerPageOptions={[10]}
-                                checkBoxSelection
-                                autoHeight={true}
+                                headerHeight={55}
+                                rowHeight={36}
+                                autoHeight
+                                onSelectionModelChange={id => {
+                                    const selectedID = new Set(id);
+                                    const selectedRowData = dummy.find(row => selectedID.has(row.id));
+                                    // setSelectedData(selectedRowData);
+                                    console.log(selectedRowData);
+                                    dispatch(approvalKalkualActions.selectApproval(selectedRowData.NoIN));
+                                    navigate('/approval/user');
+                                }}
                                 sx={{
                                     '& .MuiDataGrid-columnHeaderTitle': {
                                         textOverflow: "clip",

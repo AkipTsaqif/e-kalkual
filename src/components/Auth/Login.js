@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton'
 import SendIcon from "@mui/icons-material/Send";
 
 import axios from "axios";
@@ -63,13 +63,10 @@ const Login = () => {
     });
 
     const fetchUser = useCallback(async (username, password) => {
+        setIsFetching(true);
         const response = await axios.post("https://localhost:44375/api/auth", {
                 UserAD: username,
                 Password: password
-            }, {
-                onUploadProgress: (e) => {
-                    setIsFetching(true);
-                }
             }).then(res => {
                 setIsFetching(false);
                 if (res.data === null) toast.error("Password tidak benar!", {
@@ -163,7 +160,7 @@ const Login = () => {
                             <TextField sx={{ width: "25vw" }} type="password" id="password" inputRef={passwordRef} size="small"/>
                         </Box>
                         <Box marginBottom="2vh">
-                            <Button type="submit" variant="contained" endIcon={<SendIcon />} disabled={isFetching}>Login</Button>
+                            <LoadingButton loading={isFetching} loadingPosition="end" type="submit" variant="contained" endIcon={<SendIcon />} disabled={isFetching}>Login</LoadingButton>
                         </Box>
                     </form>
                 </Box>

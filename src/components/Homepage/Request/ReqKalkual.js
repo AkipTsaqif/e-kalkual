@@ -150,6 +150,7 @@ const Kalibrasi = () => {
     const navigate = useNavigate();
     
     const [tipe, setTipe] = useState("");
+    const [noIN, setNoIN] = useState("");
     const [alatMesin, setAlatMesin] = useState("");
     const [lokasi, setLokasi] = useState("PLG");
     const [jenisKalibrasi, setJenisKalibrasi] = useState("Internal");
@@ -163,7 +164,6 @@ const Kalibrasi = () => {
         id: idLocale
     }
 
-    const noINRef = useRef();
     const tipeKalkualRef = useRef();
     const namaRef = useRef();
     const tipeAlatRef = useRef();
@@ -208,7 +208,7 @@ const Kalibrasi = () => {
     const inputtedData = () => {
         const request = {
             Option: "Insert",
-            NoIN: noINRef.current.value,
+            NoIN: noIN,
             TipeKalkual: tipeKalkualRef.current.value,
             Nama: namaRef.current.value,
             Tipe: tipeAlatRef.current.value,
@@ -259,6 +259,28 @@ const Kalibrasi = () => {
         });
     }
 
+    const getNoIN = async () => {
+        const response = await axios.post("https://localhost:44375/api/kalkual", {
+            Option: "Generate Next NoIN",
+            EDKalkual: format(!!savedRequest.EDKalkual ? savedRequest.EDKalkual : new Date(), "yyyy-MM-dd"),
+            JenisKalkual: location.state.kalibrasi !== null 
+                            ? (location.state.kalibrasi 
+                                ? (!!jenisKalibrasiRef.current.value
+                                    ? jenisKalibrasiRef.current.value
+                                    : "Internal") 
+                                : "Internal") 
+                            : "Internal"
+        }).then(resp => setNoIN(JSON.parse(resp.data)[0].NoIN));
+    }
+
+    useEffect(() => {
+        getNoIN();
+    }, [savedRequest.EDKalkual, jenisKalibrasi])
+
+    useEffect(() => {
+        console.log("noIN: " + noIN);
+    }, [noIN])
+
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -305,6 +327,10 @@ const Kalibrasi = () => {
                     px: 5,
                     pb: 2,
                     '& .MuiTextField-root': { m: 1 },
+                    "& .MuiInputBase-root.Mui-disabled": {
+                        color: "gray",
+                        fontWeight: "bold"
+                    },
                     borderRadius: 2,
                     boxShadow: 5
                 }}>
@@ -312,7 +338,7 @@ const Kalibrasi = () => {
                         <Typography variant="h6">User ID:</Typography>
                         <TextField sx={{ gridColumn: "span 2" }} id="userID" label="User ID" size="small" variant="filled" value={username} disabled/>
                         <Typography variant="h6">No IN:</Typography>
-                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} defaultValue={savedRequest ? savedRequest.NoIN : ""} id="noIN" label="No IN" inputRef={noINRef} size="small"/>
+                        <TextField autoComplete="off" sx={{ gridColumn: "span 2" }} multiline value={!!savedRequest.NoIN ? savedRequest.NoIN : noIN} id="noIN" label="No IN" variant="filled" size="small" disabled/>
                         <Typography variant="h6">Tipe Kalkual:</Typography>
                         <TextField sx={{ gridColumn: "span 2" }}
                             size="small"

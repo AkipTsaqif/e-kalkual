@@ -126,6 +126,7 @@ const ApprovalQA = () => {
             const response = await axios.post("https://localhost:44375/api/kalkual", {
                 Option: "Approve QA",
                 NoIN: data.NoIN,
+                JustifikasiQA: justifikasi,
                 Remarks: remarksRef.current.value,
                 Approver: user,
                 TglApprove: format(new Date(), "MM-yy")

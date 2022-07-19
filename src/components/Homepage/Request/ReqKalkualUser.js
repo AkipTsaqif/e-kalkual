@@ -1,9 +1,12 @@
 import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
 import Stack from '@mui/material/Stack';
 import SendIcon from "@mui/icons-material/Send";
 import Navbar from "../../Layout/Navbar";
@@ -24,9 +27,13 @@ const tipeKalibrasi = [
 ]
 
 const ReqKalkualUser = () => {
+    const navigate = useNavigate();
     const data = useSelector(state => state.persistedReducer.label);
     console.log(data);
     const [tipe, setTipe] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const remarksRef = useRef();
 
     const theme = createTheme({
         typography: {
@@ -46,8 +53,41 @@ const ReqKalkualUser = () => {
         setTipe(e.target.value);
     }
 
-    const submitHandler = () => {
-        // otw disini
+    const submitHandler = async () => {
+        setIsLoading(true);
+        try {
+            const response = await axios.post("https://localhost:44375/api/kalkual", {
+                ...data,
+                Option: "INSERT",
+                Nama: data.NamaAlat,
+                Tipe: data.TipeAlat,
+                TipeKalkual: tipe,
+                Remarks: remarksRef.current.value,
+                Scan: "1"
+            }).then(resp => toast.success("Request kalkual berhasil di submit!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onOpen: () => setIsLoading(false),
+                onClose: () => navigate("/home")
+            }));
+        } catch (e) {
+            console.log(e);
+            toast.error("Gagal melakukan request kalkual! Silahkan dicoba kembali", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onOpen: () => {setIsLoading(false)}
+            });
+        }
     }
 
     return (
@@ -129,7 +169,7 @@ const ReqKalkualUser = () => {
                             <Typography variant="h6">Jenis kalkual:</Typography>
                             <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.JenisKalkual : ""} label="Jenis Kalibrasi" size="small" disabled/>
                             <Typography variant="h6">Remarks:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" label="Remarks" size="small"/>
+                            <TextField sx={{ gridColumn: "span 2" }} id="nama" inputRef={remarksRef} label="Remarks" size="small"/>
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>

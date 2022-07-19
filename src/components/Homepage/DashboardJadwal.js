@@ -154,7 +154,7 @@ const DashboardJadwal = () => {
         { headerName: 'Release step', headerAlign: 'center', field: 'Step', width: 75, renderCell: (val) => {
             return <Checkbox onChange={() => {tickStep(val)}} disabled={val.row.Status === "In progress" || val.row.Status === "Completed"} checked={val.row.Status === "In progress" || val.row.Status === "Completed"}/>
         } },
-        { headerName: 'IN*', headerAlign: 'center', field: 'NoIN', width: 100 },
+        { headerName: 'IN*', headerAlign: 'center', field: 'NoIN', width: 150 },
         { headerName: 'Nama Alat/Mesin/Sistem Penunjang/Ruangan', headerAlign: 'center', field: 'Nama', width: 200 },
         { headerName: 'Tipe (Alat/Mesin/Sistem Penunjang)', headerAlign: 'center', field: 'Tipe', width: 150 },
         { headerName: 'No Kontrol', headerAlign: 'center', field: 'NoKontrol', width: 150 },
@@ -195,13 +195,15 @@ const DashboardJadwal = () => {
                                             bgcolor: 'yellow'
                                         },
                                         '& .super-app-theme--urgent': {
-                                            bgcolor: 'red'
+                                            bgcolor: 'rgb(226, 0, 0)',
+                                            color: 'rgb(246, 246, 246)'
                                         },
                                         '& .super-app-theme--expired': {
                                             bgcolor: 'gray'
                                         },
                                         '& .super-app-theme--done': {
-                                            bgcolor: 'green'
+                                            bgcolor: 'green',
+                                            color: 'rgb(246, 246, 246)'
                                         }
                                     }}>
 

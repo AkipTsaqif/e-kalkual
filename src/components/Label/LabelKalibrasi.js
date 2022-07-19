@@ -91,8 +91,8 @@ const LabelKalibrasi = () => {
                             <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{format(parseISO(data.TglKalkual), "dd-MM-yyyy")}</Typography>
                             <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">ED kalibrasi:</Typography>
                             <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderBottom: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{format(parseISO(data.EDKalkual), "dd-MM-yyyy")}</Typography>
-                            <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">Approved ({data.TglApprove}) by:</Typography>
-                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{data.Approver}</Typography>
+                            <Typography sx={{ gridColumn: "1 / 4", pl: 2 }} variant="h6">Approved ({!!data.TglApprove ? data.TglApprove : "-"}) by:</Typography>
+                            <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{!!data.Approver ? data.Approver : "-"}</Typography>
                         </Box>
                     </Box>
                     <Box display="flex" width={0.8} backgroundColor="white" justifyContent="center" alignItems="center" sx={{ 

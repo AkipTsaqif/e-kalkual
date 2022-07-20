@@ -3,7 +3,6 @@ import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { QrReader } from "react-qr-reader";
 import { format, parseISO } from "date-fns";
-import { requestScanActions } from "../../../store/request-scan";
 import { labelActions } from '../../../store/label-gen';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +62,7 @@ const ReqScanUser = () => {
         console.log(scannedData);
         const response = await axios.post("https://localhost:44375/api/kalkual", {
             Option: "Get Scanned Data",
-            RequestID: scannedData[0]
+            NoIN: scannedData.text
         }).then(resp => {
             let parsedData = JSON.parse(resp.data);
             console.log(parsedData);
@@ -93,8 +92,7 @@ const ReqScanUser = () => {
                 }}>
                 <QrReader onResult={(res, err) => {
                     if (!!res) {
-                        const split = res.text.split("-");
-                        scanHandler(split);
+                        scanHandler(res);
                     }
                 }} containerStyle={{ width: "600px" }}/>
                 </Box>

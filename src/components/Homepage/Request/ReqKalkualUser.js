@@ -1,10 +1,11 @@
 import { Box, TextField, MenuItem, Button, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { labelActions } from '../../../store/label-gen';
 
 import axios from "axios";
 import Stack from '@mui/material/Stack';
@@ -28,6 +29,7 @@ const tipeKalibrasi = [
 
 const ReqKalkualUser = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const data = useSelector(state => state.persistedReducer.label);
     console.log(data);
     const [tipe, setTipe] = useState("");
@@ -44,7 +46,8 @@ const ReqKalkualUser = () => {
                 textAlign: "center"
             },
             h6: {
-                letterSpacing: 0
+                letterSpacing: 0,
+                fontSize: 18
             }
         }
     });
@@ -90,6 +93,21 @@ const ReqKalkualUser = () => {
         }
     }
 
+    const cancelHandler = (e) => {
+        e.preventDefault();
+        dispatch(labelActions.removeLabel());
+        toast.info("Berhasil membatalkan request kalkual.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onOpen: () => navigate("/home")
+        })
+    }
+
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
@@ -100,7 +118,7 @@ const ReqKalkualUser = () => {
                     boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
                     minHeight: `calc(100vh - 48px)`
                 }}>
-                    <Box display="flex" width={0.7} justifyContent="center" alignItems="center" sx={{ 
+                    <Box display="flex" width={0.95} justifyContent="center" alignItems="center" sx={{ 
                         pt: "2vh", 
                         pb: "2vh", 
                         backgroundColor: "rgba(0, 0, 0, 0.8)", 
@@ -116,7 +134,7 @@ const ReqKalkualUser = () => {
                     <Box sx={{
                         backgroundColor: 'rgba(230, 233, 233, 0.99)',
                         mx: 'auto',
-                        width: 0.6,
+                        width: 0.9,
                         height: 'auto',
                         px: 5,
                         pb: 2,
@@ -126,17 +144,35 @@ const ReqKalkualUser = () => {
                     }}>
                         <Box sx={{ 
                             display: 'grid', 
-                            gridTemplateColumns: 
-                            'repeat(3, 1fr)', 
+                            gridTemplateColumns: 'repeat(17, 1fr)', 
+                            gridTemplateRows: 'repeat(5, 1fr)',
                             alignItems: "center",
                             "& .MuiInputBase-root.Mui-disabled": {
                                 color: "gray",
                                 fontWeight: "bold"
                             } 
                         }}>
-                            <Typography variant="h6">Tipe Kalkual*:</Typography>
+                            <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">Nama alat:</Typography>
+                            <TextField sx={{ gridColumn: "4 / 9" }} id="nama" value={!!data ? data.NamaAlat : ""} label="Nama Alat/Mesin/Sistem penunjang" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">Tipe alat:</Typography>
+                            <TextField sx={{ gridColumn: "4 / 9" }} id="nama" value={!!data ? data.TipeAlat : ""} label="Tipe" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">No kontrol:</Typography>
+                            <TextField sx={{ gridColumn: "4 / 9" }} id="nama" value={!!data ? data.NoKontrol : ""} label="No Kontrol" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">Departemen:</Typography>
+                            <TextField sx={{ gridColumn: "4 / 9" }} id="nama" value={!!data ? data.Departemen : ""} label="Departemen Pemilik" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "10 / 13", gridRow: "1" }} variant="h6">Lokasi:</Typography>
+                            <TextField sx={{ gridColumn: "13 / 18", gridRow: "1" }} id="nama" value={!!data ? data.Lokasi : ""} label="Lokasi" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "10 / 13", gridRow: "2" }} variant="h6">Tanggal kalkual:</Typography>
+                            <TextField sx={{ gridColumn: "13 / 18", gridRow: "2" }} id="nama" value={!!data ? format(parseISO(data.TglKalkual), "dd-MM-yyyy") : ""} label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "10 / 13", gridRow: "3" }} variant="h6">ED kalkual:</Typography>
+                            <TextField sx={{ gridColumn: "13 / 18", gridRow: "3" }} id="nama" value={!!data ? format(parseISO(data.EDKalkual), "dd-MM-yyyy") : ""} label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
+                            <Typography sx={{ gridColumn: "10 / 13", gridRow: "4" }} variant="h6">Jenis kalkual:</Typography>
+                            <TextField sx={{ gridColumn: "13 / 18", gridRow: "4" }} id="nama" value={!!data ? data.JenisKalkual : ""} label="Jenis Kalibrasi" size="small" disabled/>
+                        </Box>
+                        <Box display="grid" sx={{ gridTemplateRows: 'repeat(2, 1fr)', gridTemplateColumns: 'repeat(17, 1fr)' }} alignItems="center">
+                            <Typography sx={{ gridRow: "1", gridColumn: "1 / 4" }} variant="h6">Tipe Kalkual*:</Typography>
                             <TextField
-                                sx={{ gridColumn: "span 2" }}
+                                sx={{ gridRow: "1", gridColumn: "4 / 18" }}
                                 id="tipe"
                                 select
                                 required
@@ -152,28 +188,12 @@ const ReqKalkualUser = () => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Typography variant="h6">Nama alat:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.NamaAlat : ""} label="Nama Alat/Mesin/Sistem penunjang" size="small" disabled/>
-                            <Typography variant="h6">Tipe alat:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.TipeAlat : ""} label="Tipe" size="small" disabled/>
-                            <Typography variant="h6">No kontrol:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.NoKontrol : ""} label="No Kontrol" size="small" disabled/>
-                            <Typography variant="h6">Departemen:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.Departemen : ""} label="Departemen Pemilik" size="small" disabled/>
-                            <Typography variant="h6">Lokasi:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.Lokasi : ""} label="Lokasi" size="small" disabled/>
-                            <Typography variant="h6">Tanggal kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? format(parseISO(data.TglKalkual), "dd-MM-yyyy") : ""} label="Tgl Kalibrasi/Kualifikasi" size="small" disabled/>
-                            <Typography variant="h6">ED kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? format(parseISO(data.EDKalkual), "dd-MM-yyyy") : ""} label="ED Kalibrasi/Kualifikasi" size="small" disabled/>
-                            <Typography variant="h6">Jenis kalkual:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" value={!!data ? data.JenisKalkual : ""} label="Jenis Kalibrasi" size="small" disabled/>
-                            <Typography variant="h6">Remarks:</Typography>
-                            <TextField sx={{ gridColumn: "span 2" }} id="nama" inputRef={remarksRef} label="Remarks" size="small"/>
+                            <Typography sx={{ gridRow: "2", gridColumn: "1 / 4" }} variant="h6">Remarks:</Typography>
+                            <TextField id="nama" sx={{ gridRow: "2", gridColumn: "4 / 18" }} inputRef={remarksRef} label="Remarks" size="small"/>
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
-                                <Button variant="outlined">Cancel</Button>
+                                <Button variant="outlined" onClick={cancelHandler}>Cancel</Button>
                                 <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
                             </Stack>
                         </Box>

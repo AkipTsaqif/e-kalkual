@@ -19,6 +19,7 @@ import ApprovalLaporan from './components/Homepage/Approval/ApprovalLaporan';
 import DashboardTnC from './components/Homepage/Dashboard/DashboardTnC';
 import ApprovalTnC from './components/Homepage/Approval/ApprovalTnC';
 import LabelKalibrasi from './components/Label/LabelKalibrasi';
+import LabelKualifikasi from './components/Label/LabelKualifikasi';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="approval/tnc" element={<ApprovalTnC />} />
           <Route path="dashboard/tnc" element={<DashboardTnC />} />
           <Route path="label/kalibrasi" element={<LabelKalibrasi />} />
+          <Route path="label/kualifikasi" element={<LabelKualifikasi />} />
         </Route>
       </Routes>   
     </div>

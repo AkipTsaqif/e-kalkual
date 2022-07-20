@@ -8,7 +8,7 @@ import ReactToPrint from 'react-to-print';
 import Box from '@mui/material/Box';
 
 import Navbar from "../Layout/Navbar"
-import BarcodeKalibrasi from '../Barcode/BarcodeKalibrasi';
+import QRCode from '../QR/QRCode';
 
 import { parse } from 'date-fns';
 import { useNavigate } from 'react-router';
@@ -232,7 +232,7 @@ const DashboardJadwal = () => {
 
                                         if (selectedRowData.Status === "Completed") {
                                             setBtnBarcode(true);
-                                            // dispatch(labelActions.generateBarcode(selectedRowData));
+                                            dispatch(labelActions.generateQR(selectedRowData.NoIN));
                                         }
                                         else setBtnBarcode(false);
 
@@ -256,13 +256,13 @@ const DashboardJadwal = () => {
                                     }}
                                 />
                             </Box>
-                            <Box m={3} mt={1} mr={3.5} display="flex" justifyContent="flex-end" alignItems="flex-end">
+                            <Box mb={2.2} mt={1} mr={3.5} display="flex" justifyContent="flex-end" alignItems="flex-end">
                                 <ReactToPrint 
                                     trigger={() => <Button variant="contained" color="success" type="button" disabled={!btnBarcode}>Print Barcode</Button>}
                                     content={() => barcodeRef.current}
                                 />
                             </Box>
-                            {/* <div style={{  }}><BarcodeKalibrasi ref={barcodeRef} /></div> */}
+                            <div style={{ display: "none" }}><QRCode ref={barcodeRef} /></div>
                         </Box>
                     </Box>
                 </ThemeProvider>  

@@ -10,8 +10,7 @@ import Navbar from "../Layout/Navbar";
 const LabelKalibrasi = () => {
     const navigate = useNavigate();
     const data = useSelector(state => state.persistedReducer.label);
-    const user = useSelector(state => state.persistedReducer.auth.user);
-    console.log(data);
+
     const theme = createTheme({
         typography: {
             h4: {
@@ -51,7 +50,7 @@ const LabelKalibrasi = () => {
                         boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
                         minHeight: `calc(100vh - 48px)`
                 }}>
-                    <Box display="flex" backgroundColor="white" width={0.8} justifyContent="center" alignItems="center" sx={{ 
+                    <Box display="flex" backgroundColor="white" width={0.95} justifyContent="center" alignItems="center" sx={{ 
                         pt: "2vh", 
                         pb: "2vh", 
                         borderTop: 1, borderLeft: 1, borderRight: 1,
@@ -60,7 +59,7 @@ const LabelKalibrasi = () => {
                     }}>
                         <Typography variant="h4">SUDAH DIKALIBRASI</Typography>
                     </Box>
-                    <Box width={0.8} backgroundColor="white" sx={{
+                    <Box width={0.95} backgroundColor="white" sx={{
                         height: 'auto',
                         borderTop: 1, borderLeft: 1, borderRight: 1,
                         borderColor: "rgba(0, 0, 0, 1)", 
@@ -95,7 +94,7 @@ const LabelKalibrasi = () => {
                             <Typography sx={{ gridColumn: "4 / 8", borderLeft: 1, borderWidth: 2, px: 2, backgroundColor: "rgb(200, 200, 200)" }} variant="h5">{!!data.Approver ? data.Approver : "-"}</Typography>
                         </Box>
                     </Box>
-                    <Box display="flex" width={0.8} backgroundColor="white" justifyContent="center" alignItems="center" sx={{ 
+                    <Box display="flex" width={0.95} backgroundColor="white" justifyContent="center" alignItems="center" sx={{ 
                         pt: "2vh",  
                         border: 1,
                         borderColor: "rgba(0, 0, 0, 1)", 

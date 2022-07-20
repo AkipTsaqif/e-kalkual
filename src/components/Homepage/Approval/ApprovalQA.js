@@ -25,6 +25,10 @@ const justifikasiList = [
     {
         value: "AMK",
         label: "Alat/mesin/sistem penjunjang perlu dikalibrasi/kualifikasi"
+    },
+    {
+        value: "SEL",
+        label: "Alat/mesin/sistem penunjang telah selesai dikalibrasi/kualifikasi"
     }
 ]
 

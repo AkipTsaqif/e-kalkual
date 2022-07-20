@@ -17,7 +17,8 @@ const labelSlice = createSlice({
         EDKalkual: "",
         Approvee: "",
         Approver: "",
-        TglApprove: ""
+        TglApprove: "",
+        ParameterUji: "",
     },
     reducers: {
         generateLabel: (state, action) => {
@@ -36,6 +37,11 @@ const labelSlice = createSlice({
             state.Approvee = action.payload.Approvee;
             state.Approver = action.payload.Approver;
             state.TglApprove = action.payload.TglApprove;
+            state.ParameterUji = action.payload.ParameterUji;
+        },
+        removeLabel: () => labelSlice.initialState,
+        generateQR: (state, action) => {
+            state.NoIN = action.payload;
         }
     }
 });

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { labelActions } from '../../../store/label-gen';
 
+import LoadingButton from '@mui/lab/LoadingButton'
 import axios from "axios";
 import Stack from '@mui/material/Stack';
 import SendIcon from "@mui/icons-material/Send";
@@ -193,8 +194,8 @@ const ReqKalkualUser = () => {
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
-                                <Button variant="outlined" onClick={cancelHandler}>Cancel</Button>
-                                <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</Button>
+                                <Button disabled={isLoading} variant="outlined" onClick={cancelHandler}>Cancel</Button>
+                                <LoadingButton loading={isLoading} loadingPosition="end" disabled={isLoading} variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</LoadingButton>
                             </Stack>
                         </Box>
                     </Box>

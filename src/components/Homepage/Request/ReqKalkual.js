@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import parseISO from "date-fns/parseISO";
 import { format } from "date-fns";
 
+import LoadingButton from '@mui/lab/LoadingButton'
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
 
@@ -237,6 +238,7 @@ const Kalibrasi = () => {
     }
 
     async function postRequest(req) {
+        console.log(req);
         const response = await axios.post("https://localhost:44375/api/kalkual", req, {
             onUploadProgress: (e) => {
                 setIsLoading(true);
@@ -320,7 +322,7 @@ const Kalibrasi = () => {
             onOpen: () => navigate("/home")
         })
     }
-    console.log(savedRequest);
+    console.log(savedRequest.NoIN);
     return (
         <Navbar>
             <ThemeProvider theme={theme}>
@@ -471,7 +473,7 @@ const Kalibrasi = () => {
                             <Stack direction="row" spacing={2}>
                                 <Button variant="outlined" onClick={cancelHandler} disabled={isLoading}>Cancel</Button>
                                 <Button variant="contained" onClick={saveHandler} color="success" disabled={isLoading}>Save</Button>
-                                <Button variant="contained" onClick={submitHandler} endIcon={<SendIcon />} disabled={isLoading}>Submit ke Approval</Button>
+                                <LoadingButton loading={isLoading} loadingPosition="end" variant="contained" onClick={submitHandler} endIcon={<SendIcon />} disabled={isLoading}>Submit ke Approval</LoadingButton>
                             </Stack>
                         </Box>
                     </Stack>

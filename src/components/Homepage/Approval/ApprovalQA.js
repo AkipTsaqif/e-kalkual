@@ -8,7 +8,7 @@ import { format } from "date-fns";
 
 import { approvalKalkualActions } from '../../../store/approval-kalkual';
 import SendIcon from "@mui/icons-material/Send";
-
+import LoadingButton from '@mui/lab/LoadingButton'
 import axios from "axios";
 import Navbar from "../../Layout/Navbar";
 import Stack from '@mui/material/Stack';
@@ -41,6 +41,7 @@ const ApprovalQA = () => {
     const [justifikasi, setJustifikasi] = useState("");
     const [enableEndDate, setEnableEndDate] = useState(false);
     const [modalStatus, setModalStatus] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
 
     const usernameRef = useRef();
     const passwordRef = useRef();
@@ -94,7 +95,7 @@ const ApprovalQA = () => {
     const reloginHandler = async () => {
         const username = usernameRef.current.value;
         const password = passwordRef.current.value;
-
+        setIsFetching(true);
         const response = await axios.post("https://localhost:44375/api/auth", {
             UserAD: username,
             Password: password
@@ -109,7 +110,8 @@ const ApprovalQA = () => {
                         closeOnClick: true,
                         pauseOnHover: true,
                         draggable: true,
-                        progress: undefined
+                        progress: undefined,
+                        onOpen: () => setIsFetching(false)
                     })
             } else if (res.data === null) {
                 toast.error("Data yang dimasukkan salah. Harap periksa kembali.", {
@@ -119,7 +121,8 @@ const ApprovalQA = () => {
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
-                    progress: undefined
+                    progress: undefined,
+                    onOpen: () => setIsFetching(false)
                 })
             }
         });
@@ -143,6 +146,7 @@ const ApprovalQA = () => {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
+                    onOpen: () => setIsFetching(false),
                     onClose: navigate("/home")
                 });
                 console.log(res);
@@ -153,7 +157,8 @@ const ApprovalQA = () => {
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
-                progress: undefined
+                progress: undefined,
+                onOpen: () => setIsFetching(false)
             }))
         }
     }
@@ -225,8 +230,8 @@ const ApprovalQA = () => {
                                 <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="endDate" label="End date" disabled={enableEndDate ? false : true}/>
                                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2, gridColumn: "span 3" }}>
                                     <Stack direction="row" spacing={8}>
-                                        <Button variant="contained" color="success" type="submit">Approve</Button>
-                                        <Button variant="outlined" onClick={() => {
+                                        <LoadingButton loading={modalStatus} loadingPosition="end" disabled={modalStatus} variant="contained" color="success" type="submit">Approve</LoadingButton>
+                                        <Button disabled={modalStatus} variant="outlined" onClick={() => {
                                             dispatch(approvalKalkualActions.cancelApproval());
                                             navigate("/home");
                                         }}>Cancel</Button>
@@ -269,7 +274,7 @@ const ApprovalQA = () => {
                                         <TextField sx={{ width: "25vw" }} type="password" id="password" inputRef={passwordRef} size="small"/>
                                     </Box>
                                     <Box marginBottom="2vh">
-                                        <Button type="submit" variant="contained" endIcon={<SendIcon />}>Konfirmasi</Button>
+                                        <LoadingButton loading={isFetching} loadingPosition="end" disabled={isFetching} type="submit" variant="contained" endIcon={<SendIcon />}>Konfirmasi</LoadingButton>
                                     </Box>
                                 </form>
                             </Box>

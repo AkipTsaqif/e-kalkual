@@ -24,6 +24,7 @@ const labelSlice = createSlice({
         generateLabel: (state, action) => {
             console.log(action.payload)
             state.RequestID = action.payload.RequestID;
+            state.NoIN = action.payload.NoIN;
             state.TipeKalkual = action.payload.TipeKalkual;
             state.TipeAlat = action.payload.Tipe;
             state.Departemen = action.payload.Departemen;

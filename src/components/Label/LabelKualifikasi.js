@@ -39,7 +39,7 @@ const LabelKualifikasi = () => {
                         color: "black",
                         fontWeight: "bold", 
                         fontFamily: "Arial", 
-                        fontSize: "1rem", 
+                        fontSize: "1.25rem", 
                         letterSpacing: "0.01rem"
                     }
                 }
@@ -81,20 +81,20 @@ const LabelKualifikasi = () => {
                             <Table size="small" >
                                 <TableHead>
                                     <TableRow sx={{ "& th": { fontWeight: "bold" } }}>
-                                        <TableCell>No.</TableCell>
-                                        <TableCell>Parameter Uji</TableCell>
-                                        <TableCell>Hasil</TableCell>
-                                        <TableCell>Tanggal Kualifikasi</TableCell>
-                                        <TableCell>ED Kualifikasi</TableCell>
+                                        <TableCell align="center">No.</TableCell>
+                                        <TableCell align="center">Parameter Uji</TableCell>
+                                        <TableCell align="center">Hasil</TableCell>
+                                        <TableCell align="center">Tanggal Kualifikasi</TableCell>
+                                        <TableCell align="center">ED Kualifikasi</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody sx={{ backgroundColor: "rgb(200, 200, 200)", whiteSpace: "pre-line" }}>
-                                    <TableRow>
-                                        <TableCell>{data.NoIN}</TableCell>
-                                        <TableCell>{data.ParameterUji}</TableCell>
-                                        <TableCell>MS</TableCell>
-                                        <TableCell>{format(parseISO(data.TglKalkual), "dd-MM-yyyy")}</TableCell>
-                                        <TableCell>{format(parseISO(data.EDKalkual), "dd-MM-yyyy")}</TableCell>
+                                    <TableRow sx={{ "& td": {fontWeight: "bold"} }}>
+                                        <TableCell align="center">{data.NoIN}</TableCell>
+                                        <TableCell align="center">{data.ParameterUji}</TableCell>
+                                        <TableCell align="center">MS</TableCell>
+                                        <TableCell align="center">{format(parseISO(data.TglKalkual), "dd-MM-yyyy")}</TableCell>
+                                        <TableCell align="center">{format(parseISO(data.EDKalkual), "dd-MM-yyyy")}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -105,7 +105,7 @@ const LabelKualifikasi = () => {
                                 borderColor: "rgb(00, 00, 00)",
                                 py: 0.5
                             }}>
-                                <Typography sx={{ gridColumn: "9 / 13" }}>Approved ({!!data.TglApprove ? data.TglApprove : "-"}) by: </Typography>
+                                <Typography display="inline" sx={{ gridColumn: "10 / 13" }}>Approved ({!!data.TglApprove ? data.TglApprove : "-"}) by: </Typography>
                                 <Box display="flex" sx={{ gridColumn: "13 / 17", direction: "rtl"}}>
                                     <Typography sx={{ textAlign: "right" }}>{!!data.Approver ? data.Approver : "-"}</Typography>
                                 </Box>

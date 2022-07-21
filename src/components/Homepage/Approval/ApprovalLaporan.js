@@ -1,5 +1,4 @@
-import { Box, TextField, Button, FormControl, Typography, LinearProgress, FormHelperText } from "@mui/material";
-import { withStyles } from "@mui/styles";
+import { Box, TextField, Button, Typography, LinearProgress, Radio, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
 import { useState, useRef } from "react";
@@ -11,6 +10,7 @@ import { useFormik } from "formik";
 import { approvalSchema } from "../../../utils/validationSchema";
 import { uploadLaporanActions } from '../../../store/upload-laporan';
 
+import LoadingButton from '@mui/lab/LoadingButton'
 import Navbar from "../../Layout/Navbar";
 import axios from "axios";
 
@@ -24,6 +24,7 @@ const ApprovalLaporan = () => {
     const [files, setFiles] = useState({"Files": [], "FileNames": [], "NoIN": "", "Vendor": "", "Biaya": ""});
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
+    const [hasil, setHasil] = useState("MS");
 
     const vendorRef = useRef();
     const biayaRef = useRef();
@@ -38,7 +39,8 @@ const ApprovalLaporan = () => {
                 textAlign: "center"
             },
             h6: {
-                letterSpacing: 0
+                letterSpacing: 0,
+                fontSize: 18
             },
             body1: {
                 letterSpacing: 0,
@@ -65,15 +67,6 @@ const ApprovalLaporan = () => {
             // testArr();
         }
     })
-
-    const DisabledBoldTextField = withStyles({
-        root: {
-            "& .MuiInputBase-root.Mui-disabled": {
-                color: "gray",
-                fontWeight: "bold"
-            }
-        }
-      })(TextField);
 
     const saveFileHandler = (file) => {
         setUploadedFile(file);
@@ -146,6 +139,10 @@ const ApprovalLaporan = () => {
         }
     }
 
+    const hasilChangeHandler = (e) => {
+        setHasil(e.target.value);
+    }
+
     return (
         <div>
             <Navbar>
@@ -157,54 +154,98 @@ const ApprovalLaporan = () => {
                         boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
                         minHeight: `calc(100vh - 48px)`
                     }}>
-                        
-                        <Box display="flex" width={0.75} justifyContent="center" alignItems="center" sx={{ boxShadow: 5, pt: "2vh", pb: "2vh", backgroundColor: "rgba(0, 0, 0, 0.8)", borderRadius: 3, borderTop: 1, borderBottom: 1, borderColor: "rgba(220, 220, 220, 0.8)", borderWidth: 2}}>
+                        <Box display="flex" width={0.95} justifyContent="center" alignItems="center" sx={{ 
+                            pt: "2vh", 
+                            pb: "2vh", 
+                            backgroundColor: "rgba(0, 0, 0, 0.8)", 
+                            borderRadius: 3, 
+                            borderTop: 1, 
+                            borderBottom: 1, 
+                            borderColor: "rgba(220, 220, 220, 0.8)", 
+                            borderWidth: 2,
+                            boxShadow: 5
+                        }}>
                             <Typography variant="h5">Form Approval Kalkual</Typography>
                         </Box>
-                        <Stack width={0.6} sx={{
-                            backgroundColor: 'rgba(230,233,233,0.99)',
+                        <Stack sx={{
+                            backgroundColor: 'rgba(230, 233, 233, 0.99)',
                             mx: 'auto',
-                            maxWidth: '60%',
+                            width: 0.9,
                             height: 'auto',
-                            px: '5vw',
-                            pi: '2vh',
-                            pb: 3,
-                            '& .MuiTextField-root': { m: 1 },
+                            px: 5,
+                            pb: 2,
+                            '& .MuiTextField-root': { my: 0.5 },
+                            "& .MuiInputBase-root.Mui-disabled": {
+                                color: "gray",
+                                fontWeight: "bold"
+                            },
                             borderRadius: 2,
                             boxShadow: 5
                         }}>
                             <form onSubmit={formik.handleSubmit}>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', alignItems: "center"}}>
-                                    <Typography variant="h6">User ID:</Typography>
-                                    <FormControl sx={{ mt: "3vh", gridColumn: "span 2" }}><DisabledBoldTextField id="userID" label="User ID" value={user} size="small" disabled/></FormControl>
-                                    <Typography variant="h6">No IN:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="noIN" label="No IN" value={data.NoIN} size="small" disabled/>
-                                    <Typography variant="h6">Tipe kalkual:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="tipe" label="Tipe Kalkual" value={data.TipeKalkual} size="small" disabled/>
-                                    <Typography variant="h6">Nama alat:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="nama" label="Nama Alat/Mesin/Sistem Penunjang" value={data.NamaAlat} size="small" disabled/>
-                                    <Typography variant="h6">No kontrol:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="noKontrol" label="No Kontrol" value={data.NoKontrol} size="small" disabled/>
-                                    <Typography variant="h6">Departemen:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="departemen" label="Departemen Pemilik" value={data.Departemen} size="small" disabled/>
-                                    <Typography variant="h6">Lokasi:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="lokasi" label="Lokasi" value={data.Lokasi} size="small" disabled/>
-                                    <Typography variant="h6">Tanggal kalkual:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="tgl" label="Tgl Kalibrasi/Kualifikasi" value={data.TglKalkual} size="small"/>
-                                    <Typography variant="h6">ED kalkual:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="ed" label="ED Kalibrasi/Kualifikasi" value={data.EDKalkual} size="small" disabled/>
-                                    <Typography variant="h6">Jenis kalkual:</Typography>
-                                    <DisabledBoldTextField sx={{ mt: "3vh", gridColumn: "span 2" }} id="jenis" label="Jenis Kalibrasi" value={data.JenisKalkual} size="small" disabled/>
-                                    <Typography variant="h6">Parameter uji:</Typography>
-                                    <TextField sx={{ mt: "3vh", gridColumn: "span 2" }} inputRef={parameterRef} id="parameter" label="Input parameter uji" size="small" minRows={5} multiline/>
-                                    <Typography variant="h6">Berkas laporan:</Typography>
-                                    <Box marginTop={1} marginBottom={1} justifyContent="space-evenly" alignItems="center" sx={{ display: "flex", gridColumn: "span 2" }}>     
-                                        <Button variant="outlined" component="label" disabled={isUploading ? true : false}>Upload File<input onChange={(e) => saveFileHandler(e.target.files[0])} type="file" hidden /></Button>
-                                        <Button variant="contained" onClick={cvtob64} color="success" disabled={isUploading ? true : false}>Add</Button>
+                                <Box mt={1} sx={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(17, 1fr)', 
+                                    alignItems: "center",
+                                    rowGap: 0.5
+                                }}>
+                                    <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">User ID:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 9" }} id="userID" label="User ID" value={user} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">No IN:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 9" }} id="noIN" label="No IN" value={data.NoIN} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">Tipe kalkual:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 9" }} id="tipe" label="Tipe Kalkual" value={data.TipeKalkual} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">Nama alat:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 9" }} id="nama" label="Nama Alat/Mesin/Sistem Penunjang" value={data.NamaAlat} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "1 / 4" }} variant="h6">No kontrol:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 9" }} id="noKontrol" label="No Kontrol" value={data.NoKontrol} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "10 / 13", gridRow: "1" }} variant="h6">Departemen:</Typography>
+                                    <TextField sx={{ gridColumn: "13 / 18", gridRow: "1" }} id="departemen" label="Departemen Pemilik" value={data.Departemen} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "10 / 13", gridRow: "2" }} variant="h6">Lokasi:</Typography>
+                                    <TextField sx={{ gridColumn: "13 / 18", gridRow: "2" }} id="lokasi" label="Lokasi" value={data.Lokasi} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "10 / 13", gridRow: "3" }} variant="h6">Tanggal kalkual:</Typography>
+                                    <TextField sx={{ gridColumn: "13 / 18", gridRow: "3" }} id="tgl" label="Tgl Kalibrasi/Kualifikasi" value={data.TglKalkual} size="small"/>
+                                    <Typography sx={{ gridColumn: "10 / 13", gridRow: "4" }} variant="h6">ED kalkual:</Typography>
+                                    <TextField sx={{ gridColumn: "13 / 18", gridRow: "4" }} id="ed" label="ED Kalibrasi/Kualifikasi" value={data.EDKalkual} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "10 / 13", gridRow: "5" }} variant="h6">Jenis kalkual:</Typography>
+                                    <TextField sx={{ gridColumn: "13 / 18", gridRow: "5" }} id="jenis" label="Jenis Kalibrasi" value={data.JenisKalkual} size="small" disabled/>
+                                    <Typography sx={{ gridColumn: "1 / 4", gridRow: "6" }} variant="h6">Parameter uji:</Typography>
+                                    <TextField sx={{ gridColumn: "4 / 18", gridRow: "6" }} required inputRef={parameterRef} id="parameter" label="Input parameter uji" size="small" minRows={3} multiline/>
+                                    <Typography sx={{ gridColumn: "1 / 4", gridRow: "7" }} variant="h6">Hasil:</Typography>
+                                    <Box display="flex" justifyContent="space-between" sx={{ 
+                                        gridColumn: "4 / 18", 
+                                        gridRow: "7",
+                                        '& .MuiFormControlLabel-root.MuiFormControlLabel-labelPlacementEnd': { marginRight: "40px" }
+                                    }}>
+                                        <FormControl>
+                                            <RadioGroup row value={hasil} onChange={hasilChangeHandler}>
+                                                <FormControlLabel value="MS" control={<Radio />} label="MS - Memenuhi Syarat" />
+                                                <FormControlLabel value="TMS" control={<Radio />} label="TMS - Tidak Memenuhi Syarat" />
+                                            </RadioGroup>
+                                        </FormControl>
                                     </Box>
-                                    <LinearProgress sx={{ gridColumn: "2 / 4" }} variant="determinate" value={progress} />
-                                    <Typography sx={{ ml: 1, mt: 1, gridColumn: "2 / 4" }} variant="body1">Berkas terpilih: {uploadedFile ? uploadedFile.name : "-"}</Typography>
-                                    <Box marginTop={1} marginBottom={1} py={1} display="grid" sx={{ backgroundColor: "rgba(231,234,234,0.99)", boxShadow: 1, gridColumn: "2 / 4", gridTemplateColumns: 'repeat(5, 1fr)', }}>
+                                    <Typography sx={{ gridColumn: "1 / 4", gridRow: "8" }} variant="h6">Berkas laporan:</Typography>
+                                    <Box  
+                                        alignItems="center"
+                                        display="grid" 
+                                        sx={{ 
+                                            gridColumn: "4 / 18",
+                                            gridRow: "8",
+                                            gridTemplateColumns: "repeat(8, 1fr)",
+                                            rowGap: 1
+                                    }}>     
+                                        <Button sx={{ gridColumn: "2 / 4", gridRow: "1" }} variant="outlined" component="label" disabled={isUploading ? true : false}>Upload File<input onChange={(e) => saveFileHandler(e.target.files[0])} type="file" hidden /></Button>
+                                        <Button sx={{ gridColumn: "6 / 8", gridRow: "1" }} variant="contained" onClick={cvtob64} color="success" disabled={isUploading ? true : false}>Add</Button>
+                                        <LinearProgress sx={{ gridColumn: "1 / 9", gridRow: "2" }} variant="determinate" value={progress} />
+                                    </Box>
+                                    <Typography sx={{ gridColumn: "4 / 18", gridRow: "9" }} variant="body1">Berkas terpilih: {uploadedFile ? uploadedFile.name : "-"}</Typography>
+                                    <Box py={1} display="grid" sx={{ 
+                                        backgroundColor: "rgba(231,234,234,0.99)", 
+                                        boxShadow: 1, 
+                                        gridColumn: "4 / 18", 
+                                        gridRow: "10",
+                                        gridTemplateColumns: 'repeat(5, 1fr)'
+                                    }}>
                                         <Typography variant="body1" sx={{ ml: 1, gridColumn: "1 / 6" }}>Berkas laporan:</Typography>
                                         {files.FileNames.map((items, i) => 
                                             <Typography sx={{ ml: 1, gridColumn: "2 / 6" }} key={items} variant="body1">{i + 1}. {items}</Typography>
@@ -212,19 +253,19 @@ const ApprovalLaporan = () => {
                                     </Box>
                                     {data.JenisKalkual === "Eksternal" 
                                         ? <>
-                                        <Typography variant="h6">Input vendor:</Typography>
-                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.vendor} onChange={formik.handleChange} error={formik.touched.vendor && Boolean(formik.errors.vendor)} helperText={formik.touched.vendor && formik.errors.vendor} inputRef={vendorRef} id="vendor" name="vendor" label="Masukkan vendor" size="small"/>
-                                        <Typography variant="h6">Input biaya:</Typography>
-                                        <TextField sx={{gridColumn: "span 2"}} autoComplete="off" value={formik.values.biaya} onChange={formik.handleChange} error={formik.touched.biaya && Boolean(formik.errors.biaya)} helperText={formik.touched.biaya && formik.errors.biaya} inputRef={biayaRef} id="biaya" name="biaya" label="Masukkan biaya" size="small"/></> 
+                                        <Typography sx={{ gridColumn: "1 / 4", gridRow: "11" }} variant="h6">Input vendor:</Typography>
+                                        <TextField sx={{ gridColumn: "4 / 9", gridRow: "11" }} autoComplete="off" value={formik.values.vendor} onChange={formik.handleChange} error={formik.touched.vendor && Boolean(formik.errors.vendor)} helperText={formik.touched.vendor && formik.errors.vendor} inputRef={vendorRef} id="vendor" name="vendor" label="Masukkan vendor" size="small"/>
+                                        <Typography sx={{ gridColumn: "10 / 13", gridRow: "11" }} variant="h6">Input biaya:</Typography>
+                                        <TextField sx={{ gridColumn: "13 / 18", gridRow: "11" }} autoComplete="off" value={formik.values.biaya} onChange={formik.handleChange} error={formik.touched.biaya && Boolean(formik.errors.biaya)} helperText={formik.touched.biaya && formik.errors.biaya} inputRef={biayaRef} id="biaya" name="biaya" label="Masukkan biaya" size="small"/></> 
                                         : <></>}
                                 </Box>
                                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                                     <Stack direction="row" spacing={2}>
-                                        <Button variant="outlined" onClick={() => {
+                                        <Button disabled={isUploading} variant="outlined" onClick={() => {
                                             dispatch(uploadLaporanActions.cancelLaporan());
                                             navigate("/dashboard");
                                         }}>Cancel</Button>
-                                        <Button variant="contained" endIcon={<SendIcon />} type="submit" disabled={isUploading ? true : false}>Submit ke Approval</Button>
+                                        <LoadingButton loading={isUploading} loadingPosition="end" variant="contained" endIcon={<SendIcon />} type="submit" disabled={isUploading}>Submit ke Approval</LoadingButton>
                                     </Stack>
                                 </Box>  
                             </form>

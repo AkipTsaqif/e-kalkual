@@ -166,7 +166,7 @@ const ApprovalUser = () => {
                                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2, gridColumn: "span 3" }}>
                                     <Stack direction="row" spacing={8}>
                                         <LoadingButton loading={modalStatus} loadingPosition="end" disabled={modalStatus} variant="contained" color="success" type="submit">Approve</LoadingButton>
-                                        <Button disabled={modalStatus} variant="outlined" onClick={() => {
+                                        <Button disabled={modalStatus} variant="contained" color="error" onClick={() => {
                                                 dispatch(approvalKalkualActions.cancelApproval());
                                                 navigate("/home");
                                             }}>Cancel</Button>

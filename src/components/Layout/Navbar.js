@@ -48,6 +48,11 @@ const Navbar = (props) => {
 
     const theme = createTheme({
         typography: {
+            h5: {
+                fontWeight: "bold",
+                color: "white",
+                letterSpacing: 0
+            },
             h6: {
                 fontWeight: "bold",
                 color: "white",
@@ -69,236 +74,245 @@ const Navbar = (props) => {
     }
 
     return (
-        <Box className={styles.background} display="flex" flexDirection="column" sx={{ minHeight: "100vh", maxWidth: "100vw" }}>
-            <Box position="fixed" minWidth="100vw" zIndex={1} sx={{ 
-                borderBottom: 1, 
-                borderBottomColor: "rgba(220, 220, 220, 0.8)", 
-                borderBottomWidth: 2,
-                boxShadow: 5
-            }}>
-                <header className={styles.header}>
-                    <div className={styles.logo}>E-Kalkual</div>
-                    <nav>
-                        <ul>
-                            {isHome ? <div></div> : <Button variant="text" onClick={() => navigate("/home")}>Back</Button>}
-                            <Button variant="text" onClick={() => {
-                                dispatch(authActions.logout());
-                                navigate("/");
-                                toast.success("Berhasil log out!", {
-                                    position: "top-center",
-                                    autoClose: 2000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined
-                                });
-                            }}>Logout</Button>
-                        </ul>
-                    </nav>
-                </header>
-            </Box>
-            <Box flex={1} display="flex">
-                <Box position="fixed" display="flex" flexDirection="column" zIndex={1} top={48} minHeight="100vh" sx={{
-                    backgroundColor: "rgba(0,0,0,0.8)", 
-                    minWidth: 240, 
-                    maxWidth: 240, 
-                    borderRight: 1, 
-                    borderRightWidth: 2, 
-                    borderColor: "rgba(220, 220, 220, 0.8)",
+        <ThemeProvider theme={theme}>
+            <Box className={styles.background} display="flex" flexDirection="column" sx={{ minHeight: "100vh", maxWidth: "100vw" }}>
+                <Box position="fixed" minWidth="100vw" zIndex={1} sx={{ 
+                    borderBottom: 1, 
+                    borderBottomColor: "rgba(220, 220, 220, 0.8)", 
+                    borderBottomWidth: 2,
                     boxShadow: 5
                 }}>
-                    <Box>
-                        <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
-                        <ThemeProvider theme={theme}>
-                            <Typography variant="h6" sx={{ ml: 4, mt: 2, mb: -1 }}>Selamat datang,</Typography>
-                            <CardHeader avatar={
-                                <Avatar sx={{ bgcolor: auth.profileColor }}>
-                                    <Typography>{acronym}</Typography>
-                                </Avatar>
-                            } title={<Typography variant="h6" sx={{ wordWrap: "break-word" }}>{strArr}</Typography>}/>   
-                        </ThemeProvider>
-                        <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
-                    </Box>
-                    <Box>
-                        <List sx={{
-                            maxHeight: '70vh', 
-                            overflowY: 'auto', 
-                            '&::-webkit-scrollbar': { 
-                                width: '0.3em' 
-                            }, 
-                            '&::-webkit-scrollbar-track': { 
-                                boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-                                webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+                    <Box display="flex" justifyContent="space-between" alignItems="center" position="sticky"
+                        margin="auto auto" width="auto" height="3rem" sx={{
+                            backgroundColor: "rgba(0, 0, 0, 0.8)",
+                            boxShadow: 4,
+                            px: {
+                                lg: 8,
+                                xs: 4
                             },
-                            '&::-webkit-scrollbar-thumb': {
-                                backgroundColor: 'rgba(220, 220, 220, 0.4)',
-                                outline: '1px solid slategrey',
-                                borderRadius: 2
-                            }}} >
-                            <ListItemButton onClick={() => navigate("/home")}>
-                                <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                    <HomeIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Home' primaryTypographyProps={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    letterSpacing: 0,
-                                }}/>
-                            </ListItemButton>
-                            <ListItemButton onClick={dashboardSubmenuHandler}>
-                                <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Dashboard' primaryTypographyProps={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    letterSpacing: 0,
-                                }}/>
-                                {menuDashboard ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
-                            </ListItemButton>
-                            <Collapse in={menuDashboard} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    <ListItemButton onClick={() => navigate("/dashboard")} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <DashboardIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Dashboard Jadwal" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => navigate("/dashboard/qa")} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <DashboardIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Outstanding QA" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => navigate("/dashboard/user")} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <DashboardIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Outstanding User" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => navigate("/dashboard/tnc")} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <DashboardIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Outstanding TMB dan CWR" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                </List>
-                            </Collapse>
-                            <ListItemButton onClick={reqSubmenuHandler}>
-                                <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                    <RequestQuoteIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Request' primaryTypographyProps={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    letterSpacing: 0,
-                                }}/>
-                                {menuRequest ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
-                            </ListItemButton>
-                            <Collapse in={menuRequest} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    <ListItemButton onClick={() => navigate("/request/new", {state: {kalibrasi: true}})} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <BuildIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Kalibrasi" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => navigate("/request/new", {state: {kalibrasi: false}})} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <EngineeringIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Kualifikasi" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => navigate("/request/scan")} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <QrCodeScannerIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Scan" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                </List>
-                            </Collapse>
-                            <ListItemButton onClick={verifSubmenuHandler}>
-                                <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                    <AssignmentTurnedInIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Verifikasi' primaryTypographyProps={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    letterSpacing: 0,
-                                }}/>
-                                {menuVerifikasi ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
-                            </ListItemButton>
-                            <Collapse in={menuVerifikasi} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    <ListItemButton onClick={() => {navigate("/verifikasi/periode")}} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <EventRepeatIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Periode Verifikasi" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "timbangan"}})}} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <ScaleIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Verifikasi Timbangan" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                    <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "checkweigher"}})}} sx={{ pl: 7 }}>
-                                        <ListItemIcon style={{minWidth: '40px', color: "white"}}>
-                                            <ScaleIcon style={{fontSize: 18}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Verifikasi Checkweigher" primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: "white",
-                                            letterSpacing: 0,
-                                        }}/>
-                                    </ListItemButton>
-                                </List>
-                            </Collapse>
-                        </List>
+                            '& .MuiButton-root': {
+                                font: "inherit",
+                                fontWeight: "bold",
+                                color: "white"
+                            }
+                    }}>
+                        <Typography sx={{ flex: 1 }} variant="h5">E-Kalkual</Typography>
+                        {isHome ? <div></div> : <Button variant="text" sx={{ mr: 3 }} onClick={() => navigate("/home")}>Back</Button>}
+                        <Button variant="text" onClick={() => {
+                            dispatch(authActions.logout());
+                            navigate("/");
+                            toast.success("Berhasil log out!", {
+                                position: "top-center",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined
+                            });
+                        }}>Logout</Button>
                     </Box>
                 </Box>
-                <Box flex={1} paddingLeft={30} marginTop={6} overflow="auto">
-                    <section>{props.children}</section>
+                <Box flex={1} display="flex">
+                    <Box position="fixed" display="flex" flexDirection="column" zIndex={1} top={48} minHeight="100vh" sx={{
+                        backgroundColor: "rgba(0,0,0,0.8)", 
+                        minWidth: 240, 
+                        maxWidth: 240, 
+                        borderRight: 1, 
+                        borderRightWidth: 2, 
+                        borderColor: "rgba(220, 220, 220, 0.8)",
+                        boxShadow: 5
+                    }}>
+                        <Box>
+                            <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
+                                <Typography variant="h6" sx={{ ml: 4, mt: 2, mb: -1 }}>Selamat datang,</Typography>
+                                <CardHeader avatar={
+                                    <Avatar sx={{ bgcolor: auth.profileColor }}>
+                                        <Typography>{acronym}</Typography>
+                                    </Avatar>
+                                } title={<Typography variant="h6" sx={{ wordWrap: "break-word" }}>{strArr}</Typography>}/>   
+                            <Divider light={true} variant="fullWidth" sx={{ bgcolor: "rgba(220, 220, 220, 0.8)", borderBottomWidth: 2 }}/>
+                        </Box>
+                        <Box>
+                            <List sx={{
+                                maxHeight: '70vh', 
+                                overflowY: 'auto', 
+                                '&::-webkit-scrollbar': { 
+                                    width: '0.3em' 
+                                }, 
+                                '&::-webkit-scrollbar-track': { 
+                                    boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                                    webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+                                },
+                                '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: 'rgba(220, 220, 220, 0.4)',
+                                    outline: '1px solid slategrey',
+                                    borderRadius: 2
+                                }}} >
+                                <ListItemButton onClick={() => navigate("/home")}>
+                                    <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                        <HomeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Home' primaryTypographyProps={{
+                                        fontSize: 20,
+                                        color: "white",
+                                        letterSpacing: 0,
+                                    }}/>
+                                </ListItemButton>
+                                <ListItemButton onClick={dashboardSubmenuHandler}>
+                                    <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                        <DashboardIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Dashboard' primaryTypographyProps={{
+                                        fontSize: 20,
+                                        color: "white",
+                                        letterSpacing: 0,
+                                    }}/>
+                                    {menuDashboard ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
+                                </ListItemButton>
+                                <Collapse in={menuDashboard} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton onClick={() => navigate("/dashboard")} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <DashboardIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Dashboard Jadwal" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => navigate("/dashboard/qa")} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <DashboardIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Outstanding QA" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => navigate("/dashboard/user")} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <DashboardIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Outstanding User" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => navigate("/dashboard/tnc")} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <DashboardIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Outstanding TMB dan CWR" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
+                                <ListItemButton onClick={reqSubmenuHandler}>
+                                    <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                        <RequestQuoteIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Request' primaryTypographyProps={{
+                                        fontSize: 20,
+                                        color: "white",
+                                        letterSpacing: 0,
+                                    }}/>
+                                    {menuRequest ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
+                                </ListItemButton>
+                                <Collapse in={menuRequest} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton onClick={() => navigate("/request/new", {state: {kalibrasi: true}})} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <BuildIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Kalibrasi" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => navigate("/request/new", {state: {kalibrasi: false}})} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <EngineeringIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Kualifikasi" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => navigate("/request/scan")} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <QrCodeScannerIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Scan" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
+                                <ListItemButton onClick={verifSubmenuHandler}>
+                                    <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                        <AssignmentTurnedInIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Verifikasi' primaryTypographyProps={{
+                                        fontSize: 20,
+                                        color: "white",
+                                        letterSpacing: 0,
+                                    }}/>
+                                    {menuVerifikasi ? <ExpandLess style={{color: "white"}}/> : <ExpandMore style={{color: "white"}}/>}
+                                </ListItemButton>
+                                <Collapse in={menuVerifikasi} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton onClick={() => {navigate("/verifikasi/periode")}} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <EventRepeatIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Periode Verifikasi" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "timbangan"}})}} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <ScaleIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Verifikasi Timbangan" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                        <ListItemButton onClick={() => {navigate("/verifikasi/tnc", {state: {tipe: "checkweigher"}})}} sx={{ pl: 7 }}>
+                                            <ListItemIcon style={{minWidth: '40px', color: "white"}}>
+                                                <ScaleIcon style={{fontSize: 18}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Verifikasi Checkweigher" primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: "white",
+                                                letterSpacing: 0,
+                                            }}/>
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
+                            </List>
+                        </Box>
+                    </Box>
+                    <Box flex={1} paddingLeft={30} marginTop={6} overflow="auto">
+                        <section>{props.children}</section>
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </ThemeProvider>
     )
 }
 

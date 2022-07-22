@@ -13,7 +13,8 @@ const uploadLaporanSlice = createSlice({
         Lokasi: "",
         TglKalkual: "",
         EDKalkual: "",
-        JenisKalkual: ""
+        JenisKalkual: "",
+        Jenis: ""
     },
     reducers: {
         inputLaporan: (state, action) => {
@@ -27,19 +28,9 @@ const uploadLaporanSlice = createSlice({
             state.TglKalkual = action.payload.TglKalkual;
             state.EDKalkual = action.payload.EDKalkual;
             state.JenisKalkual = action.payload.JenisKalkual;
+            state.Jenis = action.payload.Jenis;
         },
-        cancelLaporan: (state, action) => {
-            state.NoIN = "";
-            state.TipeKalkual = "";
-            state.NamaAlat = "";
-            state.TipeAlat = "";
-            state.NoKontrol = "";
-            state.Departemen = "";
-            state.Lokasi = "";
-            state.TglKalkual = "";
-            state.EDKalkual = "";
-            state.JenisKalkual = "";
-        }
+        cancelLaporan: () => uploadLaporanSlice.initialState
     }
 })
 

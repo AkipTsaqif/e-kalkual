@@ -6,5 +6,8 @@ export const approvalSchema = yup.object({
         .required('Masukkan vendor pengerjaan'),
     biaya: yup
         .string('Masukkan biaya pengeluaran')
-        .required('Masukkan biaya pengeluaran')
+        .required('Masukkan biaya pengeluaran'),
+    fileTerpilih: yup
+        .string('Harap tambahkan terlebih dahulu file tersebut dengan menekan tombol ADD')
+        .required('Harap tambahkan terlebih dahulu file tersebut dengan menekan tombol ADD')
 })

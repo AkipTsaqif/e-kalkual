@@ -471,7 +471,7 @@ const Kalibrasi = () => {
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
-                                <Button variant="outlined" onClick={cancelHandler} disabled={isLoading}>Cancel</Button>
+                                <Button variant="contained" color="error" onClick={cancelHandler} disabled={isLoading}>Cancel</Button>
                                 <Button variant="contained" onClick={saveHandler} color="success" disabled={isLoading}>Save</Button>
                                 <LoadingButton loading={isLoading} loadingPosition="end" variant="contained" onClick={submitHandler} endIcon={<SendIcon />} disabled={isLoading}>Submit ke Approval</LoadingButton>
                             </Stack>

@@ -1,7 +1,7 @@
 import { Box, TextField, Button, Typography, LinearProgress, Radio, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from '@mui/material/Stack';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,7 +21,7 @@ const ApprovalLaporan = () => {
     const user = useSelector(state => state.persistedReducer.auth.user);
     
     const [uploadedFile, setUploadedFile] = useState();
-    const [files, setFiles] = useState({"Files": [], "FileNames": [], "NoIN": "", "Vendor": "", "Biaya": ""});
+    const [files, setFiles] = useState({"Files": [], "FileNames": []});
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const [hasil, setHasil] = useState("MS");
@@ -91,56 +91,78 @@ const ApprovalLaporan = () => {
     }
 
     const submitLaporanHandler = async () => {
-        try {
-            setProgress(0);
-            
-            const res = await axios.post("https://localhost:44375/api/upload", {
-                ...files,
-                "NoIN": data.NoIN,
-                "Vendor": data.JenisKalkual === "Eksternal" ? vendorRef.current.value : null,
-                "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null,
-                "ParameterUji": parameterRef.current.value,
-                "Approvee": user
-            }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                onUploadProgress: (e) => {
-                    setIsUploading(true);
-                    const totalLength = e.lengthComputable ? e.total : e.target.getResponseHeader('content-length') || e.target.getResponseHeader('x-decompressed-content-length');
-                    setProgress(Math.round((100 * e.loaded) / totalLength));
-                }
-            }).then(resp => console.log(resp.data));
-
-            toast.success("Data kalkual berhasil di submit!", {
+        if (!!(uploadedFile !== undefined) || !!(!!(files.Files.length === 0) && !!(files.FileNames.length === 0))) 
+            toast.error("File laporan kosong, harap upload lalu tekan tombol ADD", {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
-                progress: undefined,
-                onOpen: () => setIsUploading(false),
-                onClose: () => navigate("/home")
+                progress: undefined
             });
 
-        } catch (e) {
-            console.log(e);
-            toast.error("Gagal mengupload file laporan!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                onOpen: () => {setIsUploading(false)}
-            });
+        else {
+            try {
+                setProgress(0);
+                
+                const res = await axios.post("https://localhost:44375/api/upload", {
+                    ...files,
+                    "NoIN": data.NoIN,
+                    "Vendor": data.JenisKalkual === "Eksternal" ? vendorRef.current.value : null,
+                    "Biaya": data.JenisKalkual === "Eksternal" ? biayaRef.current.value : null,
+                    "ParameterUji": !!(data.Jenis === "Kualifikasi") ? parameterRef.current.value : null,
+                    "Hasil": hasil,
+                    "Approvee": user
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    onUploadProgress: (e) => {
+                        setIsUploading(true);
+                        const totalLength = e.lengthComputable ? e.total : e.target.getResponseHeader('content-length') || e.target.getResponseHeader('x-decompressed-content-length');
+                        setProgress(Math.round((100 * e.loaded) / totalLength));
+                    }
+                }).then(resp => console.log(resp.data));
+
+                toast.success("Data kalkual berhasil di submit!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    onOpen: () => setIsUploading(false),
+                    onClose: () => navigate("/home")
+                });
+
+            } catch (e) {
+                console.log(e);
+                toast.error("Gagal mengupload file laporan!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    onOpen: () => {setIsUploading(false)}
+                });
+            }
         }
     }
 
     const hasilChangeHandler = (e) => {
         setHasil(e.target.value);
+    }
+
+    const removeFile = (id) => {
+        let filter = {
+            "FileNames": files.FileNames.filter((el) => el !== id),
+            "Files": files.Files.filter((el, index) => index !== files.FileNames.indexOf(id))
+        }
+        setFiles(filter);
     }
 
     return (
@@ -209,8 +231,11 @@ const ApprovalLaporan = () => {
                                     <TextField sx={{ gridColumn: "13 / 18", gridRow: "4" }} id="ed" label="ED Kalibrasi/Kualifikasi" value={data.EDKalkual} size="small" disabled/>
                                     <Typography sx={{ gridColumn: "10 / 13", gridRow: "5" }} variant="h6">Jenis kalkual:</Typography>
                                     <TextField sx={{ gridColumn: "13 / 18", gridRow: "5" }} id="jenis" label="Jenis Kalibrasi" value={data.JenisKalkual} size="small" disabled/>
-                                    <Typography sx={{ gridColumn: "1 / 4", gridRow: "6" }} variant="h6">Parameter uji:</Typography>
-                                    <TextField sx={{ gridColumn: "4 / 18", gridRow: "6" }} required inputRef={parameterRef} id="parameter" label="Input parameter uji" size="small" minRows={3} multiline/>
+                                    {!!(data.Jenis === "Kualifikasi") ? 
+                                        <>
+                                        <Typography sx={{ gridColumn: "1 / 4", gridRow: "6" }} variant="h6">Parameter uji:</Typography>
+                                        <TextField sx={{ gridColumn: "4 / 18", gridRow: "6" }} required inputRef={parameterRef} id="parameter" label="Input parameter uji" size="small" minRows={3} multiline/>
+                                    </> : <></>}
                                     <Typography sx={{ gridColumn: "1 / 4", gridRow: "7" }} variant="h6">Hasil:</Typography>
                                     <Box display="flex" justifyContent="space-between" sx={{ 
                                         gridColumn: "4 / 18", 
@@ -244,11 +269,20 @@ const ApprovalLaporan = () => {
                                         boxShadow: 1, 
                                         gridColumn: "4 / 18", 
                                         gridRow: "10",
-                                        gridTemplateColumns: 'repeat(5, 1fr)'
+                                        gridTemplateColumns: 'repeat(9, 1fr)',
+                                        rowGap: 0.5,
+                                        '& .MuiButton-root': {
+                                            minHeight: 0, minWidth: 30,
+                                            p: 0
+                                        }
                                     }}>
                                         <Typography variant="body1" sx={{ ml: 1, gridColumn: "1 / 6" }}>Berkas laporan:</Typography>
-                                        {files.FileNames.map((items, i) => 
-                                            <Typography sx={{ ml: 1, gridColumn: "2 / 6" }} key={items} variant="body1">{i + 1}. {items}</Typography>
+                                        {files.FileNames.map((items, id) => 
+                                            <><Typography sx={{ gridColumn: "2 / 9", gutterBottom: false }} key={items} variant="body1">{id + 1}. {items}</Typography>
+                                            <Button key={items} variant="contained" color="error" size="small" sx={{ 
+                                                gridColumn: "10 / 10", 
+                                                mr: 1 
+                                            }} onClick={() => removeFile(items)}>X</Button></>
                                         )}
                                     </Box>
                                     {data.JenisKalkual === "Eksternal" 
@@ -261,7 +295,7 @@ const ApprovalLaporan = () => {
                                 </Box>
                                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                                     <Stack direction="row" spacing={2}>
-                                        <Button disabled={isUploading} variant="outlined" onClick={() => {
+                                        <Button disabled={isUploading} variant="contained" color="error" onClick={() => {
                                             dispatch(uploadLaporanActions.cancelLaporan());
                                             navigate("/dashboard");
                                         }}>Cancel</Button>

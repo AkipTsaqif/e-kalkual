@@ -194,7 +194,7 @@ const ReqKalkualUser = () => {
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                             <Stack direction="row" spacing={2}>
-                                <Button disabled={isLoading} variant="outlined" onClick={cancelHandler}>Cancel</Button>
+                                <Button disabled={isLoading} variant="contained" color="error" onClick={cancelHandler}>Cancel</Button>
                                 <LoadingButton loading={isLoading} loadingPosition="end" disabled={isLoading} variant="contained" onClick={submitHandler} endIcon={<SendIcon />}>Submit ke Approval</LoadingButton>
                             </Stack>
                         </Box>

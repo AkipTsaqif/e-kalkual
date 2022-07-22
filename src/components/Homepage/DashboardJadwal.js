@@ -24,6 +24,7 @@ const DashboardJadwal = () => {
     const [selectedData, setSelectedData] = useState({});
     const [btnBarcode, setBtnBarcode] = useState(false);
     const [rowColor, setRowColor] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const barcodeRef = useRef();
 
@@ -90,6 +91,7 @@ const DashboardJadwal = () => {
     // })
 
     async function getData(dashboard) {
+        setIsLoading(true);
         const response = await fetch("https://localhost:44375/api/kalkual", {
             method: 'POST',
             body: JSON.stringify(dashboard),
@@ -109,9 +111,11 @@ const DashboardJadwal = () => {
                 });
 
                 setDummy(parsedData);
+                setIsLoading(false);
             });
         }).catch(e => {
             console.log(e);
+            setIsLoading(false);
         });
     }
 
@@ -215,7 +219,7 @@ const DashboardJadwal = () => {
                                     rowsPerPageOptions={[10]}
                                     rowHeight={35}
                                     headerHeight={55}
-                                    // autoHeight={true}
+                                    loading={isLoading}
                                     components={{ Toolbar: GridToolbar }}
                                     disableColumnSelector={true}
                                     disableDensitySelector={true}

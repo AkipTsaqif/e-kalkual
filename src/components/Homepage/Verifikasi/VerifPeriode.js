@@ -69,7 +69,7 @@ const VerifPeriode = () => {
                                 <Stack direction="row" spacing={2}>
                                     <Button variant="contained" color="success">Save</Button>
                                     <Button variant="outlined" onClick={() => setLockPeriode(false)}>Edit</Button>
-                                    <Button variant="outlined" onClick={() => setLockPeriode(true)}>Cancel</Button>
+                                    <Button variant="contained" color="error" onClick={() => setLockPeriode(true)}>Cancel</Button>
                                 </Stack>
                             </Box>
                         </Box>

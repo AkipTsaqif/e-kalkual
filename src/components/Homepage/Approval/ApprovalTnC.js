@@ -69,7 +69,7 @@ const ApprovalTnC = () => {
                             <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 2, gridColumn: "span 3" }}>
                                 <Stack direction="row" spacing={8}>
                                     <Button variant="contained" color="success">Approve</Button>
-                                    <Button variant="outlined">Cancel</Button>
+                                    <Button variant="contained" color="error">Cancel</Button>
                                 </Stack>
                             </Box>
                         </Box>

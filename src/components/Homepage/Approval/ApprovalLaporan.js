@@ -500,13 +500,13 @@ const ApprovalLaporan = () => {
 													color="error"
 													size="small"
 													sx={{
-														gridColumn: "15 / 17",
-														// gridRow: id + 2,
+														gridColumn: "1 / 2",
+														gridRow: id + 2,
 														mx: 1,
 													}}
 													onClick={() => removeFile(items)}
 												>
-													Del
+													X
 												</Button>
 											</Fragment>
 										))}

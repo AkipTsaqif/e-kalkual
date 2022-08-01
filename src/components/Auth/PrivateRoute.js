@@ -1,25 +1,25 @@
 import { useSelector } from "react-redux";
-import { Navigate, Outlet, Route, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, Route, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PrivateRoute = () => {
-    const authorized = useSelector(state => state.persistedReducer.auth);
-    const location = useLocation();
+	const authorized = useSelector((state) => state.persistedReducer.auth);
+	const location = useLocation();
 
-    if (!authorized.authorized) {
-        toast.error("Harap log in terlebih dahulu!", {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-        })
-        return <Navigate to="/" state={{ from: location }} />
-    }
+	if (!authorized.authorized) {
+		toast.error("Harap log in terlebih dahulu!", {
+			position: "top-center",
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+		return <Navigate to="/" state={{ from: location }} />;
+	}
 
-    return <Outlet />
-}
+	return <Outlet />;
+};
 
 export default PrivateRoute;

@@ -150,7 +150,6 @@ const Login = () => {
 				}}
 			>
 				<Box
-					width="35vw"
 					margin="auto auto"
 					textAlign="center"
 					sx={{
@@ -160,6 +159,10 @@ const Login = () => {
 						borderColor: "rgba(220, 220, 220, 0.8)",
 						borderWidth: 3,
 						boxShadow: 20,
+						width: {
+							lg: "500px",
+							xs: "300px",
+						},
 					}}
 				>
 					<Box marginTop="2vh" />
@@ -182,7 +185,12 @@ const Login = () => {
 								Username
 							</Typography>
 							<TextField
-								sx={{ width: "25vw" }}
+								sx={{
+									width: {
+										lg: "400px",
+										xs: "250px",
+									},
+								}}
 								fullWidth
 								type="text"
 								id="username"
@@ -195,7 +203,12 @@ const Login = () => {
 								Password
 							</Typography>
 							<TextField
-								sx={{ width: "25vw" }}
+								sx={{
+									width: {
+										lg: "400px",
+										xs: "250px",
+									},
+								}}
 								type="password"
 								id="password"
 								inputRef={passwordRef}

@@ -176,8 +176,8 @@ const Navbar = (props) => {
 							minHeight="100vh"
 							sx={{
 								backgroundColor: "rgba(0,0,0,0.8)",
-								minWidth: 240,
-								maxWidth: 240,
+								minWidth: 225,
+								maxWidth: 225,
 								borderRight: 1,
 								borderRightWidth: 2,
 								borderColor: "rgba(220, 220, 220, 0.8)",
@@ -485,7 +485,7 @@ const Navbar = (props) => {
 					</Slide>
 					<Box
 						flex={1}
-						paddingLeft={isHidden ? 30 : 0}
+						paddingLeft={isHidden ? 28.3 : 0}
 						marginTop={6}
 						overflow="auto"
 						style={{

@@ -430,6 +430,11 @@ const DashboardJadwal = () => {
 												"& .MuiDataGrid-filterFormValueInput": { width: 200 },
 											},
 										},
+										GridToolbar: {
+											printOptions: {
+												allColumns: true,
+											},
+										},
 									}}
 									onSelectionModelChange={(id) => {
 										const selectedID = new Set(id);

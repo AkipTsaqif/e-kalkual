@@ -107,7 +107,7 @@ const ApprovalQA = () => {
 		const password = passwordRef.current.value;
 		setIsFetching(true);
 		const response = await axios
-			.post("https://localhost:44375/api/auth", {
+			.post("https://portal.bintang7.com/Kalkual/api/auth", {
 				UserAD: username,
 				Password: password,
 			})
@@ -146,7 +146,7 @@ const ApprovalQA = () => {
 	const approveHandler = async (status) => {
 		if (status == 1) {
 			const response = await axios
-				.post("https://localhost:44375/api/kalkual", {
+				.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 					Option: "Approve QA",
 					NoIN: data.NoIN,
 					JustifikasiQA: justifikasi,

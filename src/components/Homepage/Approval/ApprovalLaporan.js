@@ -122,7 +122,7 @@ const ApprovalLaporan = () => {
 
 				const res = await axios
 					.post(
-						"https://localhost:44375/api/upload",
+						"https://portal.bintang7.com/Kalkual/api/upload",
 						{
 							...files,
 							NoIN: data.NoIN,

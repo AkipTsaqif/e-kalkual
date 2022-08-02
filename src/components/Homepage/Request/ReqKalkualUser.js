@@ -61,7 +61,7 @@ const ReqKalkualUser = () => {
 		setIsLoading(true);
 		try {
 			const response = await axios
-				.post("https://localhost:44375/api/kalkual", {
+				.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 					...data,
 					Option: "INSERT",
 					Nama: data.NamaAlat,

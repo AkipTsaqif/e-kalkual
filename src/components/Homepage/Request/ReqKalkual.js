@@ -252,7 +252,7 @@ const Kalibrasi = () => {
 	async function postRequest(req) {
 		console.log(req);
 		const response = await axios
-			.post("https://localhost:44375/api/kalkual", req, {
+			.post("https://portal.bintang7.com/Kalkual/api/kalkual", req, {
 				onUploadProgress: (e) => {
 					setIsLoading(true);
 				},
@@ -288,7 +288,7 @@ const Kalibrasi = () => {
 
 	const getNoIN = async () => {
 		const response = await axios
-			.post("https://localhost:44375/api/kalkual", {
+			.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 				Option: "Generate Next NoIN",
 				EDKalkual: format(
 					!!savedRequest.EDKalkual ? savedRequest.EDKalkual : new Date(),

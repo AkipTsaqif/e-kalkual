@@ -17,7 +17,7 @@ const ReqScanUser = () => {
 	const scanHandler = async (scannedData) => {
 		console.log(scannedData);
 		const response = await axios
-			.post("https://localhost:44375/api/kalkual", {
+			.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 				Option: "Get Scanned Data",
 				NoIN: scannedData.text,
 			})

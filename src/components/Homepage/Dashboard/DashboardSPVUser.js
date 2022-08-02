@@ -36,7 +36,7 @@ const DashboardSPVUser = () => {
 	const getData = async () => {
 		try {
 			const response = await axios
-				.post("https://localhost:44375/api/kalkual", {
+				.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 					Option: "Dashboard User",
 				})
 				.then((res) => {

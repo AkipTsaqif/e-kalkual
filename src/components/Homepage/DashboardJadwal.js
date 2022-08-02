@@ -145,14 +145,17 @@ const DashboardJadwal = () => {
 
 	async function getData(dashboard) {
 		setIsLoading(true);
-		const response = await fetch("https://localhost:44375/api/kalkual", {
-			method: "POST",
-			body: JSON.stringify(dashboard),
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "*/*",
-			},
-		})
+		const response = await fetch(
+			"https://portal.bintang7.com/Kalkual/api/kalkual",
+			{
+				method: "POST",
+				body: JSON.stringify(dashboard),
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "*/*",
+				},
+			}
+		)
 			.then((resp) => {
 				resp.json().then((data) => {
 					const parsedData = JSON.parse(data).map((item, index) => {
@@ -182,14 +185,17 @@ const DashboardJadwal = () => {
 			NoIN: val.row.NoIN,
 		};
 
-		const response = await fetch("https://localhost:44375/api/kalkual", {
-			method: "POST",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "*/*",
-			},
-		})
+		const response = await fetch(
+			"https://portal.bintang7.com/Kalkual/api/kalkual",
+			{
+				method: "POST",
+				body: JSON.stringify(data),
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "*/*",
+				},
+			}
+		)
 			.then((resp) => {
 				resp.json().then((data) => {
 					const parsedData = JSON.parse(data).map((item, index) => {

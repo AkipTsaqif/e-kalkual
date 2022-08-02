@@ -37,9 +37,12 @@ const DashboardQA = () => {
 	let no = 0;
 	const getData = async () => {
 		try {
-			const res = await axios.post("https://localhost:44375/api/kalkual", {
-				Option: "Dashboard QA",
-			});
+			const res = await axios.post(
+				"https://portal.bintang7.com/Kalkual/api/kalkual",
+				{
+					Option: "Dashboard QA",
+				}
+			);
 
 			const parsedData = JSON.parse(res.data).map((item, index) => {
 				return {

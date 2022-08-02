@@ -166,7 +166,7 @@ const Navbar = (props) => {
 					</Box>
 				</Box>
 				<Box flex={1} display="flex">
-					<Slide in={isHidden} direction="right" mountOnEnter>
+					<Slide in={isHidden} direction="right" appear={false}>
 						<Box
 							position="fixed"
 							display="flex"
@@ -488,8 +488,14 @@ const Navbar = (props) => {
 						paddingLeft={isHidden ? 30 : 0}
 						marginTop={6}
 						overflow="auto"
+						style={{
+							transition: theme.transitions.create("all", {
+								easing: theme.transitions.easing.easeInOut,
+								duration: theme.transitions.duration.leavingScreen,
+							}),
+						}}
 					>
-						<section>{props.children}</section>
+						<Box>{props.children}</Box>
 					</Box>
 				</Box>
 			</Box>

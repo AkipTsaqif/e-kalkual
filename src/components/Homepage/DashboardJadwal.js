@@ -1,23 +1,27 @@
-import { DataGrid, GridToolbar, GridFilterModel } from "@mui/x-data-grid";
+import {
+	DataGrid,
+	GridToolbar,
+	GridFilterModel,
+	GridFilterInputSingleSelect,
+} from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { Checkbox } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, Button } from "@mui/material";
 
-import PropTypes from "prop-types";
 import ReactToPrint from "react-to-print";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 
 import Navbar from "../Layout/Navbar";
 import QRCode from "../QR/QRCode";
 
-import { parse } from "date-fns";
+import { parse, format, parseISO } from "date-fns";
 import { useNavigate } from "react-router";
 
 import { uploadLaporanActions } from "../../store/upload-laporan";
 import { labelActions } from "../../store/label-gen";
+import { object } from "yup/lib/locale";
 
 // const DueColorValue = (props) => {
 // 	const { item, applyValue, focusElementRef } = props;
@@ -155,8 +159,6 @@ const DashboardJadwal = () => {
 						return {
 							...item,
 							id: index,
-							TglKalkual: item.TglKalkual.slice(0, 10),
-							EDKalkual: item.EDKalkual.slice(0, 10),
 						};
 					});
 
@@ -255,57 +257,77 @@ const DashboardJadwal = () => {
 			field: "Departemen",
 			width: 100,
 		},
-		{ headerName: "Lokasi", headerAlign: "center", field: "Lokasi", width: 75 },
+		{
+			headerName: "Lokasi",
+			headerAlign: "center",
+			field: "Lokasi",
+			width: 75,
+			type: "singleSelect",
+			valueOptions: ["PLG", "CKR"],
+		},
 		{
 			headerName: "Tanggal Kalkual",
 			headerAlign: "center",
 			field: "TglKalkual",
 			width: 175,
+			type: "date",
+			valueFormatter: (params) => format(parseISO(params?.value), "dd-MM-yyyy"),
 		},
 		{
 			headerName: "Frekuensi Kalkual (Umur Jatuh Tempo)",
 			headerAlign: "center",
 			field: "EDKalkual",
 			width: 150,
+			type: "date",
+			valueFormatter: (params) => format(parseISO(params?.value), "dd-MM-yyyy"),
 		},
 		{
 			headerName: "Jenis Kalkual (internal/eksternal)",
 			headerAlign: "center",
 			field: "JenisKalkual",
 			width: 150,
+			type: "singleSelect",
+			valueOptions: ["Internal", "Eksternal"],
 		},
-		{ headerName: "Status", headerAlign: "center", field: "Status", width: 100 },
-		{ headerName: "Urgensi", field: "dueColor", hide: true },
+		{
+			headerName: "Status",
+			headerAlign: "center",
+			field: "Status",
+			width: 100,
+			type: "singleSelect",
+			valueOptions:
+				typeof dummy !== "undefined" && dummy.length > 0
+					? dummy
+							.map((obj) => obj.Status)
+							.filter((value, index, self) => self.indexOf(value) === index)
+							.filter((obj) => obj)
+					: "ERROR",
+		},
+		{
+			headerName: "Urgensi",
+			field: "dueColor",
+			hide: true,
+			type: "singleSelect",
+			valueOptions:
+				typeof dummy !== "undefined" && dummy.length > 0
+					? dummy
+							.map((obj) => obj.dueColor)
+							.filter((value, index, self) => self.indexOf(value) === index)
+							.filter((obj) => obj)
+					: "ERROR",
+		},
 	];
 
 	useEffect(() => {
 		if (typeof dummy !== "undefined" && dummy.length > 0) {
 			const test = dummy
 				.map((obj) => obj.dueColor)
-				.filter((value, index, self) => self.indexOf(value) === index);
+				.filter((value, index, self) => self.indexOf(value) === index)
+				.filter((obj) => obj);
 			console.log(test);
+			console.log(dummy);
 		}
 	}, [dummy]);
-
-	// const dueColorOperator = [
-	// 	{
-	// 		label: "Is",
-	// 		value: "is",
-	// 		getApplyFilterFn: (filterItem) => {
-	// 			if (
-	// 				!filterItem.columnField ||
-	// 				!filterItem.value ||
-	// 				!filterItem.operatorValue
-	// 			)
-	// 				return null;
-
-	// 			return (params) => {
-	// 				return String(params.value) == String(filterItem.value);
-	// 			};
-	// 		},
-	// 		// InputComponent:
-	// 	},
-	// ];
 
 	return (
 		<div>
@@ -346,17 +368,17 @@ const DashboardJadwal = () => {
 									marginTop: "5vh",
 									margin: "auto auto",
 									borderRadius: "5px",
-									"& .super-app-theme--moderate": {
+									"& .super-app-theme--Moderate": {
 										bgcolor: "yellow",
 									},
-									"& .super-app-theme--urgent": {
+									"& .super-app-theme--Urgent": {
 										bgcolor: "rgb(226, 0, 0)",
 										color: "rgb(246, 246, 246)",
 									},
-									"& .super-app-theme--expired": {
+									"& .super-app-theme--Expired": {
 										bgcolor: "gray",
 									},
-									"& .super-app-theme--done": {
+									"& .super-app-theme--Done": {
 										bgcolor: "green",
 										color: "rgb(246, 246, 246)",
 									},
@@ -374,19 +396,6 @@ const DashboardJadwal = () => {
 									components={{ Toolbar: GridToolbar }}
 									disableColumnSelector={true}
 									disableDensitySelector={true}
-									// filterModel={{
-									// 	items: [
-									// 		{
-									// 			columnField: "dueColor",
-									// 			value:
-									// 				typeof dummy !== "undefined" && dummy.length > 0
-									// 					? dummy
-									// 							.map((obj) => obj.dueColor)
-									// 							.filter((value, index, self) => self.indexOf(value) === index)
-									// 					: "",
-									// 		},
-									// 	],
-									// }}
 									componentsProps={{
 										filterPanel: {
 											columnsSort: "asc",

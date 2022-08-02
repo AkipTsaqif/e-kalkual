@@ -65,7 +65,7 @@ const Login = () => {
 	const fetchUser = useCallback(async (username, password) => {
 		setIsFetching(true);
 		const response = await axios
-			.post("https://localhost:44375/api/auth", {
+			.post("https://portal.bintang7.com/Kalkual/api/auth", {
 				UserAD: username,
 				Password: password,
 			})

@@ -58,6 +58,9 @@ const ReqScanUser = () => {
 					}}
 				>
 					<QrReader
+						constraints={{
+							facingMode: "environment",
+						}}
 						onResult={(res, err) => {
 							if (!!res) {
 								scanHandler(res);

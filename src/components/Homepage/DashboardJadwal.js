@@ -81,10 +81,6 @@ const DashboardJadwal = () => {
 
 	const barcodeRef = useRef();
 
-	// const printHandler = useReactToPrint({
-	//     content: () => barcodeRef.current
-	// });
-
 	const dashboard = {
 		Option: "Dashboard",
 	};
@@ -324,189 +320,171 @@ const DashboardJadwal = () => {
 		},
 	];
 
-	useEffect(() => {
-		if (typeof dummy !== "undefined" && dummy.length > 0) {
-			const test = dummy
-				.map((obj) => obj.dueColor)
-				.filter((value, index, self) => self.indexOf(value) === index)
-				.filter((obj) => obj);
-			console.log(test);
-			console.log(dummy);
-		}
-	}, [dummy]);
-
 	return (
-		<div>
-			<Navbar>
-				<ThemeProvider theme={theme}>
+		<Navbar>
+			<ThemeProvider theme={theme}>
+				<Box
+					display="flex"
+					flexDirection="column"
+					justifyContent="center"
+					alignItems="center"
+					sx={{
+						m: "auto auto",
+						backgroundColor: "rgba(0, 0, 0, 0)",
+						borderRadius: 3,
+						boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
+						minHeight: `calc(100vh - 48px)`,
+					}}
+				>
 					<Box
-						display="flex"
-						flexDirection="column"
-						justifyContent="center"
-						alignItems="center"
+						width={1}
 						sx={{
-							m: "auto auto",
-							backgroundColor: "rgba(0, 0, 0, 0)",
+							backgroundColor: "rgba(0, 0, 0, 0.8)",
 							borderRadius: 3,
-							boxShadow: "0 1 4 rgba(0, 0, 0, 0.2)",
-							minHeight: `calc(100vh - 48px)`,
+							borderTop: 1,
+							borderBottom: 1,
+							borderColor: "rgba(220, 220, 220, 0.8)",
+							borderWidth: 2,
+							boxShadow: 5,
 						}}
 					>
+						<Typography variant="h5">Dashboard</Typography>
+						<hr />
 						<Box
-							width={1}
 							sx={{
-								backgroundColor: "rgba(0, 0, 0, 0.8)",
-								borderRadius: 3,
-								borderTop: 1,
-								borderBottom: 1,
-								borderColor: "rgba(220, 220, 220, 0.8)",
-								borderWidth: 2,
-								boxShadow: 5,
+								height: "515px",
+								width: "95%",
+								backgroundColor: "lightgray",
+								marginTop: "5vh",
+								margin: "auto auto",
+								borderRadius: "5px",
+								"& .super-app-theme--Moderate": {
+									bgcolor: "yellow",
+								},
+								"& .super-app-theme--Urgent": {
+									bgcolor: "rgb(226, 0, 0)",
+									color: "rgb(246, 246, 246)",
+								},
+								"& .super-app-theme--Expired": {
+									bgcolor: "gray",
+								},
+								"& .super-app-theme--Done": {
+									bgcolor: "green",
+									color: "rgb(246, 246, 246)",
+								},
 							}}
 						>
-							<Typography variant="h5">Dashboard</Typography>
-							<hr />
-							<Box
-								sx={{
-									height: "515px",
-									width: "95%",
-									backgroundColor: "lightgray",
-									marginTop: "5vh",
-									margin: "auto auto",
-									borderRadius: "5px",
-									"& .super-app-theme--Moderate": {
-										bgcolor: "yellow",
-									},
-									"& .super-app-theme--Urgent": {
-										bgcolor: "rgb(226, 0, 0)",
-										color: "rgb(246, 246, 246)",
-									},
-									"& .super-app-theme--Expired": {
-										bgcolor: "gray",
-									},
-									"& .super-app-theme--Done": {
-										bgcolor: "green",
-										color: "rgb(246, 246, 246)",
+							<DataGrid
+								getRowId={(dummy) => dummy.id}
+								columns={columns}
+								rows={dummy}
+								pageSize={10}
+								rowsPerPageOptions={[10]}
+								rowHeight={35}
+								headerHeight={55}
+								loading={isLoading}
+								components={{ Toolbar: GridToolbar }}
+								disableColumnSelector={true}
+								disableDensitySelector={true}
+								componentsProps={{
+									filterPanel: {
+										columnsSort: "asc",
+										filterFormProps: {
+											columnInputProps: {
+												variant: "outlined",
+												size: "small",
+												sx: { mt: "auto" },
+											},
+											operatorInputProps: {
+												variant: "outlined",
+												size: "small",
+												sx: { mt: "auto" },
+											},
+											valueInputProps: {
+												variant: "outlined",
+												size: "small",
+											},
+										},
+										sx: {
+											// Customize inputs using css selectors
+											"& .MuiDataGrid-filterForm": { px: 2 },
+											"& .MuiDataGrid-filterFormLinkOperatorInput": { mr: 2 },
+											"& .MuiDataGrid-filterFormColumnInput": { mr: 2, width: 150 },
+											"& .MuiDataGrid-filterFormOperatorInput": { mr: 2 },
+											"& .MuiDataGrid-filterFormValueInput": { width: 200 },
+										},
 									},
 								}}
-							>
-								<DataGrid
-									getRowId={(dummy) => dummy.id}
-									columns={columns}
-									rows={dummy}
-									pageSize={10}
-									rowsPerPageOptions={[10]}
-									rowHeight={35}
-									headerHeight={55}
-									loading={isLoading}
-									components={{ Toolbar: GridToolbar }}
-									disableColumnSelector={true}
-									disableDensitySelector={true}
-									componentsProps={{
-										filterPanel: {
-											columnsSort: "asc",
-											filterFormProps: {
-												columnInputProps: {
-													variant: "outlined",
-													size: "small",
-													sx: { mt: "auto" },
-												},
-												operatorInputProps: {
-													variant: "outlined",
-													size: "small",
-													sx: { mt: "auto" },
-												},
-												valueInputProps: {
-													variant: "outlined",
-													size: "small",
-												},
-											},
-											sx: {
-												// Customize inputs using css selectors
-												"& .MuiDataGrid-filterForm": { px: 2 },
-												"& .MuiDataGrid-filterFormLinkOperatorInput": { mr: 2 },
-												"& .MuiDataGrid-filterFormColumnInput": { mr: 2, width: 150 },
-												"& .MuiDataGrid-filterFormOperatorInput": { mr: 2 },
-												"& .MuiDataGrid-filterFormValueInput": { width: 200 },
-											},
-										},
-										GridToolbar: {
-											printOptions: {
-												allColumns: true,
-											},
-										},
-									}}
-									onSelectionModelChange={(id) => {
-										const selectedID = new Set(id);
-										const selectedRowData = dummy.find((row) => selectedID.has(row.id));
-										setSelectedData(selectedRowData);
-										console.log(selectedRowData);
+								onSelectionModelChange={(id) => {
+									const selectedID = new Set(id);
+									const selectedRowData = dummy.find((row) => selectedID.has(row.id));
+									setSelectedData(selectedRowData);
+									console.log(selectedRowData);
 
-										if (selectedRowData.Status === "In progress") {
-											dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
-											navigate("/approval/uploadlaporan");
-										}
+									if (selectedRowData.Status === "In progress") {
+										dispatch(uploadLaporanActions.inputLaporan(selectedRowData));
+										navigate("/approval/uploadlaporan");
+									}
 
-										if (selectedRowData.Status === "Completed") {
-											setBtnBarcode(true);
-											dispatch(labelActions.generateQR(selectedRowData.NoIN));
-										} else setBtnBarcode(false);
+									if (selectedRowData.Status === "Completed") {
+										setBtnBarcode(true);
+										dispatch(labelActions.generateQR(selectedRowData.NoIN));
+									} else setBtnBarcode(false);
 
-										if (selectedRowData.dueColor === "light")
-											setRowColor("rgb(210, 210, 210)");
-										else if (selectedRowData.dueColor === "moderate")
-											setRowColor("rgb(200, 200, 0)");
-										else if (selectedRowData.dueColor === "urgent")
-											setRowColor("rgb(230, 0, 0)");
-										else if (selectedRowData.dueColor === "expired")
-											setRowColor("rgb(210, 210, 210)");
-										else if (selectedRowData.dueColor === "done")
-											setRowColor("rgb(25, 170, 0)");
-									}}
-									getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
-									sx={{
-										"& .MuiDataGrid-columnHeaderTitle": {
-											textOverflow: "clip",
-											whiteSpace: "break-spaces",
-											lineHeight: 1,
-											fontWeight: "bold",
-										},
-										"& .MuiDataGrid-cell": {
-											border: "1px solid #000000",
-										},
-									}}
-								/>
-							</Box>
-							<Box
-								mb={2.2}
-								mt={1}
-								mr={3.5}
-								display="flex"
-								justifyContent="flex-end"
-								alignItems="flex-end"
-							>
-								<ReactToPrint
-									trigger={() => (
-										<Button
-											variant="contained"
-											color="success"
-											type="button"
-											disabled={!btnBarcode}
-										>
-											Print Barcode
-										</Button>
-									)}
-									content={() => barcodeRef.current}
-								/>
-							</Box>
-							<div style={{ display: "none" }}>
-								<QRCode ref={barcodeRef} />
-							</div>
+									if (selectedRowData.dueColor === "light")
+										setRowColor("rgb(210, 210, 210)");
+									else if (selectedRowData.dueColor === "moderate")
+										setRowColor("rgb(200, 200, 0)");
+									else if (selectedRowData.dueColor === "urgent")
+										setRowColor("rgb(230, 0, 0)");
+									else if (selectedRowData.dueColor === "expired")
+										setRowColor("rgb(210, 210, 210)");
+									else if (selectedRowData.dueColor === "done")
+										setRowColor("rgb(25, 170, 0)");
+								}}
+								getRowClassName={(params) => `super-app-theme--${params.row.dueColor}`}
+								sx={{
+									"& .MuiDataGrid-columnHeaderTitle": {
+										textOverflow: "clip",
+										whiteSpace: "break-spaces",
+										lineHeight: 1,
+										fontWeight: "bold",
+									},
+									"& .MuiDataGrid-cell": {
+										border: "1px solid #000000",
+									},
+								}}
+							/>
 						</Box>
+						<Box
+							mb={2.2}
+							mt={1}
+							mr={3.5}
+							display="flex"
+							justifyContent="flex-end"
+							alignItems="flex-end"
+						>
+							<ReactToPrint
+								trigger={() => (
+									<Button
+										variant="contained"
+										color="success"
+										type="button"
+										disabled={!btnBarcode}
+									>
+										Print Barcode
+									</Button>
+								)}
+								content={() => barcodeRef.current}
+							/>
+						</Box>
+						<div style={{ display: "none" }}>
+							<QRCode ref={barcodeRef} />
+						</div>
 					</Box>
-				</ThemeProvider>
-			</Navbar>
-		</div>
+				</Box>
+			</ThemeProvider>
+		</Navbar>
 	);
 };
 

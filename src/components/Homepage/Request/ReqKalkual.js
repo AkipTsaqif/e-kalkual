@@ -169,6 +169,7 @@ const Kalibrasi = () => {
 	const [tanggal, setTanggal] = useState(savedRequest.TglKalkual);
 	const [periode, setPeriode] = useState(savedRequest.Periode);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingNoIN, setIsLoadingNoIN] = useState(false);
 
 	const locale = "id";
 	const localeMap = {
@@ -287,6 +288,7 @@ const Kalibrasi = () => {
 	}
 
 	const getNoIN = async () => {
+		setIsLoadingNoIN(true);
 		const response = await axios
 			.post("https://portal.bintang7.com/Kalkual/api/kalkual", {
 				Option: "Generate Next NoIN",
@@ -303,7 +305,10 @@ const Kalibrasi = () => {
 							: "Internal"
 						: "Internal",
 			})
-			.then((resp) => setNoIN(JSON.parse(resp.data)[0].NoIN));
+			.then((resp) => {
+				setNoIN(JSON.parse(resp.data)[0].NoIN);
+				setIsLoadingNoIN(false);
+			});
 	};
 
 	useEffect(() => {
@@ -662,7 +667,7 @@ const Kalibrasi = () => {
 									variant="contained"
 									onClick={saveHandler}
 									color="success"
-									disabled={isLoading}
+									disabled={isLoadingNoIN}
 								>
 									Save
 								</Button>
@@ -672,7 +677,7 @@ const Kalibrasi = () => {
 									variant="contained"
 									onClick={submitHandler}
 									endIcon={<SendIcon />}
-									disabled={isLoading}
+									disabled={isLoading || isLoadingNoIN}
 								>
 									Submit ke Approval
 								</LoadingButton>
